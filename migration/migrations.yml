@@ -1,0 +1,4 @@
+table_storage:
+  table_name: oxmigrations_oe_examples_module
+migrations_paths:
+  'OxidEsales\ExamplesModule\Migrations': data

@@ -1,0 +1,22 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+    bind:
+      OxidEsales\Eshop\Core\Request: '@=service("OxidEsales\\ExamplesModule\\Core\\Registry").getRequest()'
+      OxidEsales\Eshop\Core\Language: '@=service("OxidEsales\\ExamplesModule\\Core\\Registry").getLang()'
+
+  OxidEsales\ExamplesModule\Greeting\Repository\GreetingRepositoryInterface:
+    class: OxidEsales\ExamplesModule\Greeting\Repository\GreetingRepository
+    public: true
+
+  OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageServiceInterface:
+    class: OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageService
+    public: true
+
+  OxidEsales\ExamplesModule\Greeting\Infrastructure\UserModelFactoryInterface:
+    class: OxidEsales\ExamplesModule\Greeting\Infrastructure\UserModelFactory
+
+  OxidEsales\ExamplesModule\Greeting\Service\UserServiceInterface:
+    class: OxidEsales\ExamplesModule\Greeting\Service\UserService
+    public: true

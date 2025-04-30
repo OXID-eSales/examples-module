@@ -1,0 +1,16 @@
+{% extends 'page/shop/start.html.twig' %}
+{% block start_newest_articles %}
+    <p>
+        <!-- If the module is active, the template block will be extended and this line is shown -->
+        {{ translate({ ident: "OEEXAMPLESMODULE_GREETING" }) }}
+        <!-- And in case we have the module setting and a logged in user, we might see some additional text-->
+        {{ oView.getOeemGreeting() }}
+        <!-- Allow logged in user to change his greeting text -->
+        {% if oView.canUpdateOeemGreeting() %}
+            <!-- Use seo_url function to output SEO style url -->
+            <a id='oeem_update_greeting' class="btn btn-primary" href="{{ seo_url({ ident: oViewConf.getSelfLink() ~ "cl=oeem_greeting" }) }}">{{ translate({ ident: "OEEXAMPLESMODULE_GREETING_UPDATE" }) }}</a>
+        {% endif %}
+    </p>
+
+    {{ parent() }}
+{% endblock %}

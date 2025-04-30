@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  OxidEsales\ExamplesModule\ProductVote\Dao\ProductVoteDaoInterface:
+    class: OxidEsales\ExamplesModule\ProductVote\Dao\ProductVoteDao
+
+  OxidEsales\ExamplesModule\ProductVote\Dao\VoteResultDaoInterface:
+    class: OxidEsales\ExamplesModule\ProductVote\Dao\VoteResultDao
+
+  OxidEsales\ExamplesModule\ProductVote\Service\VoteServiceInterface:
+    class: OxidEsales\ExamplesModule\ProductVote\Service\VoteService
+    public: true

@@ -1,0 +1,132 @@
+{
+    "name": "oxid-esales/examples-module",
+    "description": "Module with solution examples",
+    "type": "oxideshop-module",
+    "keywords": [
+        "oxid",
+        "modules",
+        "eShop"
+    ],
+    "license": [
+        "GPL-3.0"
+    ],
+    "require": {
+        "php": "^8.2",
+        "symfony/filesystem": "^6.4",
+        "oxid-esales/oxideshop-ce": "dev-b-7.3.x",
+        "oxid-esales/oxideshop-pe": "dev-b-7.3.x",
+        "oxid-esales/oxideshop-ee": "dev-b-7.3.x",
+        "oxid-esales/twig-component": "dev-b-7.3.x",
+        "oxid-esales/twig-component-pe": "dev-b-7.3.x",
+        "oxid-esales/twig-component-ee": "dev-b-7.3.x",
+        "oxid-esales/twig-admin-theme": "dev-b-7.3.x",
+        "oxid-esales/oxideshop-doctrine-migration-wrapper": "dev-b-7.3.x",
+        "oxid-esales/apex-theme": "*"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require-dev": {
+        "phpstan/phpstan": "^2.0.2",
+        "squizlabs/php_codesniffer": "^3.10",
+        "phpmd/phpmd": "^2.15",
+        "phpunit/phpunit": "~10.5.17",
+        "mikey179/vfsstream": "~1.6.8",
+        "codeception/codeception": "^5.1",
+        "codeception/module-asserts": "^3.0",
+        "codeception/module-db": "^3.1",
+        "codeception/module-filesystem": "^3.0",
+        "codeception/module-webdriver": "^4.0",
+        "oxid-esales/codeception-modules": "dev-b-7.3.x",
+        "oxid-esales/codeception-page-objects": "dev-b-7.3.x",
+        "oxid-esales/developer-tools": "dev-b-7.3.x"
+    },
+    "conflict": {
+        "oxid-esales/oxideshop-ce": "<7.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "OxidEsales\\ExamplesModule\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "OxidEsales\\ExamplesModule\\Tests\\": "tests/",
+            "OxidEsales\\EshopCommunity\\Tests\\": "./vendor/oxid-esales/oxideshop-ce/tests"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": "@install-pre-commit-hook",
+        "post-update-cmd": "@install-pre-commit-hook",
+        "install-pre-commit-hook": "git config --local core.hooksPath .github/commit-hooks",
+
+        "phpcs": "phpcs --standard=tests/phpcs.xml  --report=full",
+        "phpcs-report": "phpcs --standard=tests/phpcs.xml --report=json --report-file=tests/Reports/phpcs.report.json",
+        "phpcbf": "phpcbf --standard=tests/phpcs.xml",
+
+        "phpstan": "phpstan -ctests/PhpStan/phpstan.neon analyse src/",
+        "phpstan-report": "phpstan -ctests/PhpStan/phpstan.neon analyse src/ --error-format=json > tests/Reports/phpstan.report.json",
+
+        "phpmd": "phpmd src ansi tests/PhpMd/standard.xml",
+        "phpmd-report": "phpmd src json tests/PhpMd/standard.xml --reportfile tests/Reports/phpmd.report.json",
+
+        "static": [
+            "@phpcs",
+            "@phpstan",
+            "@phpmd"
+        ],
+
+        "tests-unit": "XDEBUG_MODE=coverage vendor/bin/phpunit --config=tests/ --testsuite=Unit --coverage-clover=tests/Reports/coverage_unit_module-template.xml",
+        "tests-integration": "XDEBUG_MODE=coverage vendor/bin/phpunit --bootstrap=/var/www/source/bootstrap.php --config=tests/ --testsuite=Integration --coverage-clover=tests/Reports/coverage_integration_module-template.xml",
+        "tests-coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --bootstrap=/var/www/source/bootstrap.php --config=tests/ --coverage-html=tests/Reports/CoverageHtml",
+
+        "tests-codeception": [
+            "Composer\\Config::disableProcessTimeout",
+            "THEME_ID=apex MODULE_IDS=oe_examples_module SHOP_ROOT_PATH=/var/www vendor/bin/codecept run Acceptance -c tests/codeception.yml --no-redirect"
+        ],
+
+        "tests-all": [
+            "@tests-unit",
+            "@tests-integration",
+            "@tests-codeception"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "oxid-esales/oxideshop-composer-plugin": true,
+            "oxid-esales/oxideshop-unified-namespace-generator": true
+        }
+    },
+    "repositories": {
+        "oxid-esales/apex-theme": {
+            "type": "path",
+            "url": "./source/Application/views/apex",
+            "options": {
+                "symlink": true
+            }
+        },
+        "oxid-esales/twig-component-ee": {
+            "type": "git",
+            "url": "https://github.com/OXID-eSales/twig-component-ee"
+        },
+        "oxid-esales/twig-component-pe": {
+            "type": "git",
+            "url": "https://github.com/OXID-eSales/twig-component-pe"
+        },
+        "oxid-esales/twig-component": {
+            "type": "git",
+            "url": "https://github.com/OXID-eSales/twig-component"
+        },
+        "oxid-esales/oxideshop-ee": {
+            "type": "git",
+            "url": "https://github.com/OXID-eSales/oxideshop_ee.git"
+        },
+        "oxid-esales/oxideshop-pe": {
+            "type": "git",
+            "url": "https://github.com/OXID-eSales/oxideshop_pe.git"
+        },
+        "oxid-esales/oxideshop-ce": {
+            "type": "git",
+            "url": "https://github.com/OXID-eSales/oxideshop_ce.git"
+        }
+    }
+}

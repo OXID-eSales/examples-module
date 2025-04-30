@@ -1,0 +1,33 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  OxidEsales\ExamplesModule\Logging\Command\ReadLogsCommand:
+    class: OxidEsales\ExamplesModule\Logging\Command\ReadLogsCommand
+    arguments:
+      $logFilePath: '%app.log_file_path%'
+    tags:
+      - { name: 'console.command', command: 'oetemplate:logger:read' }
+
+  OxidEsales\ExamplesModule\Logging\Service\BasketProductLoggerServiceInterface:
+    class: OxidEsales\ExamplesModule\Logging\Service\BasketProductLoggerService
+    public: true
+    arguments:
+      $logger: '@OxidEsales\ExamplesModule\Logger'
+
+  OxidEsales\ExamplesModule\Logger:
+    class: Monolog\Logger
+    factory: [ '@OxidEsales\ExamplesModule\Logger\Factory', 'create' ]
+
+  OxidEsales\ExamplesModule\Logger\Factory:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\MonologLoggerFactory
+    arguments:
+      $configuration: '@OxidEsales\ExamplesModule\Logger\Configuration'
+
+  OxidEsales\ExamplesModule\Logger\Configuration:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologConfiguration
+    arguments:
+      $loggerName: 'Basket Logger'
+      $logFilePath: '%app.log_file_path%'
+      $logLevel: !php/const Psr\Log\LogLevel::DEBUG

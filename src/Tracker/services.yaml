@@ -1,0 +1,16 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  OxidEsales\ExamplesModule\Tracker\Repository\TrackerRepositoryInterface:
+    class: OxidEsales\ExamplesModule\Tracker\Repository\TrackerRepository
+    public: true
+
+  OxidEsales\ExamplesModule\Tracker\Service\TrackerServiceInterface:
+    class: OxidEsales\ExamplesModule\Tracker\Service\TrackerService
+    public: true
+
+  OxidEsales\ExamplesModule\Tracker\Subscriber\BeforeModelUpdate:
+    class: OxidEsales\ExamplesModule\Tracker\Subscriber\BeforeModelUpdate
+    tags: [ 'kernel.event_subscriber' ]

@@ -53,9 +53,9 @@ sonarcloud:
   matrix:
     testplan: '["-"]'
   strip_path: '/var/www/'
-  project_key: 'CHANGE SONARCLOUD ORGANIZATION'
+  project_key: 'OXID-eSales_examples-module'
   project_name: 'oxid-esales/examples-module'
-  organization: 'CHANGE SONARCLOUD ORGANIZATION'
+  organization: 'oxid-esales'
   parameters: |
     -Dsonar.language=php \
     -Dsonar.scm.provider=git \

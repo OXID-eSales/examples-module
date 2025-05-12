@@ -2,9 +2,9 @@ install:
   cache:
     prepared_shop: false
   git:
-    repository: 'OXID-eSales/module-template'
+    repository: 'OXID-eSales/examples-module'
     ref: &ref '{{ .Github.RefName }}'
-    shop_url: 'https://github.com/OXID-eSales/module-template.git'
+    shop_url: 'https://github.com/OXID-eSales/examples-module.git'
     shop_ref: *ref
   composer:
     root_url: ''
@@ -64,4 +64,4 @@ sonarcloud:
     -Dsonar.php.phpstan.reportPaths=coverage-reports/phpstan.report.json
 
 finish:
-  slack_title: 'Module template ({{ .Data.global.git.shop_ref }}) by {{ .Github.Actor }}'
+  slack_title: 'Examples Module ({{ .Data.global.git.shop_ref }}) by {{ .Github.Actor }}'

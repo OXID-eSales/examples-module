@@ -1,15 +1,17 @@
 # OXID eShop Examples Module
 
-[![Development](https://github.com/OXID-eSales/examples-module/actions/workflows/trigger.yaml/badge.svg?branch=b-7.3.x)](https://github.com/OXID-eSales/examples-module/actions/workflows/trigger.yaml)
-[![Latest Version](https://img.shields.io/packagist/v/OXID-eSales/examples-module?logo=composer&label=latest&include_prereleases&color=orange)](https://packagist.org/packages/oxid-esales/examples-module)
-[![PHP Version](https://img.shields.io/packagist/php-v/oxid-esales/examples-module)](https://github.com/oxid-esales/examples-module)
+[![Development](https://github.com/OXID-eSales/module-template/actions/workflows/trigger.yaml/badge.svg?branch=b-7.1.x)](https://github.com/OXID-eSales/module-template/actions/workflows/trigger.yaml)
+[![Latest Version](https://img.shields.io/packagist/v/OXID-eSales/module-template?logo=composer&label=latest&include_prereleases&color=orange)](https://packagist.org/packages/oxid-esales/module-template)
+[![PHP Version](https://img.shields.io/packagist/php-v/oxid-esales/module-template)](https://github.com/oxid-esales/module-template)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=OXID-eSales_examples-module&metric=alert_status)](https://sonarcloud.io/dashboard?id=OXID-eSales_examples-module)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=OXID-eSales_examples-module&metric=coverage)](https://sonarcloud.io/dashboard?id=OXID-eSales_examples-module)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=OXID-eSales_examples-module&metric=sqale_index)](https://sonarcloud.io/dashboard?id=OXID-eSales_examples-module)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=OXID-eSales_module-template&metric=alert_status)](https://sonarcloud.io/dashboard?id=OXID-eSales_module-template)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=OXID-eSales_module-template&metric=coverage)](https://sonarcloud.io/dashboard?id=OXID-eSales_module-template)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=OXID-eSales_module-template&metric=sqale_index)](https://sonarcloud.io/dashboard?id=OXID-eSales_module-template)
 
 
-The examples module contains examples for the most common use cases (see below)
+Reusable module template for extending OXID eShop core functionality.
+
+The module template contains examples for the most common use cases (see below)
 like OXID suggests it could be implemented. 
 
 This module also comes with all the quality tools OXID recommends to use.
@@ -20,20 +22,24 @@ This module also comes with all the quality tools OXID recommends to use.
 3. [Goals](#goals)
 4. [Examples](#examples)
 5. [Install and try it out](#install-and-try-it-out)
-6. [Development installation](#development-installation)
-7. [Development installation on OXID eShop SDK](#development-installation-on-oxid-eshop-sdk)
-8. [Things to be aware of](#things-to-be-aware-of)
-9. [Running tests and quality tools](#running-tests-and-quality-tools)
-10. [Additional info](#additional-info)
+6. [Use as a base for own module](#use-as-a-base-for-own-module)
+7. [Things to be aware of](#things-to-be-aware-of)
+8. [Running tests and quality tools](#running-tests-and-quality-tools)
+9. [Additional info](#additional-info)
 
 ## Branch compatibility
 
 * b-7.3.x branch - compatible with OXID eShop compilation 7.3.x and the respective branch
+* b-7.2.x branch / v4.x version - compatible with OXID eShop compilation 7.2.x and the respective branch
+* b-7.1.x branch / v3.x version - compatible with OXID eShop compilation 7.1.x and the respective branch
+* b-7.0.x branch / v2.x version - compatible with OXID eShop compilation b-7.0.x
+* b-6.5.x branch / v1.0.0 version - compatible with OXID eShop compilation b-6.5.x
+* b-6.4.x branch is compatible with OXID eShop compilation b-6.4.x 
 
 ## The Idea
 
 OXID eSales would like to provide a lightweight reusable example module incorporating
-our best practices recommendations to be used for developing own module solutions.
+our best practices recommendations to be used as a template for developing own module solutions.
 
 Story:
 - Module will extend a block on shop start page to show a greeting message (visible when module is active).
@@ -50,7 +56,15 @@ Story:
 
 ## Goals
 
-Install and try out the module with simple examples to most common development questions.
+There are three main goals this repository is intended to help with:
+
+* Install and try out the module with simple examples to most common development questions.
+* The provided solution can be used as a base for your own module. It will help creating
+  the personalized module base with all the examples listed in the Examples section.
+* The repository can be used for creating a clean skeleton with only preconfigured
+  OXID recommended quality tools for your new module.
+
+Please jump to the section that fits your needs.
 
 ## Examples
 
@@ -126,38 +140,116 @@ composer require oxid-esales/module-template
 
 and [activate the module](https://docs.oxid-esales.com/developer/en/latest/development/modules_components_themes/module/installation_setup/setup.html#setup-activation).
 
-## Development installation
+## Use as a base for own module
 
-To be able running the tests and other preconfigured quality tools, please install the module as a [root package](https://getcomposer.org/doc/04-schema.md#root-package).
+In case you'd like to use this module as a template for your own module, this section is for you.
 
-The next section shows how to install the module as a root package by using the OXID eShop SDK.
+**Important** Instructions here are for the case you intend to develop a module for OXID eShop 7.2.x. For other
+versions, refer to the version specific branch.
 
-In case of different environment usage, please adjust by your own needs.
+Before starting to do something, please, read the whole section once, then decide on required questions, decide 
+what you want to achieve, and follow the procedure.
 
-## Development installation on OXID eShop SDK
+### Terms
 
-The installation instructions below are shown for the current [SDK](https://github.com/OXID-eSales/docker-eshop-sdk)
-for shop 7.3. Make sure your system meets the requirements of the SDK.
+First, lets decide on terms:
 
-0. Ensure all docker containers are down to avoid port conflicts
+* Module is installable to `vendor/<yourPackageName>` directory. The package name is **lowercased** and 
+  looks like: `<yourVendorName>/<yourModuleName>`, example: `oxid-esales/module-template`. Decide 
+  what will be your new module package name.
+  * Please note that combination of `<yourVendorName>` and `<yourModuleRootDirectory>` should be unique. Based on this
+    information your module id will be composed and will look like: `<yourVendorPrefix>_<yourModuleRootDirectory>`. In
+    our case it is `oe_moduletemplate`.
+  * It is recommended to use only alphanumeric characters, in case you need a separator you can use dash ("-") or underscore("_").
+* Decide on your module's namespace - `<YourVendorName>\<YourModuleName>`, example: `OxidEsales\ModuleTemplate`.
+* Decide on your module's ID - `<YourVendorPrefix>_<yourModuleName alphanumeric part>`, example: `oe_moduletemplate`.
+  * It is recommended to use only alphanumeric characters, in case you need a separator you can use underscore. More 
+    information about module id can be found [here](https://docs.oxid-esales.com/developer/en/latest/development/modules_components_themes/module/skeleton/metadataphp/amodule/id.html).
 
-1. Clone the SDK for the new project
-```shell
-echo MyProject && git clone https://github.com/OXID-eSales/docker-eshop-sdk.git $_ && cd $_
+In the following examples, your information required places will be shown as placeholders: `<yourPackageName>`, it means
+you should put your package name at that place, without brackets, for example:
+
+```
+composer config repositories.<yourPackageName> path source/modules/<yourVendorName>/<yourModuleName>
+```
+will possibly look like:
+```
+composer config repositories.my-vendor-name/my-module-name path source/modules/mvn/mymodulerootdir
+```
+in our case it is:
+```
+composer config repositories.oxid-esales/module-template path source/modules/oe/module-template
 ```
 
-2. Clone the repository to the source directory
-```shell
-git clone --recurse-submodules https://github.com/OXID-eSales/graphql-base-module.git --branch=b-7.3.x ./source
+### Procedure
+
+The following procedure describes how to create a base for your further module, and shows the basic installation for the development process:
+
+#### 1. Use the Template
+
+Click on the "Use this template" button on the template [main page](https://github.com/OXID-eSales/module-template) to 
+create your module repository from the given template. 
+
+Please make sure to NOT choose the 'take all branches' option, as this will clone the repository with everything 
+we have in our repository. Having all branches also will trigger the github actions for all branches and you dont want this usually. 
+
+As an outcome of this step, you should have a repository with one "Initial commit" of our current latest repository state.
+
+#### 2. Personalize and cleanup the module
+
+To personalize the module, use the "bin/personalize.sh" script. This script will prompt you for required information and do the work.
+
+To cleanup the module from all current examples and make it a clean skeleton, use the "bin/cleanexamples.sh" script. This script will remove all example solutions code.
+
+Its not mandatory to cleanup the module from examples, but you have this option if you want to start from the clean skeleton.
+
+For this step, clone your module repository anywhere to your local directory and run the desired scripts.
+
+```bash
+git clone <yourGitRepositoryUrl> myModule
+cd myModule
+
+// Run the personalize script
+./bin/personalize.sh
+
+// Run the clean examples script if you want to start from the clean skeleton
+./bin/cleanexamples.sh
+
+git commit -am "Personalize and cleanup the module"
+git push origin
 ```
 
-3. Run the recipe to setup the development environment, you can decide which shop edition to install. Omitting the flag installs EE.
-```shell
-./source/recipes/setup-development.sh -s CE
-```
+Please note that the module comes with a database table, translations, settings and some templates which still have the original
+names after personalization, if cleanup was not done. Just keep an eye on all that's prefixed 'OEEM', 'oeem', 'OEEXAMPLESMODULE' etc.
 
-You should be able to access the shop with http://localhost.local and the admin panel with http://localhost.local/admin
-(credentials: noreply@oxid-esales.com / admin)
+Also, you will need to adjust the README, CHANGELOG, LICENSE, metadata and the GitHub workflow file, with your
+credentials and names. For running SonarCloud as part of the steps in GitHub workflow you
+will need to configure SonarCloud and to create a secret environment variable for your repository called SONAR_TOKEN.
+The token itself is provided by SonarCloud.
+
+#### 3. Install the module for Development
+
+For installing the module for development our recommended way, check the "Development installation section", 
+or do it any other way you prefer, but make sure to reconfigure our preconfigured quality tools to fit your installation.
+
+### Development installation
+
+We recommend developing the module as independent as possible. This means that the module for development should
+be installed as a root package, with its own strict dependencies if such are needed.
+
+Consider using our docker based SDK and our ["Recipes"](https://github.com/OXID-eSales/docker-eshop-sdk-recipes) to 
+install this module development variant. Make sure you have all your current docker containers stopped before starting on this.
+
+```bash
+cd ~/Projects
+echo ModuleTemplate && git clone https://github.com/OXID-eSales/docker-eshop-sdk.git $_ && cd $_
+git clone --recurse-submodules https://github.com/OXID-eSales/docker-eshop-sdk-recipes recipes/oxid-esales
+
+// Important: In case you want to develop your module created from module template, edit the recipe with your 
+// module repository and module id first
+
+./recipes/oxid-esales/module-template/b-7.2.x-root.sh -eCE
+```
 
 ## Things to be aware of
 
@@ -192,15 +284,10 @@ As already mentioned above, in the 7.x versions of OXID eShop, the module code o
 namespace needs to point there. In our case this looks like
 
 ```bash
-    "autoload": {
+   "autoload": {
         "psr-4": {
-            "OxidEsales\\ExamplesModule\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "OxidEsales\\ExamplesModule\\Tests\\": "tests/",
-            "OxidEsales\\EshopCommunity\\Tests\\": "./vendor/oxid-esales/oxideshop-ce/tests"
+            "OxidEsales\\ModuleTemplate\\": "src/",
+            "OxidEsales\\ModuleTemplate\\Tests\\": "tests/"
         }
     },
 ```
@@ -270,6 +357,13 @@ In our case, we cover the reaction of the startpage to the different possibiliti
 The great thing about codeception tests is - they can create screenshot and html
 output in failure case, so you literally get a picture of the fail (`tests/Coreception/_output/`).
 
+### Development Environment - Docker SDK
+
+You can install the shop on whatever system fits your needs, but please check the 
+[OXID Docker SDK recipes](https://github.com/OXID-eSales/docker-eshop-sdk-recipes).
+That's what we use in OXID Development to quickly set up whatever development environment we need and
+we are constantly trying to improve them.
+
 ### Github Actions Workflow
 
 The module template comes complete with a github actions workflow. No need to rig up some separate continuous integration
@@ -307,6 +401,7 @@ Ps: a failing shop test might also turn up issues in your module, in that case f
 * Bug tracker - https://bugs.oxid-esales.com
 * Developer Documentation - https://docs.oxid-esales.com/developer/en/latest/
 * Quality Tools and Requirements - https://docs.oxid-esales.com/developer/en/latest/development/modules_components_themes/quality.html
+* Docker SDK recipes - https://github.com/OXID-eSales/docker-eshop-sdk-recipes
 * Docker SDK - https://github.com/OXID-eSales/docker-eshop-sdk
 
 ### Contact us

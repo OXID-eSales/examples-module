@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
 use OxidEsales\Eshop\Core\Language as EshopLanguage;
 use OxidEsales\Eshop\Core\Request as EshopRequest;
 use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
-use OxidEsales\ExamplesModule\Extension\Model\User as TemplateModelUser;
+use OxidEsales\ExamplesModule\Extension\Model\User as ExamplesModelUser;
 use OxidEsales\ExamplesModule\Settings\Service\ModuleSettingsServiceInterface;
 
 readonly class GreetingMessageService implements GreetingMessageServiceInterface
@@ -51,7 +51,7 @@ readonly class GreetingMessageService implements GreetingMessageServiceInterface
      */
     public function saveGreeting(EshopModelUser $user): bool
     {
-        /** @var TemplateModelUser $user */
+        /** @var ExamplesModelUser $user */
         $user->setPersonalGreeting($this->getRequestOeemGreeting());
 
         return (bool)$user->save();
@@ -74,7 +74,7 @@ readonly class GreetingMessageService implements GreetingMessageServiceInterface
     private function getUserGreeting(?EshopModelUser $user = null): string
     {
         if (is_object($user)) {
-            /** @var TemplateModelUser $user */
+            /** @var ExamplesModelUser $user */
             $result = $user->getPersonalGreeting();
         }
 

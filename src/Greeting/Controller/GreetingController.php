@@ -12,7 +12,7 @@ namespace OxidEsales\ExamplesModule\Greeting\Controller;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
 use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
-use OxidEsales\ExamplesModule\Extension\Model\User as TemplateModelUser;
+use OxidEsales\ExamplesModule\Extension\Model\User as ExamplesModelUser;
 use OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageServiceInterface;
 use OxidEsales\ExamplesModule\Settings\Service\ModuleSettingsServiceInterface;
 use OxidEsales\ExamplesModule\Tracker\Repository\TrackerRepositoryInterface;
@@ -44,7 +44,7 @@ class GreetingController extends FrontendController
         $moduleSettings = $this->getService(ModuleSettingsServiceInterface::class);
         $repository = $this->getService(TrackerRepositoryInterface::class);
 
-        /** @var TemplateModelUser $user */
+        /** @var ExamplesModelUser $user */
         $user = $this->getUser();
 
         /** @phpstan-ignore-next-line */

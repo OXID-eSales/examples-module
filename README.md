@@ -42,10 +42,10 @@ Story:
 - User custom greetings are saved via shop model save method. We subscribe to BeforeModelUpdate to track how often a user changed his personal greeting.
 - Tracking of this information will be done in a new database table to serve as an example for module's own shop model.
 - Module will extend the shop's basket model to add info to module specific log file when an item is added into basket. Logging  can be enabled or disabled depending on module setting.
-- Module will have console command `oetemplate:logger:read` to read log file.
+- Module will have console command `oeexamples:logger:read` to read log file.
 
 ```bash
-./vendor/bin/oe-console oetemplate:logger:read
+./vendor/bin/oe-console oeexamples:logger:read
 ```
 
 ## Goals
@@ -56,43 +56,43 @@ Install and try out the module with simple examples to most common development q
 
 The repository contains examples of following cases and more:
 
-* [Extending of shop controllers and models](https://github.com/OXID-eSales/module-template/blob/b-7.2.x/metadata.php#L25)
-  * extending a shop model (`OxidEsales\ModuleTemplate\Extension\Model\User`) / (`OxidEsales\ModuleTemplate\Extension\Model\Basket`)
-  * extending a shop controller (`OxidEsales\ModuleTemplate\Extension\Controller\StartController`)
+* [Extending of shop controllers and models](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/metadata.php#L25)
+  * extending a shop model (`OxidEsales\ExamplesModule\Extension\Model\User`) / (`OxidEsales\ExamplesModule\Extension\Model\Basket`)
+  * extending a shop controller (`OxidEsales\ExamplesModule\Extension\Controller\StartController`)
 
-* [New controllers](https://github.com/OXID-eSales/module-template/blob/b-7.2.x/metadata.php#L30)
+* [New controllers](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/metadata.php#L30)
   * own module controller (`oeemgreeting` with own template and own translations)
   * own module admin controller (`oeem_admin_greeting` with own template and own translations)
 
-* [Using Symfony DI](https://github.com/OXID-eSales/module-template/blob/b-7.2.x/services.yaml)
-  * [Injection of Registry classes with bind](https://github.com/OXID-eSales/module-template/blob/b-7.2.x/src/Greeting/services.yaml#L5)
+* [Using Symfony DI](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/services.yaml)
+  * [Injection of Registry classes with bind](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/src/Greeting/services.yaml#L5)
 
-* [Migrations](https://github.com/OXID-eSales/module-template/tree/b-7.2.x/migration)
+* [Migrations](https://github.com/OXID-eSales/examples-module/tree/b-7.3.x/migration)
   * extending a shop database table (`oxuser`)
 
 * Accessing the database
-  * model with a database (`OxidEsales\ModuleTemplate\Tracker\Model\GreetingTracker`)
-  * ``oxNew`` object factory example (`OxidEsales\ModuleTemplate\Greeting\Infrastructure\UserModelFactory`)
+  * model with a database (`OxidEsales\ExamplesModule\Tracker\Model\GreetingTracker`)
+  * ``oxNew`` object factory example (`OxidEsales\ExamplesModule\Greeting\Infrastructure\UserModelFactory`)
   * [DAO](src/ProductVote/Dao)
 
-* [Various types of module settings](https://github.com/OXID-eSales/module-template/blob/b-7.2.x/metadata.php#L38)
+* [Various types of module settings](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/metadata.php#L38)
 
 * Templates
-  * [creating templates for your module](https://github.com/OXID-eSales/module-template/blob/b-7.2.x/views/twig/templates/greetingtemplate.html.twig)
-  * [extending of oxid theme templates or blocks](https://github.com/OXID-eSales/module-template/tree/b-7.2.x/views/twig/extensions/themes)
+  * [creating templates for your module](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/views/twig/templates/greetingtemplate.html.twig)
+  * [extending of oxid theme templates or blocks](https://github.com/OXID-eSales/examples-module/tree/b-7.3.x/views/twig/extensions/themes)
     * extending a shop admin template block (`admin_user_main_form` - only an extension of a block, without functionality)
     * extending a shop template block (`start_newest_articles`)
 
 * Using the translations for your module specific phrases
-  * [in admin](https://github.com/OXID-eSales/module-template/tree/b-7.2.x/views/admin_twig)
-  * [in frontend](https://github.com/OXID-eSales/module-template/tree/b-7.2.x/translations)
+  * [in admin](https://github.com/OXID-eSales/examples-module/tree/b-7.3.x/views/admin_twig)
+  * [in frontend](https://github.com/OXID-eSales/examples-module/tree/b-7.3.x/translations)
 
 * Events and listeners
-  * [Subscribing to shop events](https://github.com/OXID-eSales/module-template/blob/b-7.2.x/src/Tracker/Subscriber/BeforeModelUpdate.php)
+  * [Subscribing to shop events](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/src/Tracker/Subscriber/BeforeModelUpdate.php)
 
 * Testing your module backend and frontend part
-  * [Composer aliases for easy running of tests and quality tools](https://github.com/OXID-eSales/module-template/blob/b-7.2.x/composer.json#L48)
-  * [Using the github actions as CI tool with all recommended tools preconfigured for you.](https://github.com/OXID-eSales/module-template/tree/b-7.2.x/.github)
+  * [Composer aliases for easy running of tests and quality tools](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/composer.json#L48)
+  * [Using the github actions as CI tool with all recommended tools preconfigured for you.](https://github.com/OXID-eSales/examples-module/tree/b-7.3.x/.github)
 
 **HINTS**:
 * Only extend the shop core if there is no other way like listen and handle shop events,
@@ -120,8 +120,8 @@ installation/usage methods.
 
 This module is in working state and can be directly installed via composer:
 ```
-composer require oxid-esales/module-template
-./vendor/bin/oe-eshop-doctrine_migration migrations:migrate oe_moduletemplate
+composer require oxid-esales/examples-module
+./vendor/bin/oe-eshop-doctrine_migration migrations:migrate oe_examples_module
 ```
 
 and [activate the module](https://docs.oxid-esales.com/developer/en/latest/development/modules_components_themes/module/installation_setup/setup.html#setup-activation).
@@ -161,7 +161,7 @@ You should be able to access the shop with http://localhost.local and the admin 
 
 ## Things to be aware of
 
-The module template is intended to act as a tutorial module so keep your eyes open for comments in the code.
+The examples module is intended to act as a tutorial module so keep your eyes open for comments in the code.
 
 **NOTES:** 
 * Acceptance tests are way easier to write if you put an id on relevant fields and buttons in the templates. 
@@ -175,13 +175,13 @@ The module template is intended to act as a tutorial module so keep your eyes op
 Migrations have to be run via console command (`./vendor/bin/oe-eshop-doctrine_migration`)
 
 ```bash
-./vendor/bin/oe-eshop-doctrine_migration migrations:migrate oe_moduletemplate
+./vendor/bin/oe-eshop-doctrine_migration migrations:migrate oe_examples_module
 ```
 
 NOTE: Existing migrations must not be changed. If the database needs a change, add a new migration file and change to your needs:
 
 ```bash
-./vendor/bin/oe-eshop-doctrine_migration migrations:generate oe_moduletemplate
+./vendor/bin/oe-eshop-doctrine_migration migrations:generate oe_examples_module
 ```
 
 For more information, check the [developer documentation](https://docs.oxid-esales.com/developer/en/latest/development/tell_me_about/migrations.html).
@@ -223,7 +223,6 @@ $ composer phpmd
 - run `composer update` in module root directory
 
 ```bash
-$ cd vendor/oxid-esales/module-template
 $ composer update
 ```
 
@@ -272,8 +271,8 @@ output in failure case, so you literally get a picture of the fail (`tests/Corec
 
 ### Github Actions Workflow
 
-The module template comes complete with a github actions workflow. No need to rig up some separate continuous integration
-infrastructure to run tests, it's all there in [github](https://github.com/OXID-eSales/module-template/actions).
+The examples-module comes complete with a github actions workflow. No need to rig up some separate continuous integration
+infrastructure to run tests, it's all there in [github](https://github.com/OXID-eSales/examples-module/actions).
 You will see three files in `.github/workflow` directory. The workflow from
 `.github/workflow/trigger.yaml` starts on every `push` and `pull_request` to run the code quality checks and all the module tests.
 

@@ -47,6 +47,7 @@ class GreetingController extends FrontendController
         /** @var TemplateModelUser $user */
         $user = $this->getUser();
 
+        /** @phpstan-ignore-next-line */
         if (is_a($user, EshopModelUser::class) && $moduleSettings->isPersonalGreetingMode()) {
             $greeting = $user->getPersonalGreeting();
             $tracker = $repository->getTrackerByUserId($user->getId());
@@ -72,6 +73,7 @@ class GreetingController extends FrontendController
         /** @var EshopModelUser $user */
         $user = $this->getUser();
 
+        /** @phpstan-ignore-next-line */
         if (is_a($user, EshopModelUser::class) && $moduleSettings->isPersonalGreetingMode()) {
             $greetingService = $this->getService(GreetingMessageServiceInterface::class);
             $greetingService->saveGreeting($user);

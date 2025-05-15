@@ -37,6 +37,7 @@ class StartController extends StartController_parent
     {
         $service = $this->getService(GreetingMessageServiceInterface::class);
 
+        /** @phpstan-ignore-next-line */
         $user   = is_a($this->getUser(), EshopModelUser::class) ? $this->getUser() : null;
         return $service->getGreeting($user);
     }
@@ -45,6 +46,7 @@ class StartController extends StartController_parent
     {
         $moduleSettings = $this->getService(ModuleSettingsServiceInterface::class);
 
+        /** @phpstan-ignore-next-line */
         return is_a($this->getUser(), EshopModelUser::class) && $moduleSettings->isPersonalGreetingMode();
     }
 }

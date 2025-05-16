@@ -20,3 +20,7 @@ services:
   OxidEsales\ExamplesModule\Greeting\Service\UserServiceInterface:
     class: OxidEsales\ExamplesModule\Greeting\Service\UserService
     public: true
+
+  OxidEsales\ExamplesModule\Greeting\Transput\RequestInterface:
+    class: OxidEsales\ExamplesModule\Greeting\Transput\Request
+    public: true

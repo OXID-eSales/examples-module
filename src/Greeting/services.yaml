@@ -24,3 +24,13 @@ services:
   OxidEsales\ExamplesModule\Greeting\Transput\RequestInterface:
     class: OxidEsales\ExamplesModule\Greeting\Transput\Request
     public: true
+
+  OxidEsales\ExamplesModule\Greeting\Controller\GreetingController:
+    public: true
+    tags:
+      - { name: 'oxid.view_controller', controller_key: 'oe_examples_module-greeting-controller' }
+
+  OxidEsales\ExamplesModule\Greeting\Controller\Admin\GreetingAdminController:
+    public: true
+    tags:
+      - { name: 'oxid.view_controller', controller_key: 'oe_examples_module-greeting-admin-controller' }

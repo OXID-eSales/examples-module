@@ -60,9 +60,9 @@ The repository contains examples of following cases and more:
   * extending a shop model (`OxidEsales\ExamplesModule\Extension\Model\User`) / (`OxidEsales\ExamplesModule\Extension\Model\Basket`)
   * extending a shop controller (`OxidEsales\ExamplesModule\Extension\Controller\StartController`)
 
-* [New controllers](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/metadata.php#L30)
-  * own module controller (`oeemgreeting` with own template and own translations)
-  * own module admin controller (`oeem_admin_greeting` with own template and own translations)
+* [Controllers as service](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/src/Greeting/services.yaml#L28)
+  * own module controller (`oe_examples_module-greeting-controller` with own template and own translations)
+  * own module admin controller (`oe_examples_module-greeting-admin-controller` with own template and own translations)
 
 * [Using Symfony DI](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/services.yaml)
   * [Injection of Registry classes with bind](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/src/Greeting/services.yaml#L5)
@@ -148,7 +148,7 @@ echo MyProject && git clone https://github.com/OXID-eSales/docker-eshop-sdk.git 
 
 2. Clone the repository to the source directory
 ```shell
-git clone --recurse-submodules https://github.com/OXID-eSales/graphql-base-module.git --branch=b-7.3.x ./source
+git clone --recurse-submodules https://github.com/OXID-eSales/examples-module.git --branch=b-7.3.x ./source
 ```
 
 3. Run the recipe to setup the development environment, you can decide which shop edition to install. Omitting the flag installs EE.

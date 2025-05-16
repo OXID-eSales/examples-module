@@ -12,6 +12,8 @@ namespace OxidEsales\ExamplesModule\Tests\Integration\Controller\Admin;
 use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
 use OxidEsales\ExamplesModule\Greeting\Controller\Admin\GreetingAdminController;
 use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
+use OxidEsales\ExamplesModule\Greeting\Service\UserServiceInterface;
+use OxidEsales\ExamplesModule\Greeting\Transput\RequestInterface;
 use OxidEsales\ExamplesModule\Tests\Integration\IntegrationTestCase;
 
 /*
@@ -28,12 +30,26 @@ final class GreetingAdminControllerTest extends IntegrationTestCase
     {
         $this->createTestUser();
 
-        $controller = oxNew(GreetingAdminController::class);
-        $controller->setEditObjectId(self::TEST_USER_ID);
+        $userServiceMock = $this->createMock(UserServiceInterface::class);
+        $userServiceMock
+            ->expects($this->once())
+            ->method('getUserById')
+            ->with(self::TEST_USER_ID)
+            ->willReturn($this->loadTestUser());
 
-        $this->assertSame('@oe_examples_module/admin/user_greetings', $controller->render());
+        // Stub request to return a specific edit object ID
+        $requestStub = $this->createStub(RequestInterface::class);
+        $requestStub->method('getEditObjectId')->willReturn(self::TEST_USER_ID);
 
-        $viewData = $controller->getViewData();
+        $sut = $this->getSut(
+            userService: $userServiceMock,
+            request: $requestStub,
+        );
+        $sut->setEditObjectId(self::TEST_USER_ID);
+
+        $this->assertSame('@oe_examples_module/admin/user_greetings', $sut->render());
+
+        $viewData = $sut->getViewData();
 
         $this->assertSame(self::TEST_GREETING, $viewData[ModuleCore::OEEM_ADMIN_GREETING_TEMPLATE_VARNAME]);
     }
@@ -48,5 +64,24 @@ final class GreetingAdminControllerTest extends IntegrationTestCase
             ]
         );
         $user->save();
+    }
+
+    private function loadTestUser(): EshopModelUser
+    {
+        $user = oxNew(EshopModelUser::class);
+        $user->load(self::TEST_USER_ID);
+        return $user;
+    }
+
+    private function getSut(
+        ?UserServiceInterface $userService = null,
+        ?RequestInterface $request = null
+    ): GreetingAdminController {
+        $userService ??= $this->createStub(UserServiceInterface::class);
+        $request ??= $this->createStub(RequestInterface::class);
+        return new GreetingAdminController(
+            userService: $userService,
+            request: $request,
+        );
     }
 }

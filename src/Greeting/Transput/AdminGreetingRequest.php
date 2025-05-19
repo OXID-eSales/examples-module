@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\ExamplesModule\Greeting\Transput;
 
-class Request implements RequestInterface
+class AdminGreetingRequest implements AdminGreetingRequestInterface
 {
     public function __construct(
         protected \OxidEsales\Eshop\Core\Request $request

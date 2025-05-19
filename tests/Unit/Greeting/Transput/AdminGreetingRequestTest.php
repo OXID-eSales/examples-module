@@ -7,12 +7,12 @@
 
 namespace Greeting\Transput;
 
-use OxidEsales\ExamplesModule\Greeting\Transput\Request;
+use OxidEsales\ExamplesModule\Greeting\Transput\AdminGreetingRequest;
 use OxidEsales\Eshop\Core\Request as ShopRequest;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-final class RequestTest extends TestCase
+final class AdminGreetingRequestTest extends TestCase
 {
     #[Test]
     public function getEditObjectId(): void
@@ -24,7 +24,7 @@ final class RequestTest extends TestCase
             ->with('oxid')
             ->willReturn($editObjectId);
 
-        $sut = new Request($shopRequestMock);
+        $sut = new AdminGreetingRequest($shopRequestMock);
         $this->assertSame($editObjectId, $sut->getEditObjectId());
     }
 }

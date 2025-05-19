@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
 use OxidEsales\ExamplesModule\Greeting\Controller\Admin\GreetingAdminController;
 use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
 use OxidEsales\ExamplesModule\Greeting\Service\UserServiceInterface;
-use OxidEsales\ExamplesModule\Greeting\Transput\RequestInterface;
+use OxidEsales\ExamplesModule\Greeting\Transput\AdminGreetingRequestInterface;
 use OxidEsales\ExamplesModule\Tests\Integration\IntegrationTestCase;
 
 /*
@@ -38,7 +38,7 @@ final class GreetingAdminControllerTest extends IntegrationTestCase
             ->willReturn($this->loadTestUser());
 
         // Stub request to return a specific edit object ID
-        $requestStub = $this->createStub(RequestInterface::class);
+        $requestStub = $this->createStub(AdminGreetingRequestInterface::class);
         $requestStub->method('getEditObjectId')->willReturn(self::TEST_USER_ID);
 
         $sut = $this->getSut(
@@ -75,10 +75,10 @@ final class GreetingAdminControllerTest extends IntegrationTestCase
 
     private function getSut(
         ?UserServiceInterface $userService = null,
-        ?RequestInterface $request = null
+        ?AdminGreetingRequestInterface $request = null
     ): GreetingAdminController {
         $userService ??= $this->createStub(UserServiceInterface::class);
-        $request ??= $this->createStub(RequestInterface::class);
+        $request ??= $this->createStub(AdminGreetingRequestInterface::class);
         return new GreetingAdminController(
             userService: $userService,
             request: $request,

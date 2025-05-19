@@ -7,7 +7,7 @@
 
 namespace OxidEsales\ExamplesModule\Greeting\Transput;
 
-interface RequestInterface
+interface AdminGreetingRequestInterface
 {
     public function getEditObjectId(): string;
 }

@@ -21,8 +21,8 @@ services:
     class: OxidEsales\ExamplesModule\Greeting\Service\UserService
     public: true
 
-  OxidEsales\ExamplesModule\Greeting\Transput\RequestInterface:
-    class: OxidEsales\ExamplesModule\Greeting\Transput\Request
+  OxidEsales\ExamplesModule\Greeting\Transput\AdminGreetingRequestInterface:
+    class: OxidEsales\ExamplesModule\Greeting\Transput\AdminGreetingRequest
     public: true
 
   OxidEsales\ExamplesModule\Greeting\Controller\GreetingController:

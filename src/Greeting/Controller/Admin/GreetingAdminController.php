@@ -13,7 +13,7 @@ use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
 use OxidEsales\Eshop\Application\Controller\Admin\AdminController;
 use OxidEsales\ExamplesModule\Extension\Model\User as ExamplesModelUser;
 use OxidEsales\ExamplesModule\Greeting\Service\UserServiceInterface;
-use OxidEsales\ExamplesModule\Greeting\Transput\RequestInterface;
+use OxidEsales\ExamplesModule\Greeting\Transput\AdminGreetingRequestInterface;
 
 class GreetingAdminController extends AdminController
 {
@@ -21,7 +21,7 @@ class GreetingAdminController extends AdminController
 
     public function __construct(
         private readonly UserServiceInterface $userService,
-        private readonly RequestInterface $request,
+        private readonly AdminGreetingRequestInterface $request,
     ) {
         parent::__construct();
     }

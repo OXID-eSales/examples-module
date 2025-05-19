@@ -10,7 +10,7 @@
 
 
 The examples module contains examples for the most common use cases (see below)
-like OXID suggests it could be implemented. 
+like OXID suggests it could be implemented.
 
 This module also comes with all the quality tools OXID recommends to use.
 
@@ -96,10 +96,10 @@ The repository contains examples of following cases and more:
 
 **HINTS**:
 * Only extend the shop core if there is no other way like listen and handle shop events,
-  decorate/replace some DI service. 
-* Your module might be one of many in the class chain and you should act accordingly (always ensure 
-  to call the parent method and return the result). 
-* When extending shop classes with additional methods, best prefix those methods in order to not end 
+  decorate/replace some DI service.
+* Your module might be one of many in the class chain and you should act accordingly (always ensure
+  to call the parent method and return the result).
+* When extending shop classes with additional methods, best prefix those methods in order to not end
   up with another module picking the same method name and wreacking havoc.
 * In case there is no other way than to extend existing shop methods try the minimal invasion principle.
   Put module business logic to a service (which make it easier to test as well) and call the service in the extended shop class.
@@ -148,7 +148,7 @@ echo MyProject && git clone https://github.com/OXID-eSales/docker-eshop-sdk.git 
 
 2. Clone the repository to the source directory
 ```shell
-git clone --recurse-submodules https://github.com/OXID-eSales/graphql-base-module.git --branch=b-7.3.x ./source
+git clone --recurse-submodules https://github.com/OXID-eSales/examples-module.git --branch=b-7.3.x ./source
 ```
 
 3. Run the recipe to setup the development environment, you can decide which shop edition to install. Omitting the flag installs EE.
@@ -163,8 +163,8 @@ You should be able to access the shop with http://localhost.local and the admin 
 
 The examples module is intended to act as a tutorial module so keep your eyes open for comments in the code.
 
-**NOTES:** 
-* Acceptance tests are way easier to write if you put an id on relevant fields and buttons in the templates. 
+**NOTES:**
+* Acceptance tests are way easier to write if you put an id on relevant fields and buttons in the templates.
 * If you can, try to develop on OXID eShop Enterprise Edition to get shop aware stuff right from the start.
 
 ### Module migrations
@@ -254,9 +254,9 @@ $ bin/oe-console oe:admin:create-user --admin-email admin@oxid-esales.com --admi
 
 As a rule of thumb, use codeception tests to ensure the frontend is behaving as expected.
 Codeception tests take a while to run, so try to navigate the way between covering the relevant
-cases and overtesting. 
+cases and overtesting.
 
-We definitely need some acceptance tests if the module affects the 
+We definitely need some acceptance tests if the module affects the
 frontend like in our example. If the module breaks the frontend, we need to see it asap.
 
 In our case, we cover the reaction of the startpage to the different possibilities
@@ -277,20 +277,20 @@ You will see three files in `.github/workflow` directory. The workflow from
 `.github/workflow/trigger.yaml` starts on every `push` and `pull_request` to run the code quality checks and all the module tests.
 
 In our experience it is useful to run the shop tests with the module installed and activated from time to time.
-For sure those shop tests have been written with only the shop itself in mind. Your module, depending on what it is doing, 
-might completely change the shop behaviour. Which means those shop tests with a module might just explode in your face. 
+For sure those shop tests have been written with only the shop itself in mind. Your module, depending on what it is doing,
+might completely change the shop behaviour. Which means those shop tests with a module might just explode in your face.
 Which is totally fine, as long as you can always explain WHY those tests are failing.
 
 Real life example:  There is one shop acceptance test case `OxidEsales\EshopCommunity\Tests\Acceptance\Frontend\ShopSetUpTest:`
-which is testing the frontend shop setup. Very good chance this test will fail if a module is around which extends 
+which is testing the frontend shop setup. Very good chance this test will fail if a module is around which extends
 the class chain. That test is for setting up a shop from scratch so it will simply not expect a module to be around.
 And we only need our module to safely work with a working shop. We definitely will decide to skip that `ShopSetUpTest`
 as we have a good explanation as to why it will not work. And having this special test case work with our module will give no benefit.
 
 This is only one example, there might be other tests that fail with your module but fail because your module is changing the shop.
 In that case the suggestion would be to exclude the original test from the github actions run, copy that test case to your module tests and
-update to work with your module. This was for example the strategy used for our reverse proxy modules which are mandatory to not make the shop's 
-acceptance tests fail. Unless those test cases that somehow bypass reverse proxy cache invalidation. To be on the safe side, we took over those 
+update to work with your module. This was for example the strategy used for our reverse proxy modules which are mandatory to not make the shop's
+acceptance tests fail. Unless those test cases that somehow bypass reverse proxy cache invalidation. To be on the safe side, we took over those
 few test cases to the module and plan to improve the shop tests as soon as possible. We'll gladly also take your PR with improved shop tests ;)
 
 And then there are some few shop tests marked as `@group quarantine` in the doc block. Test in that group have stability issues so they'd better

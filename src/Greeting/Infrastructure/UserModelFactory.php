@@ -13,8 +13,11 @@ use OxidEsales\Eshop\Application\Model\User;
 
 class UserModelFactory implements UserModelFactoryInterface
 {
+    /**
+     * @return \OxidEsales\ExamplesModule\Extension\Model\User
+     */
     public function create(): User
     {
-        return oxNew(User::class);
+        return oxNew(User::class); /** @phpstan-ignore return.type */
     }
 }

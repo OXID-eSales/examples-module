@@ -29,10 +29,6 @@ $aModule = [
         \OxidEsales\Eshop\Application\Model\Basket::class => \OxidEsales\ExamplesModule\Extension\Model\Basket::class,
         \OxidEsales\Eshop\Application\Model\User::class => \OxidEsales\ExamplesModule\Extension\Model\User::class,
     ],
-    'controllers' => [
-        'oeem_greeting' => \OxidEsales\ExamplesModule\Greeting\Controller\GreetingController::class,
-        'oeem_admin_greeting' => \OxidEsales\ExamplesModule\Greeting\Controller\Admin\GreetingAdminController::class,
-    ],
     'events' => [
         'onActivate' => '\OxidEsales\ExamplesModule\Core\ModuleEvents::onActivate',
         'onDeactivate' => '\OxidEsales\ExamplesModule\Core\ModuleEvents::onDeactivate'

@@ -28,9 +28,9 @@ services:
   OxidEsales\ExamplesModule\Greeting\Controller\GreetingController:
     public: true
     tags:
-      - { name: 'oxid.view_controller', controller_key: 'oe_examples_module-greeting-controller' }
+      - { name: 'oxid.view_controller', controller_key: 'oeem_greeting' }
 
   OxidEsales\ExamplesModule\Greeting\Controller\Admin\GreetingAdminController:
     public: true
     tags:
-      - { name: 'oxid.view_controller', controller_key: 'oe_examples_module-greeting-admin-controller' }
+      - { name: 'oxid.view_controller', controller_key: 'oeem_admin_greeting' }

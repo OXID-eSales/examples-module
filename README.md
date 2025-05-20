@@ -61,8 +61,8 @@ The repository contains examples of following cases and more:
   * extending a shop controller (`OxidEsales\ExamplesModule\Extension\Controller\StartController`)
 
 * [Controllers as service](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/src/Greeting/services.yaml#L28)
-  * own module controller (`oe_examples_module-greeting-controller` with own template and own translations)
-  * own module admin controller (`oe_examples_module-greeting-admin-controller` with own template and own translations)
+  * own module controller (`oeem_greeting` with own template and own translations)
+  * own module admin controller (`oeem_admin_greeting` with own template and own translations)
 
 * [Using Symfony DI](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/services.yaml)
   * [Injection of Registry classes with bind](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/src/Greeting/services.yaml#L5)

@@ -25,7 +25,7 @@ use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUserInterface;
  *
  * @mixin BaseModel
  */
-class User extends User_parent implements PersonalGreetingUserInterface
+class User extends User_parent implements UserInterface
 {
     use PersonalGreetingUser;
 }

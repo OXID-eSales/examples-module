@@ -18,6 +18,7 @@ class UserModelFactory implements UserModelFactoryInterface
      */
     public function create(): User
     {
-        return oxNew(User::class); /** @phpstan-ignore return.type */
+        /** @phpstan-ignore return.type */
+        return oxNew(User::class);
     }
 }

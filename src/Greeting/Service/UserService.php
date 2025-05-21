@@ -14,6 +14,8 @@ use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUserInterface;
 
 /**
  * @extendable-class
+ *
+ * @todo: getting the user should go through the user repository
  */
 readonly class UserService implements UserServiceInterface
 {

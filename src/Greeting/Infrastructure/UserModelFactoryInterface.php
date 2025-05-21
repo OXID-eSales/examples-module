@@ -11,5 +11,8 @@ use OxidEsales\Eshop\Application\Model\User;
 
 interface UserModelFactoryInterface
 {
+    /**
+     * @return \OxidEsales\ExamplesModule\Extension\Model\User
+     */
     public function create(): User;
 }

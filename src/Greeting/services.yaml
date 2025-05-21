@@ -20,3 +20,17 @@ services:
   OxidEsales\ExamplesModule\Greeting\Service\UserServiceInterface:
     class: OxidEsales\ExamplesModule\Greeting\Service\UserService
     public: true
+
+  OxidEsales\ExamplesModule\Greeting\Transput\AdminGreetingRequestInterface:
+    class: OxidEsales\ExamplesModule\Greeting\Transput\AdminGreetingRequest
+    public: true
+
+  OxidEsales\ExamplesModule\Greeting\Controller\GreetingController:
+    public: true
+    tags:
+      - { name: 'oxid.view_controller', controller_key: 'oeem_greeting' }
+
+  OxidEsales\ExamplesModule\Greeting\Controller\Admin\GreetingAdminController:
+    public: true
+    tags:
+      - { name: 'oxid.view_controller', controller_key: 'oeem_admin_greeting' }

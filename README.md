@@ -60,8 +60,8 @@ The repository contains examples of following cases and more:
   * extending a shop model (`OxidEsales\ExamplesModule\Extension\Model\User`) / (`OxidEsales\ExamplesModule\Extension\Model\Basket`)
   * extending a shop controller (`OxidEsales\ExamplesModule\Extension\Controller\StartController`)
 
-* [New controllers](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/metadata.php#L30)
-  * own module controller (`oeemgreeting` with own template and own translations)
+* [Controllers as service](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/src/Greeting/services.yaml#L28)
+  * own module controller (`oeem_greeting` with own template and own translations)
   * own module admin controller (`oeem_admin_greeting` with own template and own translations)
 
 * [Using Symfony DI](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/services.yaml)

@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\ExamplesModule\Greeting\Service;
 
-use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
+use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUserInterface;
 
 interface UserServiceInterface
 {
-    public function getUserById(string $userId): EshopModelUser;
+    public function getUserById(string $userId): PersonalGreetingUserInterface;
 }

@@ -11,10 +11,10 @@ namespace OxidEsales\ExamplesModule\Tests\Integration\Greeting\Controller;
 
 use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
 use OxidEsales\ExamplesModule\Extension\Model\User as ModuleUser;
 use OxidEsales\ExamplesModule\Greeting\Controller\GreetingController;
+use OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageServiceInterface;
 use OxidEsales\ExamplesModule\Settings\Service\ModuleSettingsServiceInterface;
 use OxidEsales\ExamplesModule\Tests\Integration\IntegrationTestCase;
 use OxidEsales\ExamplesModule\Tracker\Model\TrackerModel;
@@ -56,21 +56,47 @@ final class GreetingControllerTest extends IntegrationTestCase
      */
     public function testUpdateGreeting(bool $hasUser, string $mode, string $expected, int $count): void
     {
-        $moduleSettings = $this->get(ModuleSettingsServiceInterface::class);
-        $moduleSettings->saveGreetingMode($mode);
-        $_POST[ModuleCore::OEEM_GREETING_TEMPLATE_VARNAME] = $expected;
+        $moduleSettingsServiceStub = $this->createStub(ModuleSettingsServiceInterface::class);
+        $moduleSettingsServiceStub
+            ->method('isPersonalGreetingMode')
+            ->willReturn($mode === ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL);
 
-        $controller = oxNew(GreetingController::class);
+        $trackerStub = $this->createMock(TrackerModel::class);
+        $trackerStub->method('getCount')->willReturn($count);
 
-        if ($hasUser) {
-            $controller->setUser($this->createTestUser());
+        $trackerRepositoryMock = $this->createStub(TrackerRepositoryInterface::class);
+        $trackerRepositoryMock
+            ->method('getTrackerByUserId')
+            ->with(self::TEST_USER_ID)
+            ->willReturn($trackerStub);
+
+        $greetingServiceMock = $this->createMock(GreetingMessageServiceInterface::class);
+        if ($hasUser && $mode === ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL) {
+            $greetingServiceMock
+                ->method('saveGreeting')
+                ->willReturnCallback(function (EshopModelUser $user) use ($expected): bool {
+                    $user->assign(['oeemgreeting' => $expected]);
+                    $user->save();
+                    return true;
+                });
+        } else {
+            $greetingServiceMock->expects($this->never())->method('saveGreeting');
         }
 
-        $controller->updateGreeting();
+        $sut = $this->getSut(
+            moduleSettings: $moduleSettingsServiceStub,
+            trackerRepository: $trackerRepositoryMock,
+            greetingMessageService: $greetingServiceMock,
+        );
+
+        if ($hasUser) {
+            $sut->setUser($this->createTestUser());
+        }
+
+        $sut->updateGreeting();
 
         /** @var ModuleUser $user */
-        $user = oxNew(EshopModelUser::class);
-        $user->load(self::TEST_USER_ID);
+        $user = $this->loadTestUser();
         $this->assertSame($expected, $user->getPersonalGreeting());
 
         $tracker = $this->get(TrackerRepositoryInterface::class)
@@ -83,20 +109,34 @@ final class GreetingControllerTest extends IntegrationTestCase
      */
     public function testRender(bool $hasUser, string $mode, array $expected): void
     {
-        $this->createTestTracker();
+        $this->createTestTracker($expected['counter']);
 
-        $moduleSettings = $this->get(ModuleSettingsServiceInterface::class);
-        $moduleSettings->saveGreetingMode($mode);
+        $moduleSettingsServiceStub = $this->createStub(ModuleSettingsServiceInterface::class);
+        $moduleSettingsServiceStub
+            ->method('isPersonalGreetingMode')
+            ->willReturn($mode === ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL);
 
-        $controller = oxNew(GreetingController::class);
+        $trackerStub = $this->createMock(TrackerModel::class);
+        $trackerStub->method('getCount')->willReturn($expected['counter']);
+
+        $trackerRepositoryMock = $this->createStub(TrackerRepositoryInterface::class);
+        $trackerRepositoryMock
+            ->method('getTrackerByUserId')
+            ->with(self::TEST_USER_ID)
+            ->willReturn($trackerStub);
+
+        $sut = $this->getSut(
+            moduleSettings: $moduleSettingsServiceStub,
+            trackerRepository: $this->get(TrackerRepositoryInterface::class),
+        );
 
         if ($hasUser) {
-            $controller->setUser($this->createTestUser());
+            $sut->setUser($this->createTestUser());
         }
 
-        $this->assertSame('@oe_examples_module/templates/greetingtemplate', $controller->render());
+        $this->assertSame('@oe_examples_module/templates/greetingtemplate', $sut->render());
 
-        $viewData = $controller->getViewData();
+        $viewData = $sut->getViewData();
         $this->assertSame($expected['greeting'], $viewData[ModuleCore::OEEM_GREETING_TEMPLATE_VARNAME]);
         $this->assertSame($expected['counter'], $viewData[ModuleCore::OEEM_COUNTER_TEMPLATE_VARNAME]);
     }
@@ -183,16 +223,38 @@ final class GreetingControllerTest extends IntegrationTestCase
         return $user;
     }
 
-    private function createTestTracker(): void
+    private function createTestTracker(?int $count): void
     {
         $tracker = oxNew(TrackerModel::class);
         $tracker->assign(
             [
                 'oxuserid' => self::TEST_USER_ID,
                 'oxshopid' => 1,
-                'oeemcount' => '67',
+                'oeemcount' => $count ?? rand(1, 100),
             ]
         );
         $tracker->save();
+    }
+
+    private function loadTestUser(): EshopModelUser
+    {
+        $user = oxNew(EshopModelUser::class);
+        $user->load(self::TEST_USER_ID);
+        return $user;
+    }
+
+    private function getSut(
+        ?ModuleSettingsServiceInterface $moduleSettings = null,
+        ?TrackerRepositoryInterface $trackerRepository = null,
+        ?GreetingMessageServiceInterface $greetingMessageService = null,
+    ): GreetingController {
+        $moduleSettings ??= $this->createStub(ModuleSettingsServiceInterface::class);
+        $trackerRepository ??= $this->createStub(TrackerRepositoryInterface::class);
+        $greetingMessageService ??= $this->createStub(GreetingMessageServiceInterface::class);
+        return new GreetingController(
+            moduleSettings: $moduleSettings,
+            trackerRepository: $trackerRepository,
+            greetingService: $greetingMessageService,
+        );
     }
 }

@@ -33,6 +33,14 @@ class GreetingController extends FrontendController
      */
     protected $_sThisTemplate = '@oe_examples_module/templates/greetingtemplate';
 
+    public function __construct(
+        private readonly ModuleSettingsServiceInterface $moduleSettings,
+        private readonly TrackerRepositoryInterface $trackerRepository,
+        private readonly GreetingMessageServiceInterface $greetingService,
+    ) {
+        parent::__construct();
+    }
+
     /**
      * Rendering method.
      *
@@ -41,16 +49,14 @@ class GreetingController extends FrontendController
     public function render()
     {
         $template = parent::render();
-        $moduleSettings = $this->getService(ModuleSettingsServiceInterface::class);
-        $repository = $this->getService(TrackerRepositoryInterface::class);
 
         /** @var ExamplesModelUser $user */
         $user = $this->getUser();
 
         /** @phpstan-ignore-next-line */
-        if (is_a($user, EshopModelUser::class) && $moduleSettings->isPersonalGreetingMode()) {
+        if (is_a($user, EshopModelUser::class) && $this->moduleSettings->isPersonalGreetingMode()) {
             $greeting = $user->getPersonalGreeting();
-            $tracker = $repository->getTrackerByUserId($user->getId());
+            $tracker = $this->trackerRepository->getTrackerByUserId($user->getId());
             $counter = $tracker->getCount();
         }
 
@@ -68,15 +74,12 @@ class GreetingController extends FrontendController
      */
     public function updateGreeting(): void
     {
-        $moduleSettings = $this->getService(ModuleSettingsServiceInterface::class);
-
         /** @var EshopModelUser $user */
         $user = $this->getUser();
 
         /** @phpstan-ignore-next-line */
-        if (is_a($user, EshopModelUser::class) && $moduleSettings->isPersonalGreetingMode()) {
-            $greetingService = $this->getService(GreetingMessageServiceInterface::class);
-            $greetingService->saveGreeting($user);
+        if (is_a($user, EshopModelUser::class) && $this->moduleSettings->isPersonalGreetingMode()) {
+            $this->greetingService->saveGreeting($user);
         }
     }
 }

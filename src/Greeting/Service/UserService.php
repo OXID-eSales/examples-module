@@ -9,11 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\ExamplesModule\Greeting\Service;
 
-use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
 use OxidEsales\ExamplesModule\Greeting\Infrastructure\UserModelFactoryInterface;
+use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUserInterface;
 
 /**
  * @extendable-class
+ *
+ * @todo: getting the user should go through the user repository
  */
 readonly class UserService implements UserServiceInterface
 {
@@ -22,7 +24,7 @@ readonly class UserService implements UserServiceInterface
     ) {
     }
 
-    public function getUserById(string $userId): EshopModelUser
+    public function getUserById(string $userId): PersonalGreetingUserInterface
     {
         $userModel = $this->userModelFactory->create();
         $userModel->load($userId);

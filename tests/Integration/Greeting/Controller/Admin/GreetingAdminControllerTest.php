@@ -9,44 +9,68 @@ declare(strict_types=1);
 
 namespace OxidEsales\ExamplesModule\Tests\Integration\Controller\Admin;
 
-use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
-use OxidEsales\ExamplesModule\Greeting\Controller\Admin\GreetingAdminController;
 use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
+use OxidEsales\ExamplesModule\Greeting\Controller\Admin\GreetingAdminController;
+use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUserInterface;
+use OxidEsales\ExamplesModule\Greeting\Service\UserServiceInterface;
+use OxidEsales\ExamplesModule\Greeting\Transput\AdminGreetingRequestInterface;
 use OxidEsales\ExamplesModule\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
-/*
- * We want to test controller behavior going 'full way'.
- * No mocks, we go straight to the database (full integration)).
- */
 final class GreetingAdminControllerTest extends IntegrationTestCase
 {
-    public const TEST_USER_ID = '_testuser';
-
-    public const TEST_GREETING = 'Hello there!';
-
-    public function testRender(): void
+    #[Test]
+    public function renderSetsTplParamIfEditObjectGivenByRequest(): void
     {
-        $this->createTestUser();
+        $requestStub = $this->createConfiguredStub(AdminGreetingRequestInterface::class, [
+            'getEditObjectId' => $userId = uniqid()
+        ]);
 
-        $controller = oxNew(GreetingAdminController::class);
-        $controller->setEditObjectId(self::TEST_USER_ID);
+        $userStub = $this->createConfiguredStub(PersonalGreetingUserInterface::class, [
+            'getPersonalGreeting' => $expectedGreeting = uniqid(),
+        ]);
 
-        $this->assertSame('@oe_examples_module/admin/user_greetings', $controller->render());
+        $userServiceMock = $this->createMock(UserServiceInterface::class);
+        $userServiceMock->method('getUserById')
+            ->with($userId)
+            ->willReturn($userStub);
 
-        $viewData = $controller->getViewData();
+        $sut = $this->getSut(
+            request: $requestStub,
+            userService: $userServiceMock,
+        );
 
-        $this->assertSame(self::TEST_GREETING, $viewData[ModuleCore::OEEM_ADMIN_GREETING_TEMPLATE_VARNAME]);
+        $this->assertSame('@oe_examples_module/admin/user_greetings', $sut->render());
+
+        $paramValue = $sut->getViewDataElement(ModuleCore::OEEM_ADMIN_GREETING_TEMPLATE_VARNAME);
+        $this->assertSame($expectedGreeting, $paramValue);
     }
 
-    private function createTestUser(): void
+    #[Test]
+    public function renderDoesntSetTplParamIfEditObjectIsNotGivenByRequest(): void
     {
-        $user = oxNew(EshopModelUser::class);
-        $user->assign(
-            [
-                'oxid'         => self::TEST_USER_ID,
-                'oeemgreeting' => self::TEST_GREETING,
-            ]
+        $userServiceSpy = $this->createMock(UserServiceInterface::class);
+        $userServiceSpy->expects($this->never())->method('getUserById');
+
+        $sut = $this->getSut(
+            userService: $userServiceSpy,
         );
-        $user->save();
+
+        $this->assertSame('@oe_examples_module/admin/user_greetings', $sut->render());
+
+        $paramValue = $sut->getViewDataElement(ModuleCore::OEEM_ADMIN_GREETING_TEMPLATE_VARNAME);
+        $this->assertNull($paramValue);
+    }
+
+    private function getSut(
+        ?UserServiceInterface $userService = null,
+        ?AdminGreetingRequestInterface $request = null
+    ): GreetingAdminController {
+        $userService ??= $this->createStub(UserServiceInterface::class);
+        $request ??= $this->createStub(AdminGreetingRequestInterface::class);
+        return new GreetingAdminController(
+            userService: $userService,
+            request: $request,
+        );
     }
 }

@@ -20,11 +20,26 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(GreetingMessageService::class)]
 final class GreetingMessageServiceTest extends TestCase
 {
+    public function testGeneralGreeting(): void
+    {
+        $shopName = uniqid();
+        $service = $this->getGreetingMessageService(
+            shopLanguage: $langStub = $this->createStub(CoreLanguage::class),
+            shopName: $shopName,
+        );
+
+        $translatedString = 'Welcome to shop %s!';
+        $langStub->method('translateString')
+            ->with(ModuleCore::GENERAL_GREETING_LANGUAGE_CONST)
+            ->willReturn($translatedString);
+
+        $this->assertSame(sprintf($translatedString, $shopName), $service->getGeneralGreeting());
+    }
+
     public function testGenericGreetingNoUserForGenericMode(): void
     {
-        $service = new GreetingMessageService(
+        $service = $this->getGreetingMessageService(
             moduleSettings: $moduleSettingsStub = $this->createMock(ModuleSettingsServiceInterface::class),
-            shopRequest: $this->createStub(CoreRequest::class),
             shopLanguage: $langStub = $this->createStub(CoreLanguage::class),
         );
 
@@ -41,9 +56,8 @@ final class GreetingMessageServiceTest extends TestCase
 
     public function testGenericGreetingWithUserForGenericMode(): void
     {
-        $service = new GreetingMessageService(
+        $service = $this->getGreetingMessageService(
             moduleSettings: $moduleSettingsStub = $this->createMock(ModuleSettingsServiceInterface::class),
-            shopRequest: $this->createStub(CoreRequest::class),
             shopLanguage: $langStub = $this->createStub(CoreLanguage::class),
         );
 
@@ -60,15 +74,27 @@ final class GreetingMessageServiceTest extends TestCase
 
     public function testGenericGreetingNoUserForPersonalMode(): void
     {
-        $service = new GreetingMessageService(
+        $service = $this->getGreetingMessageService(
             moduleSettings: $moduleSettingsStub = $this->createMock(ModuleSettingsServiceInterface::class),
-            shopRequest: $this->createStub(CoreRequest::class),
-            shopLanguage: $this->createStub(CoreLanguage::class),
         );
 
         $moduleSettingsStub->method('getGreetingMode')
             ->willReturn(ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL);
 
         $this->assertSame('', $service->getGreeting(null));
+    }
+
+    private function getGreetingMessageService(
+        ?ModuleSettingsServiceInterface $moduleSettings = null,
+        ?CoreRequest $shopRequest = null,
+        ?CoreLanguage $shopLanguage = null,
+        ?string $shopName = null,
+    ): GreetingMessageService {
+        return new GreetingMessageService(
+            moduleSettings: $moduleSettings ?? $this->createStub(ModuleSettingsServiceInterface::class),
+            shopRequest: $shopRequest ?? $this->createStub(CoreRequest::class),
+            shopLanguage: $shopLanguage ?? $this->createStub(CoreLanguage::class),
+            shopName: $shopName ?? 'Test Shop',
+        );
     }
 }

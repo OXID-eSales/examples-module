@@ -26,7 +26,7 @@ final class GreetingMessageServiceTest extends TestCase
 {
     public function testGenericGreetingWithUserForPersonalMode(): void
     {
-        $sut = new GreetingMessageService(
+        $sut = $this->getSut(
             moduleSettings: $moduleSettingsStub = $this->createMock(ModuleSettingsServiceInterface::class),
             shopRequest: $this->createStub(CoreRequest::class),
             shopLanguage: $langStub = $this->createStub(CoreLanguage::class),
@@ -51,11 +51,13 @@ final class GreetingMessageServiceTest extends TestCase
     private function getSut(
         ModuleSettingsServiceInterface $moduleSettings = null,
         CoreRequest $shopRequest = null,
+        CoreLanguage $shopLanguage = null,
     ): GreetingMessageService {
         return new GreetingMessageService(
             moduleSettings: $moduleSettings ?? $this->createStub(ModuleSettingsServiceInterface::class),
-            shopRequest: $this->createStub(CoreRequest::class),
+            shopRequest: $shopRequest ?? $this->createStub(CoreRequest::class),
             shopLanguage: $shopLanguage ?? $this->createStub(CoreLanguage::class),
+            shopName: 'Test Shop',
         );
     }
 }

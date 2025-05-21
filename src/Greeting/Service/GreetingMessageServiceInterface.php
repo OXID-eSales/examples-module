@@ -13,6 +13,8 @@ use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
 
 interface GreetingMessageServiceInterface
 {
+    public function getGeneralGreeting(): string;
+
     public function getGreeting(?EshopModelUser $user = null): string;
 
     public function saveGreeting(EshopModelUser $user): bool;

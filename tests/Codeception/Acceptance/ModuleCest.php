@@ -24,12 +24,12 @@ final class ModuleCest
         $I->wantToTest('that deactivating the module does not destroy the shop');
 
         $I->openShop();
-        $I->waitForText(Translator::translate('OEEXAMPLESMODULE_GREETING'));
+        $I->waitForText(sprintf(Translator::translate('OEEXAMPLESMODULE_GREETING'), getenv('OEEM_SHOP_NAME')));
 
         $I->deactivateModule(Module::MODULE_ID);
         $I->reloadPage();
 
         $I->waitForPageLoad();
-        $I->dontSee(Translator::translate('OEEXAMPLESMODULE_GREETING'));
+        $I->dontSee(sprintf(Translator::translate('OEEXAMPLESMODULE_GREETING'), getenv('OEEM_SHOP_NAME')));
     }
 }

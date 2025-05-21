@@ -37,7 +37,7 @@ final class GreetingCest
 
         $I->openShop();
 
-        $I->waitForText(Translator::translate('OEEXAMPLESMODULE_GREETING'));
+        $I->waitForText(sprintf(Translator::translate('OEEXAMPLESMODULE_GREETING'), getenv('OEEM_SHOP_NAME')));
         $I->see(Translator::translate('OEEXAMPLESMODULE_GREETING_GENERIC'));
         $I->dontSeeElement('#oeem_update_greeting');
     }
@@ -51,7 +51,7 @@ final class GreetingCest
         $I->openShop()
             ->loginUser($I->getDemoUserName(), $I->getDemoUserPassword());
 
-        $I->waitForText(Translator::translate('OEEXAMPLESMODULE_GREETING'));
+        $I->waitForText(sprintf(Translator::translate('OEEXAMPLESMODULE_GREETING'), getenv('OEEM_SHOP_NAME')));
         $I->see(Translator::translate('OEEXAMPLESMODULE_GREETING_GENERIC'));
         $I->dontSee('Hi there sweetie'); //no personal greeting even if user has one set
         $I->dontSeeElement('#oeem_update_greeting');
@@ -64,7 +64,7 @@ final class GreetingCest
         $I->setGreetingModePersonal();
         $I->openShop();
 
-        $I->waitForText(Translator::translate('OEEXAMPLESMODULE_GREETING'));
+        $I->waitForText(sprintf(Translator::translate('OEEXAMPLESMODULE_GREETING'), getenv('OEEM_SHOP_NAME')));
         $I->dontSee(Translator::translate('OEEXAMPLESMODULE_GREETING_GENERIC'));
         $I->dontSeeElement('#oeem_update_greeting');
     }
@@ -79,7 +79,7 @@ final class GreetingCest
         $I->openShop()
             ->loginUser($I->getDemoUserName(), $I->getDemoUserPassword());
 
-        $I->waitForText(Translator::translate('OEEXAMPLESMODULE_GREETING'));
+        $I->waitForText(sprintf(Translator::translate('OEEXAMPLESMODULE_GREETING'), getenv('OEEM_SHOP_NAME')));
         $I->dontSee(Translator::translate('OEEXAMPLESMODULE_GREETING_GENERIC'));
         $I->see('Hi there sweetie');
         $I->seeElement('#oeem_update_greeting');

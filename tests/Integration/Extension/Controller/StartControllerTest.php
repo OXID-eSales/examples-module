@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Application\Controller\StartController as EshopStartControl
 use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Registry as EshopRegistry;
+use OxidEsales\ExamplesModule\Core\Module;
 use OxidEsales\ExamplesModule\Extension\Controller\StartController;
 use OxidEsales\ExamplesModule\Settings\Service\ModuleSettingsServiceInterface;
 use OxidEsales\ExamplesModule\Tests\Integration\IntegrationTestCase;
@@ -44,6 +45,22 @@ final class StartControllerTest extends IntegrationTestCase
     {
         Registry::getSession()->setUser(null);
         parent::tearDown();
+    }
+
+    public function testGetGeneralGreeting(): void
+    {
+        $controller = oxNew(EshopStartController::class);
+
+        $greetingPattern = EshopRegistry::getLang()->translateString(Module::GENERAL_GREETING_LANGUAGE_CONST);
+        $expectedGreeting = sprintf($greetingPattern, getenv('OEEM_SHOP_NAME'));
+
+        $this->assertSame($expectedGreeting, $controller->getOeemGeneralGreeting());
+    }
+
+    public function testShowGeneralGreeting(): void
+    {
+        $controller = oxNew(EshopStartController::class);
+        $this->assertTrue($controller->showOeemGeneralGreeting());
     }
 
     /**

@@ -12,6 +12,8 @@ services:
 
   OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageServiceInterface:
     class: OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageService
+    arguments:
+      $shopName: '%env(OEEM_SHOP_NAME)%'
     public: true
 
   OxidEsales\ExamplesModule\Greeting\Infrastructure\UserModelFactoryInterface:

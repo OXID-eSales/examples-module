@@ -94,6 +94,12 @@ The repository contains examples of following cases and more:
   * [Composer aliases for easy running of tests and quality tools](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/composer.json#L48)
   * [Using the github actions as CI tool with all recommended tools preconfigured for you.](https://github.com/OXID-eSales/examples-module/tree/b-7.3.x/.github)
 
+* [Using variables from .env file](https://github.com/OXID-eSales/examples-module/tree/b-7.3.x/.env)
+  * [Access via `getenv()` function](https://github.com/OXID-eSales/examples-module/tree/b-7.3.x/src/Extension/Controller/StartController.php)
+    * Note: Changes to environment variables take effect immediately — no cache clearing is required.
+  * [Access via DI container](https://github.com/OXID-eSales/examples-module/tree/b-7.3.x/src/Greeting/services.yaml)
+    * Note: After updating environment variables, you must clear the cache for changes to take effect.
+
 **HINTS**:
 * Only extend the shop core if there is no other way like listen and handle shop events,
   decorate/replace some DI service.

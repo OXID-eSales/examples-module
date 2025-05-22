@@ -33,6 +33,17 @@ class StartController extends StartController_parent
      * NOTE: only leaf classes can be extended this way. The FrontendController class which
      *      many Controllers inherit from cannot be extended this way.
      */
+    public function getOeemGeneralGreeting(): string
+    {
+        $service = $this->getService(GreetingMessageServiceInterface::class);
+        return $service->getGeneralGreeting();
+    }
+
+    public function showOeemGeneralGreeting(): bool
+    {
+        return strtolower((string)getenv('SHOW_GENERAL_GREETING')) == 'true';
+    }
+
     public function getOeemGreeting(): string
     {
         $service = $this->getService(GreetingMessageServiceInterface::class);

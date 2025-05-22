@@ -43,7 +43,7 @@ final class UpdateGreetingCest
         $I->openShop()
             ->loginUser($I->getDemoUserName(), $I->getDemoUserPassword());
 
-        $I->waitForText(Translator::translate('OEEXAMPLESMODULE_GREETING'));
+        $I->waitForText(sprintf(Translator::translate('OEEXAMPLESMODULE_GREETING'), getenv('OEEM_SHOP_NAME')));
         $I->dontSee(Translator::translate('OEEXAMPLESMODULE_GREETING_GENERIC'));
         $I->see('Hi there sweetie');
 

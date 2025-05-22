@@ -22,7 +22,13 @@ readonly class GreetingMessageService implements GreetingMessageServiceInterface
         private ModuleSettingsServiceInterface $moduleSettings,
         private EshopRequest $shopRequest,
         private EshopLanguage $shopLanguage,
+        private ?string $shopName,
     ) {
+    }
+
+    public function getGeneralGreeting(): string
+    {
+        return sprintf($this->translate(ModuleCore::GENERAL_GREETING_LANGUAGE_CONST), $this->shopName);
     }
 
     public function getGreeting(?EshopModelUser $user = null): string

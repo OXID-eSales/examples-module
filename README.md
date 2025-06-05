@@ -159,7 +159,7 @@ git clone --recurse-submodules https://github.com/OXID-eSales/examples-module.gi
 
 3. Run the recipe to setup the development environment, you can decide which shop edition to install. Omitting the flag installs EE.
 ```shell
-./source/recipes/setup-development.sh -s CE
+./source/recipes/setup-development.sh -e CE
 ```
 
 You should be able to access the shop with http://localhost.local and the admin panel with http://localhost.local/admin

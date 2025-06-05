@@ -7,4 +7,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [v1.0.0] - Unreleased
 
 ### Added
-- First version of our reusable examples
+- The module is extracted from the [Module template](https://github.com/OXID-eSales/module-template) repository.

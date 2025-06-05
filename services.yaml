@@ -1,5 +1,6 @@
 parameters:
   app.log_file_path: '/var/www/source/log/oe_examples_module.log'
+  env(OEEM_SHOP_NAME): 'OXID eShop name not overwritten by .env file'
 
 imports:
   - { resource: src/Greeting/services.yaml }

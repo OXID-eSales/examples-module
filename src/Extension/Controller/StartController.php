@@ -41,7 +41,7 @@ class StartController extends StartController_parent
 
     public function showOeemGeneralGreeting(): bool
     {
-        return strtolower((string)getenv('SHOW_GENERAL_GREETING')) == 'true';
+        return strtolower((string)getenv('SHOW_GENERAL_GREETING')) !== 'false';
     }
 
     public function getOeemGreeting(): string

@@ -28,7 +28,7 @@ This module also comes with all the quality tools OXID recommends to use.
 
 ## Branch compatibility
 
-* b-7.3.x branch - compatible with OXID eShop compilation 7.3.x and the respective branch
+* b-7.3.x branch and v1.x releases - compatible with OXID eShop compilation 7.3.x and the respective branch
 
 ## The Idea
 

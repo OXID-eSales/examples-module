@@ -132,6 +132,20 @@ composer require oxid-esales/examples-module
 
 and [activate the module](https://docs.oxid-esales.com/developer/en/latest/development/modules_components_themes/module/installation_setup/setup.html#setup-activation).
 
+## Customizable parameters
+
+There is a parameter in the `services.yaml` that can be customized for the module:
+* `app.log_file_path` - Path to the log file where example log message will be stored.
+
+To modify the parameters, create the `configurable_services.yaml` file in the `var/configuration` folder as
+described in the [Documentation](https://docs.oxid-esales.com/developer/en/latest/development/tell_me_about/service_container.html#replacing-oxid-eshop-services-in-a-project),
+and overwrite the parameters you want to change. Ex.:
+
+```yaml
+parameters:
+  app.log_file_path: '/my/custom/filepath/to.log'
+```
+
 ## Development installation
 
 To be able running the tests and other preconfigured quality tools, please install the module as a [root package](https://getcomposer.org/doc/04-schema.md#root-package).

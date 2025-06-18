@@ -15,7 +15,7 @@ $sMetadataVersion = '2.1';
  */
 $aModule = [
     'id'          => 'oe_examples_module',
-    'title'       => 'Oxid eSales Examples Module',
+    'title'       => 'OXID eSales Examples Module',
     'description' => 'Module with examples for the most common use cases',
     'thumbnail'   => 'pictures/logo.png',
     'version'     => '1.0.0',

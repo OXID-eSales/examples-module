@@ -1,6 +1,6 @@
 # OXID eShop Examples Module
 
-[![Development](https://github.com/OXID-eSales/examples-module/actions/workflows/trigger.yaml/badge.svg?branch=b-7.3.x)](https://github.com/OXID-eSales/examples-module/actions/workflows/trigger.yaml)
+[![Development](https://github.com/OXID-eSales/examples-module/actions/workflows/trigger.yaml/badge.svg?branch=b-7.4.x)](https://github.com/OXID-eSales/examples-module/actions/workflows/trigger.yaml)
 [![Latest Version](https://img.shields.io/packagist/v/OXID-eSales/examples-module?logo=composer&label=latest&include_prereleases&color=orange)](https://packagist.org/packages/oxid-esales/examples-module)
 [![PHP Version](https://img.shields.io/packagist/php-v/oxid-esales/examples-module)](https://github.com/oxid-esales/examples-module)
 
@@ -28,6 +28,7 @@ This module also comes with all the quality tools OXID recommends to use.
 
 ## Branch compatibility
 
+* b-7.4.x branch and v2.x releases - compatible with OXID eShop compilation 7.4.x and the respective branch
 * b-7.3.x branch and v1.x releases - compatible with OXID eShop compilation 7.3.x and the respective branch
 
 ## The Idea
@@ -56,18 +57,18 @@ Install and try out the module with simple examples to most common development q
 
 The repository contains examples of following cases and more:
 
-* [Extending of shop controllers and models](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/metadata.php#L25)
+* [Extending of shop controllers and models](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/metadata.php#L25)
   * extending a shop model (`OxidEsales\ExamplesModule\Extension\Model\User`) / (`OxidEsales\ExamplesModule\Extension\Model\Basket`)
   * extending a shop controller (`OxidEsales\ExamplesModule\Extension\Controller\StartController`)
 
-* [Controllers as service](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/src/Greeting/services.yaml#L28)
+* [Controllers as service](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/src/Greeting/services.yaml#L28)
   * own module controller (`oeem_greeting` with own template and own translations)
   * own module admin controller (`oeem_admin_greeting` with own template and own translations)
 
-* [Using Symfony DI](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/services.yaml)
-  * [Injection of Registry classes with bind](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/src/Greeting/services.yaml#L5)
+* [Using Symfony DI](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/services.yaml)
+  * [Injection of Registry classes with bind](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/src/Greeting/services.yaml#L5)
 
-* [Migrations](https://github.com/OXID-eSales/examples-module/tree/b-7.3.x/migration)
+* [Migrations](https://github.com/OXID-eSales/examples-module/tree/b-7.4.x/migration)
   * extending a shop database table (`oxuser`)
 
 * Accessing the database
@@ -75,29 +76,29 @@ The repository contains examples of following cases and more:
   * ``oxNew`` object factory example (`OxidEsales\ExamplesModule\Greeting\Infrastructure\UserModelFactory`)
   * [DAO](src/ProductVote/Dao)
 
-* [Various types of module settings](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/metadata.php#L38)
+* [Various types of module settings](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/metadata.php#L38)
 
 * Templates
-  * [creating templates for your module](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/views/twig/templates/greetingtemplate.html.twig)
-  * [extending of oxid theme templates or blocks](https://github.com/OXID-eSales/examples-module/tree/b-7.3.x/views/twig/extensions/themes)
+  * [creating templates for your module](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/views/twig/templates/greetingtemplate.html.twig)
+  * [extending of oxid theme templates or blocks](https://github.com/OXID-eSales/examples-module/tree/b-7.4.x/views/twig/extensions/themes)
     * extending a shop admin template block (`admin_user_main_form` - only an extension of a block, without functionality)
     * extending a shop template block (`start_newest_articles`)
 
 * Using the translations for your module specific phrases
-  * [in admin](https://github.com/OXID-eSales/examples-module/tree/b-7.3.x/views/admin_twig)
-  * [in frontend](https://github.com/OXID-eSales/examples-module/tree/b-7.3.x/translations)
+  * [in admin](https://github.com/OXID-eSales/examples-module/tree/b-7.4.x/views/admin_twig)
+  * [in frontend](https://github.com/OXID-eSales/examples-module/tree/b-7.4.x/translations)
 
 * Events and listeners
-  * [Subscribing to shop events](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/src/Tracker/Subscriber/BeforeModelUpdate.php)
+  * [Subscribing to shop events](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/src/Tracker/Subscriber/BeforeModelUpdate.php)
 
 * Testing your module backend and frontend part
-  * [Composer aliases for easy running of tests and quality tools](https://github.com/OXID-eSales/examples-module/blob/b-7.3.x/composer.json#L48)
-  * [Using the github actions as CI tool with all recommended tools preconfigured for you.](https://github.com/OXID-eSales/examples-module/tree/b-7.3.x/.github)
+  * [Composer aliases for easy running of tests and quality tools](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/composer.json#L48)
+  * [Using the github actions as CI tool with all recommended tools preconfigured for you.](https://github.com/OXID-eSales/examples-module/tree/b-7.4.x/.github)
 
-* [Using variables from .env file](https://github.com/OXID-eSales/examples-module/tree/b-7.3.x/.env)
-  * [Access via `getenv()` function](https://github.com/OXID-eSales/examples-module/tree/b-7.3.x/src/Extension/Controller/StartController.php)
+* [Using variables from .env file](https://github.com/OXID-eSales/examples-module/tree/b-7.4.x/.env)
+  * [Access via `getenv()` function](https://github.com/OXID-eSales/examples-module/tree/b-7.4.x/src/Extension/Controller/StartController.php)
     * Note: Changes to environment variables take effect immediately — no cache clearing is required.
-  * [Access via DI container](https://github.com/OXID-eSales/examples-module/tree/b-7.3.x/src/Greeting/services.yaml)
+  * [Access via DI container](https://github.com/OXID-eSales/examples-module/tree/b-7.4.x/src/Greeting/services.yaml)
     * Note: After updating environment variables, you must clear the cache for changes to take effect.
 
 **HINTS**:
@@ -157,7 +158,7 @@ In case of different environment usage, please adjust by your own needs.
 ## Development installation on OXID eShop SDK
 
 The installation instructions below are shown for the current [SDK](https://github.com/OXID-eSales/docker-eshop-sdk)
-for shop 7.3. Make sure your system meets the requirements of the SDK.
+for shop 7.4. Make sure your system meets the requirements of the SDK.
 
 0. Ensure all docker containers are down to avoid port conflicts
 
@@ -168,7 +169,7 @@ echo MyProject && git clone https://github.com/OXID-eSales/docker-eshop-sdk.git 
 
 2. Clone the repository to the source directory
 ```shell
-git clone --recurse-submodules https://github.com/OXID-eSales/examples-module.git --branch=b-7.3.x ./source
+git clone --recurse-submodules https://github.com/OXID-eSales/examples-module.git --branch=b-7.4.x ./source
 ```
 
 3. Run the recipe to setup the development environment, you can decide which shop edition to install. Omitting the flag installs EE.

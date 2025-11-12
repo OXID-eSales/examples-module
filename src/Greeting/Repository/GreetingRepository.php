@@ -10,10 +10,11 @@ declare(strict_types=1);
 namespace OxidEsales\ExamplesModule\Greeting\Repository;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\ExamplesModule\Extension\Model\User;
 
 readonly class GreetingRepository implements GreetingRepositoryInterface
 {
+    public const OEEM_USER_GREETING_FIELD = 'oeemgreeting';
+
     public function __construct(
         private QueryBuilderFactoryInterface $queryBuilderFactory,
     ) {
@@ -27,7 +28,7 @@ readonly class GreetingRepository implements GreetingRepositoryInterface
             'oxuserid' => $userId,
         ];
 
-        $result = $queryBuilder->select(User::OEEM_USER_GREETING_FIELD)
+        $result = $queryBuilder->select(self::OEEM_USER_GREETING_FIELD)
             ->from('oxuser')
             ->where('oxid = :oxuserid')
             ->setParameters($parameters)

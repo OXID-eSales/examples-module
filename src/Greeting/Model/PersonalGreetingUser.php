@@ -10,13 +10,14 @@ declare(strict_types=1);
 namespace OxidEsales\ExamplesModule\Greeting\Model;
 
 use OxidEsales\Eshop\Core\Model\BaseModel;
+use OxidEsales\ExamplesModule\Greeting\Repository\GreetingRepository;
 
 /** @phpstan-require-extends BaseModel */
 trait PersonalGreetingUser
 {
     public function getPersonalGreeting(): string
     {
-        return (string)$this->getRawFieldData(PersonalGreetingUserInterface::OEEM_USER_GREETING_FIELD);
+        return (string)$this->getRawFieldData(GreetingRepository::OEEM_USER_GREETING_FIELD);
     }
 
     //NOTE: we only assign the value to the model.
@@ -24,7 +25,7 @@ trait PersonalGreetingUser
     public function setPersonalGreeting(string $personalGreeting): void
     {
         $this->assign([
-            PersonalGreetingUserInterface::OEEM_USER_GREETING_FIELD => $personalGreeting,
+            GreetingRepository::OEEM_USER_GREETING_FIELD => $personalGreeting,
         ]);
     }
 }

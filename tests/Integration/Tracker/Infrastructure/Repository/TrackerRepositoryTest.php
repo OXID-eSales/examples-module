@@ -11,19 +11,19 @@ namespace OxidEsales\ExamplesModule\Tests\Integration\Tracker\Infrastructure\Rep
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\ExamplesModule\Tracker\Model\TrackerModel;
 use OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository\TrackerRepository;
 use OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository\TrackerRepositoryInterface;
+use OxidEsales\ExamplesModule\Tracker\Model\TrackerModel;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(TrackerRepository::class)]
 final class TrackerRepositoryTest extends IntegrationTestCase
 {
-    public const TEST_TRACKER_ID = '_testoxid';
+    private const TEST_TRACKER_ID = '_testoxid';
 
-    public const TEST_USER_ID = '_testuser';
+    private const TEST_USER_ID = '_testuser';
 
-    public const TEST_GREETING = 'Hi there';
+    private const TEST_TRACKER_COUNT = 5;
 
     public function setUp(): void
     {
@@ -43,19 +43,23 @@ final class TrackerRepositoryTest extends IntegrationTestCase
     {
         $this->prepareTestData();
 
-        $sut = $this->get(TrackerRepositoryInterface::class);
+        $sut = $this->getSut();
         $tracker = $sut->getTrackerByUserId(self::TEST_USER_ID);
 
-        $this->assertSame(self::TEST_TRACKER_ID, $tracker->getId());
+        $this->assertSame(self::TEST_TRACKER_COUNT, $tracker->getCount());
     }
 
-    public function testGetNotExistingTrackerByUserId(): void
+    public function testGetNotExistingTrackerByUserIdGivesZeroCount(): void
     {
-        $sut = $this->get(TrackerRepositoryInterface::class);
+        $sut = $this->getSut();
         $tracker = $sut->getTrackerByUserId('_notexisting');
 
-        $this->assertEmpty($tracker->getId());
-        $this->assertSame('_notexisting', $tracker->getFieldData('oxuserid'));
+        $this->assertSame(0, $tracker->getCount());
+    }
+
+    private function getSut(): TrackerRepositoryInterface
+    {
+        return $this->get(TrackerRepositoryInterface::class);
     }
 
     private function prepareTestData(): void
@@ -66,7 +70,7 @@ final class TrackerRepositoryTest extends IntegrationTestCase
                 'oxid' => self::TEST_TRACKER_ID,
                 'oxshopid' => '1',
                 'oxuserid' => self::TEST_USER_ID,
-                'oeemcount' => 5,
+                'oeemcount' => self::TEST_TRACKER_COUNT,
             ]
         );
         $tracker->save();

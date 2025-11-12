@@ -6,3 +6,6 @@ services:
   OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository\TrackerRepositoryInterface:
     class: OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository\TrackerRepository
     public: true
+
+  OxidEsales\ExamplesModule\Tracker\Infrastructure\Factory\TrackerModelFactoryInterface:
+    class: OxidEsales\ExamplesModule\Tracker\Infrastructure\Factory\TrackerModelFactory

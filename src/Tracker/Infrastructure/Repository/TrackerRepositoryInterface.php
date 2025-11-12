@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tracker\Repository;
+namespace OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository;
 
 use OxidEsales\ExamplesModule\Tracker\Model\TrackerModel;
 

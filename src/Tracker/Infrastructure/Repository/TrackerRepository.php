@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tracker\Repository;
+namespace OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository;
 
 use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;

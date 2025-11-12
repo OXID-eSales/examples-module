@@ -14,7 +14,7 @@ use OxidEsales\ExamplesModule\Extension\Model\User;
 use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUserInterface;
 use OxidEsales\ExamplesModule\Greeting\Repository\GreetingRepositoryInterface;
 use OxidEsales\ExamplesModule\Tracker\Model\TrackerModel;
-use OxidEsales\ExamplesModule\Tracker\Repository\TrackerRepositoryInterface;
+use OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository\TrackerRepositoryInterface;
 use OxidEsales\ExamplesModule\Tracker\Service\TrackerService;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;

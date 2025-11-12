@@ -15,7 +15,7 @@ use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
 use OxidEsales\ExamplesModule\Extension\Model\User as ExamplesModelUser;
 use OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageServiceInterface;
 use OxidEsales\ExamplesModule\Settings\Service\ModuleSettingsServiceInterface;
-use OxidEsales\ExamplesModule\Tracker\Repository\TrackerRepositoryInterface;
+use OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository\TrackerRepositoryInterface;
 
 /**
  * @extendable-class

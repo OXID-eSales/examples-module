@@ -12,7 +12,7 @@ namespace OxidEsales\ExamplesModule\Tracker\Service;
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUserInterface;
 use OxidEsales\ExamplesModule\Greeting\Repository\GreetingRepositoryInterface;
-use OxidEsales\ExamplesModule\Tracker\Repository\TrackerRepositoryInterface;
+use OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository\TrackerRepositoryInterface;
 
 /**
  * Example which we can decorate

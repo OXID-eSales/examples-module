@@ -7,13 +7,13 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tests\Integration\Tracker\Repository;
+namespace OxidEsales\ExamplesModule\Tests\Integration\Tracker\Infrastructure\Repository;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\ExamplesModule\Tracker\Model\TrackerModel;
-use OxidEsales\ExamplesModule\Tracker\Repository\TrackerRepository;
-use OxidEsales\ExamplesModule\Tracker\Repository\TrackerRepositoryInterface;
+use OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository\TrackerRepository;
+use OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository\TrackerRepositoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(TrackerRepository::class)]

@@ -18,7 +18,7 @@ use OxidEsales\Eshop\Core\Model\BaseModel;
  *
  * @SuppressWarnings("PHPMD.CamelCasePropertyName")
  */
-class TrackerModel extends BaseModel
+class TrackerModel extends BaseModel implements TrackerInterface
 {
     protected $_sCoreTable = 'oeem_tracker';
 

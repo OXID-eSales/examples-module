@@ -15,7 +15,7 @@ use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
 use OxidEsales\ExamplesModule\Extension\Model\User as ExamplesModelUser;
 use OxidEsales\ExamplesModule\Extension\Model\UserInterface;
 use OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageServiceInterface;
-use OxidEsales\ExamplesModule\Settings\Service\ModuleSettingsServiceInterface;
+use OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface;
 use OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository\TrackerRepositoryInterface;
 
 use function PHPUnit\Framework\isInstanceOf;
@@ -37,7 +37,7 @@ class GreetingController extends FrontendController
     protected $_sThisTemplate = '@oe_examples_module/templates/greetingtemplate';
 
     public function __construct(
-        private readonly ModuleSettingsServiceInterface $moduleSettings,
+        private readonly GreetingSettingsInterface $greetingSettings,
         private readonly TrackerRepositoryInterface $trackerRepository,
         private readonly GreetingMessageServiceInterface $greetingService,
     ) {
@@ -58,7 +58,7 @@ class GreetingController extends FrontendController
         if (
             $user instanceof UserInterface
             && !empty($user->getId())
-            && $this->moduleSettings->isPersonalGreetingMode()
+            && $this->greetingSettings->isPersonalGreetingMode()
         ) {
             $greeting = $user->getPersonalGreeting();
             $tracker = $this->trackerRepository->getTrackerByUserId($user->getId());
@@ -83,7 +83,7 @@ class GreetingController extends FrontendController
         $user = $this->getUser();
 
         /** @phpstan-ignore-next-line */
-        if (is_a($user, EshopModelUser::class) && $this->moduleSettings->isPersonalGreetingMode()) {
+        if (is_a($user, EshopModelUser::class) && $this->greetingSettings->isPersonalGreetingMode()) {
             $this->greetingService->saveGreeting($user);
         }
     }

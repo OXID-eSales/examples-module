@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Core\Language as CoreLanguage;
 use OxidEsales\Eshop\Core\Request as CoreRequest;
 use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
 use OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageService;
-use OxidEsales\ExamplesModule\Settings\Service\ModuleSettingsServiceInterface;
+use OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -39,12 +39,12 @@ final class GreetingMessageServiceTest extends TestCase
     public function testGenericGreetingNoUserForGenericMode(): void
     {
         $service = $this->getSut(
-            moduleSettings: $moduleSettingsStub = $this->createMock(ModuleSettingsServiceInterface::class),
+            greetingSettings: $greetingSettingsStub = $this->createStub(GreetingSettingsInterface::class),
             shopLanguage: $langStub = $this->createStub(CoreLanguage::class),
         );
 
-        $moduleSettingsStub->method('getGreetingMode')
-            ->willReturn(ModuleSettingsServiceInterface::GREETING_MODE_GENERIC);
+        $greetingSettingsStub->method('getGreetingMode')
+            ->willReturn(GreetingSettingsInterface::GREETING_MODE_GENERIC);
 
         $expectedTranslation = 'translatedGreeting';
         $langStub->method('translateString')
@@ -57,12 +57,12 @@ final class GreetingMessageServiceTest extends TestCase
     public function testGenericGreetingWithUserForGenericMode(): void
     {
         $service = $this->getSut(
-            moduleSettings: $moduleSettingsStub = $this->createMock(ModuleSettingsServiceInterface::class),
+            greetingSettings: $greetingSettingsStub = $this->createStub(GreetingSettingsInterface::class),
             shopLanguage: $langStub = $this->createStub(CoreLanguage::class),
         );
 
-        $moduleSettingsStub->method('getGreetingMode')
-            ->willReturn(ModuleSettingsServiceInterface::GREETING_MODE_GENERIC);
+        $greetingSettingsStub->method('getGreetingMode')
+            ->willReturn(GreetingSettingsInterface::GREETING_MODE_GENERIC);
 
         $expectedTranslation = 'translatedGreeting';
         $langStub->method('translateString')
@@ -75,23 +75,23 @@ final class GreetingMessageServiceTest extends TestCase
     public function testGenericGreetingNoUserForPersonalMode(): void
     {
         $service = $this->getSut(
-            moduleSettings: $moduleSettingsStub = $this->createMock(ModuleSettingsServiceInterface::class),
+            greetingSettings: $greetingSettingsStub = $this->createStub(GreetingSettingsInterface::class),
         );
 
-        $moduleSettingsStub->method('getGreetingMode')
-            ->willReturn(ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL);
+        $greetingSettingsStub->method('getGreetingMode')
+            ->willReturn(GreetingSettingsInterface::GREETING_MODE_PERSONAL);
 
         $this->assertSame('', $service->getGreeting(null));
     }
 
     private function getSut(
-        ?ModuleSettingsServiceInterface $moduleSettings = null,
+        ?GreetingSettingsInterface $greetingSettings = null,
         ?CoreRequest $shopRequest = null,
         ?CoreLanguage $shopLanguage = null,
         ?string $shopName = null,
     ): GreetingMessageService {
         return new GreetingMessageService(
-            moduleSettings: $moduleSettings ?? $this->createStub(ModuleSettingsServiceInterface::class),
+            greetingSettings: $greetingSettings ?? $this->createStub(GreetingSettingsInterface::class),
             shopRequest: $shopRequest ?? $this->createStub(CoreRequest::class),
             shopLanguage: $shopLanguage ?? $this->createStub(CoreLanguage::class),
             shopName: $shopName ?? uniqid(),

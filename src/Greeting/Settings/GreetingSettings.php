@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Settings\Service;
+namespace OxidEsales\ExamplesModule\Greeting\Settings;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServiceInterface;
 use OxidEsales\ExamplesModule\Core\Module;
@@ -15,7 +15,7 @@ use OxidEsales\ExamplesModule\Core\Module;
 /**
  * @extendable-class
  */
-readonly class ModuleSettingsService implements ModuleSettingsServiceInterface
+readonly class GreetingSettings implements GreetingSettingsInterface
 {
     public const GREETING_MODE_VALUES = [
         self::GREETING_MODE_GENERIC,
@@ -42,10 +42,5 @@ readonly class ModuleSettingsService implements ModuleSettingsServiceInterface
     public function saveGreetingMode(string $value): void
     {
         $this->moduleSettingService->saveString(self::GREETING_MODE, $value, Module::MODULE_ID);
-    }
-
-    public function isLoggingEnabled(): bool
-    {
-        return $this->moduleSettingService->getBoolean(self::LOGGER_STATUS, Module::MODULE_ID);
     }
 }

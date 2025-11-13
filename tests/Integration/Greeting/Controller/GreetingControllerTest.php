@@ -15,7 +15,7 @@ use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
 use OxidEsales\ExamplesModule\Extension\Model\User as ModuleUser;
 use OxidEsales\ExamplesModule\Greeting\Controller\GreetingController;
 use OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageServiceInterface;
-use OxidEsales\ExamplesModule\Settings\Service\ModuleSettingsServiceInterface;
+use OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface;
 use OxidEsales\ExamplesModule\Tests\Integration\IntegrationTestCase;
 use OxidEsales\ExamplesModule\Tracker\Model\TrackerModel;
 use OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository\TrackerRepositoryInterface;
@@ -56,10 +56,10 @@ final class GreetingControllerTest extends IntegrationTestCase
      */
     public function testUpdateGreeting(bool $hasUser, string $mode, string $expected, int $count): void
     {
-        $moduleSettingsServiceStub = $this->createStub(ModuleSettingsServiceInterface::class);
-        $moduleSettingsServiceStub
+        $greetingSettingsStub = $this->createStub(GreetingSettingsInterface::class);
+        $greetingSettingsStub
             ->method('isPersonalGreetingMode')
-            ->willReturn($mode === ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL);
+            ->willReturn($mode === GreetingSettingsInterface::GREETING_MODE_PERSONAL);
 
         $trackerStub = $this->createMock(TrackerModel::class);
         $trackerStub->method('getCount')->willReturn($count);
@@ -71,7 +71,7 @@ final class GreetingControllerTest extends IntegrationTestCase
             ->willReturn($trackerStub);
 
         $greetingServiceMock = $this->createMock(GreetingMessageServiceInterface::class);
-        if ($hasUser && $mode === ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL) {
+        if ($hasUser && $mode === GreetingSettingsInterface::GREETING_MODE_PERSONAL) {
             $greetingServiceMock
                 ->method('saveGreeting')
                 ->willReturnCallback(function (EshopModelUser $user) use ($expected): bool {
@@ -84,7 +84,7 @@ final class GreetingControllerTest extends IntegrationTestCase
         }
 
         $sut = $this->getSut(
-            moduleSettings: $moduleSettingsServiceStub,
+            greetingSettings: $greetingSettingsStub,
             trackerRepository: $trackerRepositoryMock,
             greetingMessageService: $greetingServiceMock,
         );
@@ -111,10 +111,10 @@ final class GreetingControllerTest extends IntegrationTestCase
     {
         $this->createTestTracker($expected['counter']);
 
-        $moduleSettingsServiceStub = $this->createStub(ModuleSettingsServiceInterface::class);
-        $moduleSettingsServiceStub
+        $greetingSettingsStub = $this->createStub(GreetingSettingsInterface::class);
+        $greetingSettingsStub
             ->method('isPersonalGreetingMode')
-            ->willReturn($mode === ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL);
+            ->willReturn($mode === GreetingSettingsInterface::GREETING_MODE_PERSONAL);
 
         $trackerStub = $this->createMock(TrackerModel::class);
         $trackerStub->method('getCount')->willReturn($expected['counter']);
@@ -126,7 +126,7 @@ final class GreetingControllerTest extends IntegrationTestCase
             ->willReturn($trackerStub);
 
         $sut = $this->getSut(
-            moduleSettings: $moduleSettingsServiceStub,
+            greetingSettings: $greetingSettingsStub,
             trackerRepository: $this->get(TrackerRepositoryInterface::class),
         );
 
@@ -146,25 +146,25 @@ final class GreetingControllerTest extends IntegrationTestCase
         return [
             'without_user_generic' => [
                 'hasUser' => false,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_GENERIC,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_GENERIC,
                 'expected' => '',
                 'count' => 0,
             ],
             'without_user_personal' => [
                 'hasUser' => false,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_PERSONAL,
                 'expected' => '',
                 'count' => 0,
             ],
             'with_user_generic' => [
                 'hasUser' => true,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_GENERIC,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_GENERIC,
                 'expected' => self::TEST_GREETING,
                 'count' => 0,
             ],
             'with_user_personal' => [
                 'hasUser' => true,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_PERSONAL,
                 'expected' => self::TEST_GREETING_UPDATED,
                 'count' => 1,
             ],
@@ -176,7 +176,7 @@ final class GreetingControllerTest extends IntegrationTestCase
         return [
             'without_user_generic' => [
                 'hasUser' => false,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_GENERIC,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_GENERIC,
                 'expected' => [
                     'greeting' => '',
                     'counter' => 0,
@@ -184,7 +184,7 @@ final class GreetingControllerTest extends IntegrationTestCase
             ],
             'without_user_personal' => [
                 'hasUser' => false,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_PERSONAL,
                 'expected' => [
                     'greeting' => '',
                     'counter' => 0,
@@ -192,7 +192,7 @@ final class GreetingControllerTest extends IntegrationTestCase
             ],
             'with_user_generic' => [
                 'hasUser' => true,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_GENERIC,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_GENERIC,
                 'expected' => [
                     'greeting' => '',
                     'counter' => 0,
@@ -200,7 +200,7 @@ final class GreetingControllerTest extends IntegrationTestCase
             ],
             'with_user_personal' => [
                 'hasUser' => true,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_PERSONAL,
                 'expected' => [
                     'greeting' => self::TEST_GREETING,
                     'counter' => 67,
@@ -244,15 +244,15 @@ final class GreetingControllerTest extends IntegrationTestCase
     }
 
     private function getSut(
-        ?ModuleSettingsServiceInterface $moduleSettings = null,
+        ?GreetingSettingsInterface $greetingSettings = null,
         ?TrackerRepositoryInterface $trackerRepository = null,
         ?GreetingMessageServiceInterface $greetingMessageService = null,
     ): GreetingController {
-        $moduleSettings ??= $this->createStub(ModuleSettingsServiceInterface::class);
+        $greetingSettings ??= $this->createStub(GreetingSettingsInterface::class);
         $trackerRepository ??= $this->createStub(TrackerRepositoryInterface::class);
         $greetingMessageService ??= $this->createStub(GreetingMessageServiceInterface::class);
         return new GreetingController(
-            moduleSettings: $moduleSettings,
+            greetingSettings: $greetingSettings,
             trackerRepository: $trackerRepository,
             greetingService: $greetingMessageService,
         );

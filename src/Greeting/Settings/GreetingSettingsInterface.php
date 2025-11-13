@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Settings\Service;
+namespace OxidEsales\ExamplesModule\Greeting\Settings;
 
-interface ModuleSettingsServiceInterface
+interface GreetingSettingsInterface
 {
     public const GREETING_MODE = 'oeexamplesmodule_GreetingMode';
 
@@ -17,13 +17,9 @@ interface ModuleSettingsServiceInterface
 
     public const GREETING_MODE_PERSONAL = 'personal';
 
-    public const LOGGER_STATUS = 'oeexamplesmodule_LoggerEnabled';
-
     public function isPersonalGreetingMode(): bool;
 
     public function getGreetingMode(): string;
 
     public function saveGreetingMode(string $value): void;
-
-    public function isLoggingEnabled(): bool;
 }

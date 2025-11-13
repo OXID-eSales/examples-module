@@ -14,12 +14,12 @@ use OxidEsales\Eshop\Core\Language as EshopLanguage;
 use OxidEsales\Eshop\Core\Request as EshopRequest;
 use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
 use OxidEsales\ExamplesModule\Extension\Model\User as ExamplesModelUser;
-use OxidEsales\ExamplesModule\Settings\Service\ModuleSettingsServiceInterface;
+use OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface;
 
 readonly class GreetingMessageService implements GreetingMessageServiceInterface
 {
     public function __construct(
-        private ModuleSettingsServiceInterface $moduleSettings,
+        private GreetingSettingsInterface $greetingSettings,
         private EshopRequest $shopRequest,
         private EshopLanguage $shopLanguage,
         private ?string $shopName,
@@ -35,7 +35,7 @@ readonly class GreetingMessageService implements GreetingMessageServiceInterface
     {
         $result = ModuleCore::DEFAULT_PERSONAL_GREETING_LANGUAGE_CONST;
 
-        if (ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL == $this->moduleSettings->getGreetingMode()) {
+        if (GreetingSettingsInterface::GREETING_MODE_PERSONAL == $this->greetingSettings->getGreetingMode()) {
             $result = $this->getUserGreeting($user);
         }
 

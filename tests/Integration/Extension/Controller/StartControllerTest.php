@@ -15,7 +15,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Registry as EshopRegistry;
 use OxidEsales\ExamplesModule\Core\Module;
 use OxidEsales\ExamplesModule\Extension\Controller\StartController;
-use OxidEsales\ExamplesModule\Settings\Service\ModuleSettingsServiceInterface;
+use OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface;
 use OxidEsales\ExamplesModule\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
@@ -68,8 +68,8 @@ final class StartControllerTest extends IntegrationTestCase
      */
     public function testCanUpdateOeemGreeting(bool $hasUser, string $mode, bool $expected): void
     {
-        $moduleSettings = $this->get(ModuleSettingsServiceInterface::class);
-        $moduleSettings->saveGreetingMode($mode);
+        $greetingSettings = $this->get(GreetingSettingsInterface::class);
+        $greetingSettings->saveGreetingMode($mode);
 
         $controller = oxNew(EshopStartController::class);
 
@@ -87,8 +87,8 @@ final class StartControllerTest extends IntegrationTestCase
      */
     public function testGetOeemGreeting(bool $hasUser, string $mode, $expect): void
     {
-        $moduleSettings = $this->get(ModuleSettingsServiceInterface::class);
-        $moduleSettings->saveGreetingMode($mode);
+        $greetingSettings = $this->get(GreetingSettingsInterface::class);
+        $greetingSettings->saveGreetingMode($mode);
 
         $controller = oxNew(EshopStartController::class);
 
@@ -107,22 +107,22 @@ final class StartControllerTest extends IntegrationTestCase
         return [
             'without_user_generic' => [
                 'hasUser' => false,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_GENERIC,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_GENERIC,
                 'expected' => false,
             ],
             'without_user_personal' => [
                 'hasUser' => false,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_PERSONAL,
                 'expected' => false,
             ],
             'with_user_generic' => [
                 'hasUser' => true,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_GENERIC,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_GENERIC,
                 'expected' => false,
             ],
             'with_user_personal' => [
                 'hasUser' => true,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_PERSONAL,
                 'expected' => true,
             ],
         ];
@@ -133,22 +133,22 @@ final class StartControllerTest extends IntegrationTestCase
         return [
             'without_user_generic' => [
                 'hasUser' => false,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_GENERIC,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_GENERIC,
                 'expect' => 'OEEXAMPLESMODULE_GREETING_GENERIC',
             ],
             'without_user_personal' => [
                 'hasUser' => false,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_PERSONAL,
                 'expect' => '',
             ],
             'with_user_generic' => [
                 'hasUser' => true,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_GENERIC,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_GENERIC,
                 'expect' => 'OEEXAMPLESMODULE_GREETING_GENERIC',
             ],
             'with_user_personal' => [
                 'hasUser' => true,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_PERSONAL,
                 'expect' => self::TEST_GREETING,
             ],
         ];

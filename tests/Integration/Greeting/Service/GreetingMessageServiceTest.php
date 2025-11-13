@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Core\Language as CoreLanguage;
 use OxidEsales\Eshop\Core\Request as CoreRequest;
 use OxidEsales\ExamplesModule\Extension\Model\User;
 use OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageService;
-use OxidEsales\ExamplesModule\Settings\Service\ModuleSettingsServiceInterface;
+use OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -27,13 +27,13 @@ final class GreetingMessageServiceTest extends TestCase
     public function testGenericGreetingWithUserForPersonalMode(): void
     {
         $sut = $this->getSut(
-            moduleSettings: $moduleSettingsStub = $this->createMock(ModuleSettingsServiceInterface::class),
+            greetingSettings: $greetingSettingsStub = $this->createStub(GreetingSettingsInterface::class),
             shopRequest: $this->createStub(CoreRequest::class),
             shopLanguage: $langStub = $this->createStub(CoreLanguage::class),
         );
 
-        $moduleSettingsStub->method('getGreetingMode')
-            ->willReturn(ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL);
+        $greetingSettingsStub->method('getGreetingMode')
+            ->willReturn(GreetingSettingsInterface::GREETING_MODE_PERSONAL);
 
         $personalGreeting = 'someUserPersonalGreeting';
         /** @var User $userStub */
@@ -49,12 +49,12 @@ final class GreetingMessageServiceTest extends TestCase
     }
 
     private function getSut(
-        ModuleSettingsServiceInterface $moduleSettings = null,
+        GreetingSettingsInterface $greetingSettings = null,
         CoreRequest $shopRequest = null,
         CoreLanguage $shopLanguage = null,
     ): GreetingMessageService {
         return new GreetingMessageService(
-            moduleSettings: $moduleSettings ?? $this->createStub(ModuleSettingsServiceInterface::class),
+            greetingSettings: $greetingSettings ?? $this->createStub(GreetingSettingsInterface::class),
             shopRequest: $shopRequest ?? $this->createStub(CoreRequest::class),
             shopLanguage: $shopLanguage ?? $this->createStub(CoreLanguage::class),
             shopName: 'Test Shop',

@@ -11,8 +11,8 @@ namespace OxidEsales\ExamplesModule\Tests\Integration\Controller\Admin;
 
 use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
 use OxidEsales\ExamplesModule\Greeting\Controller\Admin\GreetingAdminController;
+use OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\UserRepositoryInterface;
 use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUserInterface;
-use OxidEsales\ExamplesModule\Greeting\Service\UserServiceInterface;
 use OxidEsales\ExamplesModule\Greeting\Transput\AdminGreetingRequestInterface;
 use OxidEsales\ExamplesModule\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\Test;
@@ -30,14 +30,14 @@ final class GreetingAdminControllerTest extends IntegrationTestCase
             'getPersonalGreeting' => $expectedGreeting = uniqid(),
         ]);
 
-        $userServiceMock = $this->createMock(UserServiceInterface::class);
-        $userServiceMock->method('getUserById')
+        $userRepositoryMock = $this->createMock(UserRepositoryInterface::class);
+        $userRepositoryMock->method('getUserById')
             ->with($userId)
             ->willReturn($userStub);
 
         $sut = $this->getSut(
             request: $requestStub,
-            userService: $userServiceMock,
+            userRepository: $userRepositoryMock,
         );
 
         $this->assertSame('@oe_examples_module/admin/user_greetings', $sut->render());
@@ -49,11 +49,11 @@ final class GreetingAdminControllerTest extends IntegrationTestCase
     #[Test]
     public function renderDoesntSetTplParamIfEditObjectIsNotGivenByRequest(): void
     {
-        $userServiceSpy = $this->createMock(UserServiceInterface::class);
-        $userServiceSpy->expects($this->never())->method('getUserById');
+        $userRepositorySpy = $this->createMock(UserRepositoryInterface::class);
+        $userRepositorySpy->expects($this->never())->method('getUserById');
 
         $sut = $this->getSut(
-            userService: $userServiceSpy,
+            userRepository: $userRepositorySpy,
         );
 
         $this->assertSame('@oe_examples_module/admin/user_greetings', $sut->render());
@@ -63,13 +63,13 @@ final class GreetingAdminControllerTest extends IntegrationTestCase
     }
 
     private function getSut(
-        ?UserServiceInterface $userService = null,
+        ?UserRepositoryInterface $userRepository = null,
         ?AdminGreetingRequestInterface $request = null
     ): GreetingAdminController {
-        $userService ??= $this->createStub(UserServiceInterface::class);
+        $userRepository ??= $this->createStub(UserRepositoryInterface::class);
         $request ??= $this->createStub(AdminGreetingRequestInterface::class);
         return new GreetingAdminController(
-            userService: $userService,
+            userRepository: $userRepository,
             request: $request,
         );
     }

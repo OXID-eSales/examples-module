@@ -7,11 +7,11 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Greeting\Service;
+namespace OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository;
 
 use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUserInterface;
 
-interface UserServiceInterface
+interface UserRepositoryInterface
 {
     public function getUserById(string $userId): PersonalGreetingUserInterface;
 }

@@ -7,17 +7,12 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Greeting\Service;
+namespace OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository;
 
 use OxidEsales\ExamplesModule\Greeting\Infrastructure\Factory\UserModelFactoryInterface;
 use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUserInterface;
 
-/**
- * @extendable-class
- *
- * @todo: getting the user should go through the user repository
- */
-readonly class UserService implements UserServiceInterface
+readonly class UserRepository implements UserRepositoryInterface
 {
     public function __construct(
         private UserModelFactoryInterface $userModelFactory,

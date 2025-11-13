@@ -9,8 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\ExamplesModule\Tracker\Service;
 
-use OxidEsales\Eshop\Application\Model\User;
-use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUserInterface;
+use OxidEsales\ExamplesModule\Extension\Model\UserInterface;
 use OxidEsales\ExamplesModule\Greeting\Repository\GreetingRepositoryInterface;
 use OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository\TrackerRepositoryInterface;
 
@@ -25,8 +24,12 @@ readonly class TrackerService implements TrackerServiceInterface
     ) {
     }
 
-    public function updateTracker(User&PersonalGreetingUserInterface $user): void
+    public function updateTracker(UserInterface $user): void
     {
+        if (empty($user->getId())) {
+            return;
+        }
+
         $savedGreeting = $this->greetingRepository->getSavedUserGreeting($user->getId());
 
         if ($savedGreeting !== $user->getPersonalGreeting()) {

@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Greeting\Infrastructure;
+namespace OxidEsales\ExamplesModule\Greeting\Infrastructure\Factory;
 
 use OxidEsales\Eshop\Application\Model\User;
 

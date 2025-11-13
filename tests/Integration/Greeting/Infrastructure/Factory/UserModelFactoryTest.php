@@ -7,15 +7,15 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tests\Unit\Greeting\Infrastructure;
+namespace OxidEsales\ExamplesModule\Tests\Unit\Greeting\Infrastructure\Factory;
 
 use OxidEsales\ExamplesModule\Extension\Model\UserInterface;
-use OxidEsales\ExamplesModule\Greeting\Infrastructure\UserModelFactory;
+use OxidEsales\ExamplesModule\Greeting\Infrastructure\Factory\UserModelFactory;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \OxidEsales\ExamplesModule\Greeting\Infrastructure\UserModelFactory
+ * @covers \OxidEsales\ExamplesModule\Greeting\Infrastructure\Factory\UserModelFactory
  */
 class UserModelFactoryTest extends TestCase
 {

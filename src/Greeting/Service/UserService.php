@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\ExamplesModule\Greeting\Service;
 
-use OxidEsales\ExamplesModule\Greeting\Infrastructure\UserModelFactoryInterface;
+use OxidEsales\ExamplesModule\Greeting\Infrastructure\Factory\UserModelFactoryInterface;
 use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUserInterface;
 
 /**

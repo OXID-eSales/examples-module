@@ -1,3 +1,6 @@
+imports:
+  - { resource: Infrastructure/services.yaml }
+
 services:
   _defaults:
     public: false
@@ -15,9 +18,6 @@ services:
     arguments:
       $shopName: '%env(OEEM_SHOP_NAME)%'
     public: true
-
-  OxidEsales\ExamplesModule\Greeting\Infrastructure\UserModelFactoryInterface:
-    class: OxidEsales\ExamplesModule\Greeting\Infrastructure\UserModelFactory
 
   OxidEsales\ExamplesModule\Greeting\Service\UserServiceInterface:
     class: OxidEsales\ExamplesModule\Greeting\Service\UserService

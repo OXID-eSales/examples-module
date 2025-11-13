@@ -11,7 +11,7 @@ namespace Greeting\Service;
 
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\ExamplesModule\Extension\Model\User;
-use OxidEsales\ExamplesModule\Greeting\Infrastructure\UserModelFactoryInterface;
+use OxidEsales\ExamplesModule\Greeting\Infrastructure\Factory\UserModelFactoryInterface;
 use OxidEsales\ExamplesModule\Greeting\Service\UserService;
 use PHPUnit\Framework\Attributes\Test;
 

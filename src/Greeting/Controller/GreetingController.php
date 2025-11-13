@@ -56,8 +56,8 @@ class GreetingController extends FrontendController
         $user = $this->getUser();
 
         if (
-            !empty($user->getId())
-            && $user instanceof UserInterface
+            $user instanceof UserInterface
+            && !empty($user->getId())
             && $this->moduleSettings->isPersonalGreetingMode()
         ) {
             $greeting = $user->getPersonalGreeting();

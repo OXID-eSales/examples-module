@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Greeting\Repository;
+namespace OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 

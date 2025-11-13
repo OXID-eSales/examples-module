@@ -7,13 +7,13 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tests\Integration\Greeting\Repository;
+namespace OxidEsales\ExamplesModule\Tests\Integration\Greeting\Infrastructure\Repository;
 
 use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\ExamplesModule\Greeting\Repository\GreetingRepository;
-use OxidEsales\ExamplesModule\Greeting\Repository\GreetingRepositoryInterface;
+use OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\GreetingRepository;
+use OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\GreetingRepositoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(GreetingRepository::class)]

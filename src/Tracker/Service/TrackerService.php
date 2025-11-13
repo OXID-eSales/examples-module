@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\ExamplesModule\Tracker\Service;
 
 use OxidEsales\ExamplesModule\Extension\Model\UserInterface;
-use OxidEsales\ExamplesModule\Greeting\Repository\GreetingRepositoryInterface;
+use OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\GreetingRepositoryInterface;
 use OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository\TrackerRepositoryInterface;
 
 /**

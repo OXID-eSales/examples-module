@@ -61,44 +61,48 @@ The repository contains examples of following cases and more:
   * extending a shop model (`OxidEsales\ExamplesModule\Extension\Model\User`) / (`OxidEsales\ExamplesModule\Extension\Model\Basket`)
   * extending a shop controller (`OxidEsales\ExamplesModule\Extension\Controller\StartController`)
 
-* [Controllers as service](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/src/Greeting/services.yaml#L28)
+* [Controllers as service](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/src/Greeting/services.yaml#L29)
   * own module controller (`oeem_greeting` with own template and own translations)
   * own module admin controller (`oeem_admin_greeting` with own template and own translations)
 
-* [Using Symfony DI](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/services.yaml)
-  * [Injection of Registry classes with bind](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/src/Greeting/services.yaml#L5)
+* [Using Symfony DI](services.yaml)
+  * [Injection of Registry classes with bind](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/src/Greeting/services.yaml#L8)
 
-* [Migrations](https://github.com/OXID-eSales/examples-module/tree/b-7.4.x/migration)
+* [Migrations](migration)
   * extending a shop database table (`oxuser`)
 
 * Accessing the database
-  * model with a database (`OxidEsales\ExamplesModule\Tracker\Model\GreetingTracker`)
-  * ``oxNew`` object factory example (`OxidEsales\ExamplesModule\Greeting\Infrastructure\UserModelFactory`)
-  * [DAO](src/ProductVote/Dao)
+  * Model with a database (`OxidEsales\ExamplesModule\Tracker\Model\TrackerModel`)
+  * ``oxNew`` object factory example (`OxidEsales\ExamplesModule\Greeting\Infrastructure\Factory\UserModelFactory`)
+  * [DAO examples](src/ProductVote/Dao) - lower level abstraction for database access
+  * Repository examples - higher level abstraction for data access
+    * [GreetingRepository](src/Greeting/Infrastructure/Repository/GreetingRepository.php) - direct database query with QueryBuilder example (consider making DAO instead for cases like this)
+    * [UserRepository](src/Greeting/Infrastructure/Repository/UserRepository.php) - loading shop user with model example
+    * [TrackerRepository](src/Tracker/Infrastructure/Repository/TrackerRepository.php) - more comprehensive example showing dependencies and DTO usage
 
 * [Various types of module settings](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/metadata.php#L38)
 
 * Templates
-  * [creating templates for your module](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/views/twig/templates/greetingtemplate.html.twig)
-  * [extending of oxid theme templates or blocks](https://github.com/OXID-eSales/examples-module/tree/b-7.4.x/views/twig/extensions/themes)
+  * [creating templates for your module](views/twig/templates/greetingtemplate.html.twig)
+  * [extending of oxid theme templates or blocks](views/twig/extensions/themes)
     * extending a shop admin template block (`admin_user_main_form` - only an extension of a block, without functionality)
     * extending a shop template block (`start_newest_articles`)
 
 * Using the translations for your module specific phrases
-  * [in admin](https://github.com/OXID-eSales/examples-module/tree/b-7.4.x/views/admin_twig)
-  * [in frontend](https://github.com/OXID-eSales/examples-module/tree/b-7.4.x/translations)
+  * [in admin](views/admin_twig)
+  * [in frontend](translations)
 
 * Events and listeners
-  * [Subscribing to shop events](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/src/Tracker/Subscriber/BeforeModelUpdate.php)
+  * [Subscribing to shop events](src/Tracker/Subscriber/BeforeModelUpdate.php)
 
 * Testing your module backend and frontend part
   * [Composer aliases for easy running of tests and quality tools](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/composer.json#L48)
-  * [Using the github actions as CI tool with all recommended tools preconfigured for you.](https://github.com/OXID-eSales/examples-module/tree/b-7.4.x/.github)
+  * [Using the github actions as CI tool with all recommended tools preconfigured for you.](.github)
 
-* [Using variables from .env file](https://github.com/OXID-eSales/examples-module/tree/b-7.4.x/.env)
-  * [Access via `getenv()` function](https://github.com/OXID-eSales/examples-module/tree/b-7.4.x/src/Extension/Controller/StartController.php)
+* [Using variables from .env file](.env)
+  * [Access via `getenv()` function](src/Extension/Controller/StartController.php)
     * Note: Changes to environment variables take effect immediately — no cache clearing is required.
-  * [Access via DI container](https://github.com/OXID-eSales/examples-module/tree/b-7.4.x/src/Greeting/services.yaml)
+  * [Access via DI container](src/Greeting/services.yaml)
     * Note: After updating environment variables, you must clear the cache for changes to take effect.
 
 **HINTS**:

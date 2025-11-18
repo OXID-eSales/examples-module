@@ -94,6 +94,9 @@ The repository contains examples of following cases and more:
 
 * [Using Symfony DI](services.yaml)
   * [Injection of Registry classes with bind](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/services.yaml#L16)
+  * [Service decoration](src/Greeting/Service/Decorator/GreetingValidationDecorator.php) - shows how to decorate services
+    * Note: While the example uses validation/truncation for simplicity, better use cases include logging, caching, performance monitoring, or audit trails
+    * [Decorator registration](src/Greeting/services.yaml) - using `decorates:` in DI configuration
 
 * [Migrations](migration)
   * extending a shop database table (`oxuser`)

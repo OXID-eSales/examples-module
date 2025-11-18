@@ -16,12 +16,15 @@ use OxidEsales\ExamplesModule\ProductVote\Dao\VoteResultDaoInterface;
 use OxidEsales\ExamplesModule\ProductVote\DataObject\ProductVote;
 use OxidEsales\ExamplesModule\ProductVote\DataObject\ProductVoteInterface;
 use OxidEsales\ExamplesModule\ProductVote\DataObject\VoteResultInterface;
+use OxidEsales\ExamplesModule\ProductVote\Event\ProductVotedEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 readonly class VoteService implements VoteServiceInterface
 {
     public function __construct(
         private ProductVoteDaoInterface $productVoteDao,
         private VoteResultDaoInterface $voteResultDao,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -32,8 +35,12 @@ readonly class VoteService implements VoteServiceInterface
 
     public function setProductVote(Article $product, User $user, bool $vote): void
     {
-        $vote = new ProductVote($product->getId(), $user->getId(), $vote);
-        $this->productVoteDao->setProductVote($vote);
+        $productVote = new ProductVote($product->getId(), $user->getId(), $vote);
+        $this->productVoteDao->setProductVote($productVote);
+
+        // Dispatch custom event to allow other modules/subscribers to react to voting
+        $event = new ProductVotedEvent($productVote);
+        $this->eventDispatcher->dispatch($event);
     }
 
     public function resetProductVote(Article $product, User $user): void

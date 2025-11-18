@@ -93,7 +93,9 @@ The repository contains examples of following cases and more:
   * [in frontend](translations)
 
 * Events and listeners
-  * [Subscribing to shop events](src/Tracker/Subscriber/BeforeModelUpdate.php)
+  * [Subscribing to shop events](src/Tracker/Subscriber/BeforeModelUpdate.php) - listening to `BeforeModelUpdateEvent`
+  * [Creating and dispatching custom module events](src/ProductVote/Event/ProductVotedEvent.php)
+    * [Dispatching the event](src/ProductVote/Service/VoteService.php) - triggering events from services
 
 * Testing your module backend and frontend part
   * [Composer aliases for easy running of tests and quality tools](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/composer.json#L48)

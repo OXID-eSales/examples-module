@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\ExamplesModule\Tests\Integration\Greeting\Service;
 
-use OxidEsales\Eshop\Core\Language as CoreLanguage;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\ExamplesModule\Extension\Model\User;
 use OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\GreetingRepositoryInterface;
 use OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageService;
@@ -28,7 +28,7 @@ final class GreetingMessageServiceTest extends TestCase
     {
         $sut = $this->getSut(
             greetingSettings: $greetingSettingsStub = $this->createStub(GreetingSettingsInterface::class),
-            shopLanguage: $langStub = $this->createStub(CoreLanguage::class),
+            shopAdapter: $shopAdapterStub = $this->createStub(ShopAdapterInterface::class),
         );
 
         $greetingSettingsStub->method('getGreetingMode')
@@ -40,7 +40,7 @@ final class GreetingMessageServiceTest extends TestCase
         $userStub->method('getPersonalGreeting')->willReturn($personalGreeting);
 
         $expectedTranslation = 'translatedGreeting';
-        $langStub->method('translateString')
+        $shopAdapterStub->method('translateString')
             ->with($personalGreeting)
             ->willReturn($expectedTranslation);
 
@@ -49,13 +49,13 @@ final class GreetingMessageServiceTest extends TestCase
 
     private function getSut(
         ?GreetingSettingsInterface $greetingSettings = null,
-        ?CoreLanguage $shopLanguage = null,
+        ?ShopAdapterInterface $shopAdapter = null,
         ?string $shopName = null,
         ?GreetingRepositoryInterface $greetingRepository = null,
     ): GreetingMessageService {
         return new GreetingMessageService(
             greetingSettings: $greetingSettings ?? $this->createStub(GreetingSettingsInterface::class),
-            shopLanguage: $shopLanguage ?? $this->createStub(CoreLanguage::class),
+            shopAdapter: $shopAdapter ?? $this->createStub(ShopAdapterInterface::class),
             shopName: $shopName ?? uniqid(),
             greetingRepository: $greetingRepository ?? $this->createStub(GreetingRepositoryInterface::class),
         );

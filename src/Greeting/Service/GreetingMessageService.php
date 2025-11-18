@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\ExamplesModule\Greeting\Service;
 
 use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
-use OxidEsales\Eshop\Core\Language as EshopLanguage;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
 use OxidEsales\ExamplesModule\Extension\Model\User as ExamplesModelUser;
 use OxidEsales\ExamplesModule\Greeting\Exception\UserNotLoggedIn;
@@ -21,7 +21,7 @@ readonly class GreetingMessageService implements GreetingMessageServiceInterface
 {
     public function __construct(
         private GreetingSettingsInterface $greetingSettings,
-        private EshopLanguage $shopLanguage,
+        private ShopAdapterInterface $shopAdapter,
         private ?string $shopName,
         private GreetingRepositoryInterface $greetingRepository,
     ) {
@@ -44,12 +44,12 @@ readonly class GreetingMessageService implements GreetingMessageServiceInterface
     }
 
     /**
-     * @todo: logic should be extracted to separate class that handles calls to shop translation mechanism
+     * @todo: investigate the unclear - it triggers the translation of user greeting but this makes not much sense
+     * @todo: method most likely should be removed.
      */
     private function translate(string $toTranslate): string
     {
-        $result = $toTranslate ? $this->shopLanguage->translateString($toTranslate) : '';
-        return is_array($result) ? (string)array_pop($result) : $result;
+        return $toTranslate ? $this->shopAdapter->translateString($toTranslate) : '';
     }
 
     public function saveGreetingForCurrentUser(string $message): void

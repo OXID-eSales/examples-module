@@ -66,7 +66,7 @@ The repository contains examples of following cases and more:
   * own module admin controller (`oeem_admin_greeting` with own template and own translations)
 
 * [Using Symfony DI](services.yaml)
-  * [Injection of Registry classes with bind](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/src/Greeting/services.yaml#L8)
+  * [Injection of Registry classes with bind](https://github.com/OXID-eSales/examples-module/blob/b-7.4.x/services.yaml#L16)
 
 * [Migrations](migration)
   * extending a shop database table (`oxuser`)

@@ -5,8 +5,6 @@ services:
   _defaults:
     public: false
     autowire: true
-    bind:
-      OxidEsales\Eshop\Core\Language: '@=service("OxidEsales\\ExamplesModule\\Core\\Registry").getLang()'
 
   OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface:
     class: OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettings

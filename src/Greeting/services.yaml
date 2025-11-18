@@ -26,6 +26,9 @@ services:
     class: OxidEsales\ExamplesModule\Greeting\Transput\AdminGreetingRequest
     public: true
 
+  OxidEsales\ExamplesModule\Greeting\Transput\SaveGreetingRequestInterface:
+    class: OxidEsales\ExamplesModule\Greeting\Transput\SaveGreetingRequest
+
   OxidEsales\ExamplesModule\Greeting\Controller\GreetingController:
     public: true
     tags:

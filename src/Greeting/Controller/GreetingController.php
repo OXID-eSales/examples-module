@@ -10,15 +10,14 @@ declare(strict_types=1);
 namespace OxidEsales\ExamplesModule\Greeting\Controller;
 
 use OxidEsales\Eshop\Application\Controller\FrontendController;
-use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
 use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
-use OxidEsales\ExamplesModule\Extension\Model\User as ExamplesModelUser;
 use OxidEsales\ExamplesModule\Extension\Model\UserInterface;
+use OxidEsales\ExamplesModule\Greeting\Exception\UserNotLoggedIn;
+use OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\UserRepositoryInterface;
 use OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageServiceInterface;
 use OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface;
+use OxidEsales\ExamplesModule\Greeting\Transput\SaveGreetingRequestInterface;
 use OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository\TrackerRepositoryInterface;
-
-use function PHPUnit\Framework\isInstanceOf;
 
 /**
  * @extendable-class
@@ -40,6 +39,8 @@ class GreetingController extends FrontendController
         private readonly GreetingSettingsInterface $greetingSettings,
         private readonly TrackerRepositoryInterface $trackerRepository,
         private readonly GreetingMessageServiceInterface $greetingService,
+        private readonly SaveGreetingRequestInterface $saveGreetingRequest,
+        private readonly UserRepositoryInterface $userRepository,
     ) {
         parent::__construct();
     }
@@ -53,15 +54,19 @@ class GreetingController extends FrontendController
     {
         $template = parent::render();
 
-        $user = $this->getUser();
+        try {
+            $activeUser = $this->userRepository->getActiveUser();
+        } catch (UserNotLoggedIn $e) {
+            $activeUser = null;
+        }
 
         if (
-            $user instanceof UserInterface
-            && !empty($user->getId())
+            $activeUser instanceof UserInterface
+            && !empty($activeUser->getId())
             && $this->greetingSettings->isPersonalGreetingMode()
         ) {
-            $greeting = $user->getPersonalGreeting();
-            $tracker = $this->trackerRepository->getTrackerByUserId($user->getId());
+            $greeting = $activeUser->getPersonalGreeting();
+            $tracker = $this->trackerRepository->getTrackerByUserId($activeUser->getId());
             $counter = $tracker->getCount();
         }
 
@@ -79,12 +84,8 @@ class GreetingController extends FrontendController
      */
     public function updateGreeting(): void
     {
-        /** @var EshopModelUser $user */
-        $user = $this->getUser();
-
-        /** @phpstan-ignore-next-line */
-        if (is_a($user, EshopModelUser::class) && $this->greetingSettings->isPersonalGreetingMode()) {
-            $this->greetingService->saveGreeting($user);
+        if ($this->greetingSettings->isPersonalGreetingMode()) {
+            $this->greetingService->saveGreetingForCurrentUser($this->saveGreetingRequest->getGreetingMessage());
         }
     }
 }

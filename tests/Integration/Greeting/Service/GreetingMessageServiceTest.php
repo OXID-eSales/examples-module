@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\ExamplesModule\Tests\Integration\Greeting\Service;
 
 use OxidEsales\Eshop\Core\Language as CoreLanguage;
-use OxidEsales\Eshop\Core\Request as CoreRequest;
 use OxidEsales\ExamplesModule\Extension\Model\User;
+use OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\GreetingRepositoryInterface;
 use OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageService;
 use OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -28,7 +28,6 @@ final class GreetingMessageServiceTest extends TestCase
     {
         $sut = $this->getSut(
             greetingSettings: $greetingSettingsStub = $this->createStub(GreetingSettingsInterface::class),
-            shopRequest: $this->createStub(CoreRequest::class),
             shopLanguage: $langStub = $this->createStub(CoreLanguage::class),
         );
 
@@ -49,15 +48,16 @@ final class GreetingMessageServiceTest extends TestCase
     }
 
     private function getSut(
-        GreetingSettingsInterface $greetingSettings = null,
-        CoreRequest $shopRequest = null,
-        CoreLanguage $shopLanguage = null,
+        ?GreetingSettingsInterface $greetingSettings = null,
+        ?CoreLanguage $shopLanguage = null,
+        ?string $shopName = null,
+        ?GreetingRepositoryInterface $greetingRepository = null,
     ): GreetingMessageService {
         return new GreetingMessageService(
             greetingSettings: $greetingSettings ?? $this->createStub(GreetingSettingsInterface::class),
-            shopRequest: $shopRequest ?? $this->createStub(CoreRequest::class),
             shopLanguage: $shopLanguage ?? $this->createStub(CoreLanguage::class),
-            shopName: 'Test Shop',
+            shopName: $shopName ?? uniqid(),
+            greetingRepository: $greetingRepository ?? $this->createStub(GreetingRepositoryInterface::class),
         );
     }
 }

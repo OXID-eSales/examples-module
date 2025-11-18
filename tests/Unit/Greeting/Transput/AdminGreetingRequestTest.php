@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace Greeting\Transput;
+namespace OxidEsales\ExamplesModule\Tests\Unit\Greeting\Transput;
 
 use OxidEsales\ExamplesModule\Greeting\Transput\AdminGreetingRequest;
 use OxidEsales\Eshop\Core\Request as ShopRequest;

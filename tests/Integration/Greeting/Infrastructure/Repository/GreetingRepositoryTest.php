@@ -12,9 +12,12 @@ namespace OxidEsales\ExamplesModule\Tests\Integration\Greeting\Infrastructure\Re
 use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use OxidEsales\ExamplesModule\Extension\Model\User;
 use OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\GreetingRepository;
 use OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\GreetingRepositoryInterface;
+use OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\UserRepositoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 
 #[CoversClass(GreetingRepository::class)]
 class GreetingRepositoryTest extends IntegrationTestCase
@@ -30,6 +33,33 @@ class GreetingRepositoryTest extends IntegrationTestCase
 
         $this->assertSame(self::TEST_GREETING, $repo->getSavedUserGreeting(self::TEST_USER_ID));
         $this->assertSame('', $repo->getSavedUserGreeting('_notexisting'));
+    }
+
+    #[Test]
+    public function activeUserGreetingCanBeUpdated(): void
+    {
+        $this->prepareTestData();
+
+        $activeUser = oxNew(User::class);
+        $activeUser->load(self::TEST_USER_ID);
+
+        $userRepositoryStub = $this->createConfiguredStub(UserRepositoryInterface::class, [
+            'getActiveUser' => $activeUser
+        ]);
+
+        $sut = new GreetingRepository(
+            queryBuilderFactory: $this->get(QueryBuilderFactoryInterface::class),
+            userRepository: $userRepositoryStub,
+        );
+
+        $greetingExample = uniqid('greeting_');
+        $sut->saveGreetingForActiveUser($greetingExample);
+
+        // check that in-memory user object was updated
+        $this->assertSame($greetingExample, $activeUser->getPersonalGreeting());
+
+        // check that greeting was persisted
+        $this->assertSame($greetingExample, $sut->getSavedUserGreeting($activeUser->getId()));
     }
 
     private function prepareTestData(): void

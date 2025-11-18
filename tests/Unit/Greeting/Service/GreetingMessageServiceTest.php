@@ -10,11 +10,13 @@ declare(strict_types=1);
 namespace OxidEsales\ExamplesModule\Tests\Unit\Greeting\Service;
 
 use OxidEsales\Eshop\Core\Language as CoreLanguage;
-use OxidEsales\Eshop\Core\Request as CoreRequest;
 use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
+use OxidEsales\ExamplesModule\Greeting\Exception\UserNotLoggedIn;
+use OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\GreetingRepositoryInterface;
 use OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageService;
 use OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(GreetingMessageService::class)]
@@ -84,17 +86,51 @@ final class GreetingMessageServiceTest extends TestCase
         $this->assertSame('', $service->getGreeting(null));
     }
 
+    #[Test]
+    public function greetingSaveTriggersGreetingSaveInRepository(): void
+    {
+        $exampleGreeting = uniqid('greeting_');
+
+        $greetingRepositorySpy = $this->createMock(GreetingRepositoryInterface::class);
+        $greetingRepositorySpy->expects($this->once())
+            ->method('saveGreetingForActiveUser')
+            ->with($exampleGreeting);
+
+        $sut = $this->getSut(
+            greetingRepository: $greetingRepositorySpy,
+        );
+
+        $sut->saveGreetingForCurrentUser($exampleGreeting);
+    }
+
+    #[Test]
+    public function greetingSaveInRepositoryExplosionCatched(): void
+    {
+        $exampleGreeting = uniqid('greeting_');
+
+        $greetingRepositorySpy = $this->createMock(GreetingRepositoryInterface::class);
+        $greetingRepositorySpy->expects($this->once())
+            ->method('saveGreetingForActiveUser')
+            ->willThrowException(new UserNotLoggedIn());
+
+        $sut = $this->getSut(
+            greetingRepository: $greetingRepositorySpy,
+        );
+
+        $sut->saveGreetingForCurrentUser($exampleGreeting);
+    }
+
     private function getSut(
         ?GreetingSettingsInterface $greetingSettings = null,
-        ?CoreRequest $shopRequest = null,
         ?CoreLanguage $shopLanguage = null,
         ?string $shopName = null,
+        ?GreetingRepositoryInterface $greetingRepository = null,
     ): GreetingMessageService {
         return new GreetingMessageService(
             greetingSettings: $greetingSettings ?? $this->createStub(GreetingSettingsInterface::class),
-            shopRequest: $shopRequest ?? $this->createStub(CoreRequest::class),
             shopLanguage: $shopLanguage ?? $this->createStub(CoreLanguage::class),
             shopName: $shopName ?? uniqid(),
+            greetingRepository: $greetingRepository ?? $this->createStub(GreetingRepositoryInterface::class),
         );
     }
 }

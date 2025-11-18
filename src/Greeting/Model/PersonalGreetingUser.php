@@ -19,13 +19,4 @@ trait PersonalGreetingUser
     {
         return (string)$this->getRawFieldData(GreetingRepository::OEEM_USER_GREETING_FIELD);
     }
-
-    //NOTE: we only assign the value to the model.
-    //Calling save() method will then store it in the database
-    public function setPersonalGreeting(string $personalGreeting): void
-    {
-        $this->assign([
-            GreetingRepository::OEEM_USER_GREETING_FIELD => $personalGreeting,
-        ]);
-    }
 }

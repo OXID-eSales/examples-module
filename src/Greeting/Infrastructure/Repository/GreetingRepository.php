@@ -17,6 +17,7 @@ readonly class GreetingRepository implements GreetingRepositoryInterface
 
     public function __construct(
         private QueryBuilderFactoryInterface $queryBuilderFactory,
+        private UserRepositoryInterface $userRepository,
     ) {
     }
 
@@ -40,5 +41,16 @@ readonly class GreetingRepository implements GreetingRepositoryInterface
         }
 
         return $value ?? '';
+    }
+
+    public function saveGreetingForActiveUser(string $greeting): void
+    {
+        $user = $this->userRepository->getActiveUser();
+        $user->assign([
+            self::OEEM_USER_GREETING_FIELD => $greeting,
+        ]);
+
+        //todo: save via user repository?
+        $user->save();
     }
 }

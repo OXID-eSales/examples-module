@@ -11,18 +11,19 @@ namespace OxidEsales\ExamplesModule\Greeting\Service;
 
 use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
 use OxidEsales\Eshop\Core\Language as EshopLanguage;
-use OxidEsales\Eshop\Core\Request as EshopRequest;
 use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
 use OxidEsales\ExamplesModule\Extension\Model\User as ExamplesModelUser;
+use OxidEsales\ExamplesModule\Greeting\Exception\UserNotLoggedIn;
+use OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\GreetingRepositoryInterface;
 use OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface;
 
 readonly class GreetingMessageService implements GreetingMessageServiceInterface
 {
     public function __construct(
         private GreetingSettingsInterface $greetingSettings,
-        private EshopRequest $shopRequest,
         private EshopLanguage $shopLanguage,
         private ?string $shopName,
+        private GreetingRepositoryInterface $greetingRepository,
     ) {
     }
 
@@ -51,27 +52,13 @@ readonly class GreetingMessageService implements GreetingMessageServiceInterface
         return is_array($result) ? (string)array_pop($result) : $result;
     }
 
-    /**
-     * @todo: why do we save the user movel here, we have repository :/ extract there.
-     * @todo: type hinting is too general. You dont have setPersonalGreeting in this general User.
-     */
-    public function saveGreeting(EshopModelUser $user): bool
+    public function saveGreetingForCurrentUser(string $message): void
     {
-        /** @var ExamplesModelUser $user */
-        $user->setPersonalGreeting($this->getRequestOeemGreeting());
-
-        return (bool)$user->save();
-    }
-
-    /**
-     * @todo: missplaced responsibility, extract to some Request class
-     */
-    private function getRequestOeemGreeting(): string
-    {
-        $input = (string)$this->shopRequest->getRequestParameter(ModuleCore::OEEM_GREETING_TEMPLATE_VARNAME);
-
-        //in real life add some input validation
-        return substr($input, 0, 253);
+        try {
+            $this->greetingRepository->saveGreetingForActiveUser($message);
+        } catch (UserNotLoggedIn $e) {
+            // log exception if needed
+        }
     }
 
     /**

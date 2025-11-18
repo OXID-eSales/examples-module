@@ -17,5 +17,5 @@ interface GreetingMessageServiceInterface
 
     public function getGreeting(?EshopModelUser $user = null): string;
 
-    public function saveGreeting(EshopModelUser $user): bool;
+    public function saveGreetingForCurrentUser(string $message): void;
 }

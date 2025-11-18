@@ -9,15 +9,17 @@ declare(strict_types=1);
 
 namespace OxidEsales\ExamplesModule\Greeting\Transput;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Request\RequestInterface;
+
 class AdminGreetingRequest implements AdminGreetingRequestInterface
 {
     public function __construct(
-        protected \OxidEsales\Eshop\Core\Request $request
+        protected RequestInterface $request
     ) {
     }
 
     public function getEditObjectId(): string
     {
-        return (string) $this->request->getRequestParameter('oxid');
+        return (string) $this->request->get('oxid');
     }
 }

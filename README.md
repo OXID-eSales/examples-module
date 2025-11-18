@@ -53,6 +53,33 @@ Story:
 
 Install and try out the module with simple examples to most common development questions.
 
+We would like to encourage following ideas and principles in module development:
+
+* Separate contexts into their own folders (e.g. Greeting, Tracker, ProductVote)
+  * Basics of DDD in module development
+  * Controllers are our use cases and entry points
+  * Services contain business logic
+  * Infrastructure contains shop framework/database related code
+* Layered architecture within those contexts (e.g. Infrastructure, Service, Controller, Subscriber)
+  * Changing the implementation should not affect other layers
+  * Interfaces are the contracts between layers
+  * Data Transfer Objects (DTOs) used for data exchange between layers
+* Hexagonal architecture ideas
+  * Ports(interfaces here) and adapters(implementations here)
+  * Adapters depend on ports, not the other way round
+  * Application core is independent of external systems (as much as possible in the current context)
+* Dependency injection
+  * Allows awesome testability and flexibility
+  * Avoids usage of global state (Registry, oxNew, static calls)
+* SOLID principles
+  * SRP and DIP in focus
+* Clean architecture ideas
+  * Dependencies point inwards
+  * Business logic is independent of frameworks, databases, UIs
+* Avoid the extension of shop core classes as much as possible
+  * Prefer event listeners, DI service decoration/replacement
+  * If extension is necessary, follow minimal invasion principle
+
 ## Examples
 
 The repository contains examples of following cases and more:

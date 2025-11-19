@@ -64,6 +64,8 @@ We would like to encourage following ideas and principles in module development:
   * Changing the implementation should not affect other layers
   * Interfaces are the contracts between layers
   * Data Transfer Objects (DTOs) used for data exchange between layers
+  * Factories are responsible for creating DTOs (e.g. from database rows)
+    * Centralizes mapping logic and makes it reusable and testable
 * Hexagonal architecture ideas
   * Ports(interfaces here) and adapters(implementations here)
   * Adapters depend on ports, not the other way round
@@ -71,6 +73,7 @@ We would like to encourage following ideas and principles in module development:
 * Dependency injection
   * Allows awesome testability and flexibility
   * Avoids usage of global state (Registry, oxNew, static calls)
+    * Use factories to create model objects instead of oxNew directly
 * SOLID principles
   * SRP and DIP in focus
 * Clean architecture ideas
@@ -79,6 +82,7 @@ We would like to encourage following ideas and principles in module development:
 * Avoid the extension of shop core classes as much as possible
   * Prefer event listeners, DI service decoration/replacement
   * If extension is necessary, follow minimal invasion principle
+* Tests are a good example of Unit usage
 
 ## Examples
 

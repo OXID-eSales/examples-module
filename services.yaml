@@ -6,7 +6,6 @@ imports:
   - { resource: src/Greeting/services.yaml }
   - { resource: src/Logging/services.yaml }
   - { resource: src/ProductVote/services.yaml }
-  - { resource: src/Settings/services.yaml }
   - { resource: src/Tracker/services.yaml }
 
 services:
@@ -14,6 +13,10 @@ services:
   _defaults:
     public: false
     autowire: true
+#    This is how you can bind shop registry services to your services
+#    bind:
+#      OxidEsales\Eshop\Core\Language: '@=service("OxidEsales\\ExamplesModule\\Core\\Registry").getLang()'
+#      OxidEsales\Eshop\Core\Session: '@=service("OxidEsales\\ExamplesModule\\Core\\Registry").getSession()'
 
   OxidEsales\ExamplesModule\Core\Registry:
     class: OxidEsales\Eshop\Core\Registry

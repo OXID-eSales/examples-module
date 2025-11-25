@@ -11,7 +11,6 @@ namespace OxidEsales\ExamplesModule\Extension\Model;
 
 use OxidEsales\Eshop\Core\Model\BaseModel;
 use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUser;
-use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUserInterface;
 
 /**
  * @eshopExtension
@@ -28,4 +27,9 @@ use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUserInterface;
 class User extends User_parent implements UserInterface
 {
     use PersonalGreetingUser;
+
+    public function getId(): ?string
+    {
+        return parent::getId();
+    }
 }

@@ -11,7 +11,7 @@ namespace OxidEsales\ExamplesModule\Extension\Controller;
 
 use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
 use OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageServiceInterface;
-use OxidEsales\ExamplesModule\Settings\Service\ModuleSettingsServiceInterface;
+use OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface;
 
 /**
  * @eshopExtension
@@ -55,9 +55,9 @@ class StartController extends StartController_parent
 
     public function canUpdateOeemGreeting(): bool
     {
-        $moduleSettings = $this->getService(ModuleSettingsServiceInterface::class);
+        $greetingSettings = $this->getService(GreetingSettingsInterface::class);
 
         /** @phpstan-ignore-next-line */
-        return is_a($this->getUser(), EshopModelUser::class) && $moduleSettings->isPersonalGreetingMode();
+        return is_a($this->getUser(), EshopModelUser::class) && $greetingSettings->isPersonalGreetingMode();
     }
 }

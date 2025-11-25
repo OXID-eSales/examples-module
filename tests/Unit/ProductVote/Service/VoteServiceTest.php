@@ -15,10 +15,12 @@ use OxidEsales\ExamplesModule\ProductVote\Dao\ProductVoteDaoInterface;
 use OxidEsales\ExamplesModule\ProductVote\Dao\VoteResultDaoInterface;
 use OxidEsales\ExamplesModule\ProductVote\DataObject\ProductVote;
 use OxidEsales\ExamplesModule\ProductVote\DataObject\VoteResult;
+use OxidEsales\ExamplesModule\ProductVote\Event\ProductVotedEventInterface;
 use OxidEsales\ExamplesModule\ProductVote\Service\VoteService;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 #[CoversClass(VoteService::class)]
 final class VoteServiceTest extends TestCase
@@ -61,6 +63,30 @@ final class VoteServiceTest extends TestCase
     }
 
     #[Test]
+    public function setProductVoteDispatchesProductVotedEvent(): void
+    {
+        $vote = (bool)rand(0, 1);
+
+        $eventDispatcherSpy = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcherSpy->expects($this->once())
+            ->method('dispatch')
+            ->with(
+                $this->callback(function ($event) use ($vote) {
+                    return $event instanceof ProductVotedEventInterface
+                        && $event->getProductVote()->getProductId() === self::TEST_PRODUCT_ID
+                        && $event->getProductVote()->getUserId() === self::TEST_USER_ID
+                        && $event->getProductVote()->isVoteUp() === $vote;
+                })
+            );
+
+        $sut = $this->getSut(
+            eventDispatcher: $eventDispatcherSpy
+        );
+
+        $sut->setProductVote($this->productStub, $this->userStub, $vote);
+    }
+
+    #[Test]
     public function resetProductVoteCallsCorrespondingDaoMethod(): void
     {
         $productVoteDaoSpy = $this->createMock(ProductVoteDaoInterface::class);
@@ -87,10 +113,12 @@ final class VoteServiceTest extends TestCase
     private function getSut(
         ?ProductVoteDaoInterface $productVoteDao = null,
         ?VoteResultDaoInterface $voteResultDao = null,
+        ?EventDispatcherInterface $eventDispatcher = null,
     ): VoteService {
         return new VoteService(
             productVoteDao: $productVoteDao ?? $this->createStub(ProductVoteDaoInterface::class),
             voteResultDao: $voteResultDao ?? $this->createStub(VoteResultDaoInterface::class),
+            eventDispatcher: $eventDispatcher ?? $this->createStub(EventDispatcherInterface::class),
         );
     }
 

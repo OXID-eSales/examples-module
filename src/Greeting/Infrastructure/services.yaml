@@ -1,0 +1,13 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\GreetingRepositoryInterface:
+    class: OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\GreetingRepository
+
+  OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\UserRepositoryInterface:
+    class: OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\UserRepository
+
+  OxidEsales\ExamplesModule\Greeting\Infrastructure\Factory\UserModelFactoryInterface:
+    class: OxidEsales\ExamplesModule\Greeting\Infrastructure\Factory\UserModelFactory

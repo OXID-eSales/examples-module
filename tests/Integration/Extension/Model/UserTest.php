@@ -10,81 +10,31 @@ declare(strict_types=1);
 namespace OxidEsales\ExamplesModule\Tests\Integration\Extension\Model;
 
 use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
-use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\ExamplesModule\Extension\Model\User;
+use OxidEsales\ExamplesModule\Extension\Model\UserInterface;
+use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUserInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 
 #[CoversClass(User::class)]
 final class UserTest extends IntegrationTestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->cleanUpUsers();
-    }
-
-    public function tearDown(): void
-    {
-        Registry::getSession()->setUser(null);
-        parent::tearDown();
-    }
-
-    private function cleanUpUsers()
-    {
-        $queryBuilder = $this->get(QueryBuilderFactoryInterface::class)->create();
-        $queryBuilder->delete('oxuser');
-        $queryBuilder->execute();
-    }
-
-    public function testGetPersonalGreetingNotSet(): void
+    public function testImplementsInterfaces(): void
     {
         $user = oxNew(EshopModelUser::class);
 
-        $this->assertEmpty($user->getPersonalGreeting());
+        self::assertInstanceOf(UserInterface::class, $user);
+        self::assertInstanceOf(PersonalGreetingUserInterface::class, $user);
     }
 
-    public function testGetPersonalGreeting(): void
+    #[Test]
+    public function getIdWorksAsIntended(): void
     {
         $user = oxNew(EshopModelUser::class);
-        $user->setPersonalGreeting('some information about me');
+        $this->assertNull($user->getId());
 
-        $this->assertSame('some information about me', $user->getPersonalGreeting());
-    }
-
-    public function testNewFieldNotAutomaticallySavedToDatabase(): void
-    {
-        $user = oxNew(EshopModelUser::class);
-        $user->setId('_testuser');
-        $user->save();
-        $user->setPersonalGreeting('some information about me');
-        unset($user); //this object was not saved after last assign
-
-        $user = oxNew(EshopModelUser::class);
-        $user->load('_testuser');
-        $this->assertEmpty($user->getPersonalGreeting());
-        unset($user);
-    }
-
-    public function testNewFieldSavedToDatabase(): void
-    {
-        $user = oxNew(EshopModelUser::class);
-        $user->setId('_newuser');
-        $user->save();
-        $user->setPersonalGreeting('some information about me');
-        $user->assign([
-            'oxusername' => null,
-            'oxpassword' => null,
-            'oxregister' => null,
-        ]);
-        $user->save();
-        unset($user);
-
-        $user = oxNew(EshopModelUser::class);
-        $user->load('_newuser');
-        $this->assertTrue($user->isLoaded());
-        $this->assertSame('some information about me', $user->getPersonalGreeting());
+        $user->setId($randomId = uniqid());
+        $this->assertSame($randomId, $user->getId());
     }
 }

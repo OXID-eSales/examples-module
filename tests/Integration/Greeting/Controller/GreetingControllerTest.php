@@ -12,14 +12,16 @@ namespace OxidEsales\ExamplesModule\Tests\Integration\Greeting\Controller;
 use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
-use OxidEsales\ExamplesModule\Extension\Model\User as ModuleUser;
 use OxidEsales\ExamplesModule\Greeting\Controller\GreetingController;
+use OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\UserRepositoryInterface;
 use OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageServiceInterface;
-use OxidEsales\ExamplesModule\Settings\Service\ModuleSettingsServiceInterface;
+use OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface;
+use OxidEsales\ExamplesModule\Greeting\Transput\SaveGreetingRequestInterface;
 use OxidEsales\ExamplesModule\Tests\Integration\IntegrationTestCase;
+use OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository\TrackerRepositoryInterface;
 use OxidEsales\ExamplesModule\Tracker\Model\TrackerModel;
-use OxidEsales\ExamplesModule\Tracker\Repository\TrackerRepositoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * We want to test controller behavior going 'full way'.
@@ -28,6 +30,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
  * @todo: why no mocks? Unnecessary coupling. Whole system functionality should be checked with Acceptance test instead.
  * @todo: rework this fully to test only controller logic
  */
+
 #[CoversClass(GreetingController::class)]
 final class GreetingControllerTest extends IntegrationTestCase
 {
@@ -51,57 +54,47 @@ final class GreetingControllerTest extends IntegrationTestCase
         parent::tearDown();
     }
 
-    /**
-     * @dataProvider providerOeemGreeting
-     */
-    public function testUpdateGreeting(bool $hasUser, string $mode, string $expected, int $count): void
+    #[Test]
+    public function testUpdateGreetingWithPersonalModeOn(): void
     {
-        $moduleSettingsServiceStub = $this->createStub(ModuleSettingsServiceInterface::class);
-        $moduleSettingsServiceStub
-            ->method('isPersonalGreetingMode')
-            ->willReturn($mode === ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL);
+        $greetingSettingsStub = $this->createConfiguredStub(GreetingSettingsInterface::class, [
+            'isPersonalGreetingMode' => true,
+        ]);
 
-        $trackerStub = $this->createMock(TrackerModel::class);
-        $trackerStub->method('getCount')->willReturn($count);
+        $saveGreetingRequestStub = $this->createConfiguredStub(SaveGreetingRequestInterface::class, [
+            'getGreetingMessage' => $exampleMessage = uniqid('message_'),
+        ]);
 
-        $trackerRepositoryMock = $this->createStub(TrackerRepositoryInterface::class);
-        $trackerRepositoryMock
-            ->method('getTrackerByUserId')
-            ->with(self::TEST_USER_ID)
-            ->willReturn($trackerStub);
-
-        $greetingServiceMock = $this->createMock(GreetingMessageServiceInterface::class);
-        if ($hasUser && $mode === ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL) {
-            $greetingServiceMock
-                ->method('saveGreeting')
-                ->willReturnCallback(function (EshopModelUser $user) use ($expected): bool {
-                    $user->assign(['oeemgreeting' => $expected]);
-                    $user->save();
-                    return true;
-                });
-        } else {
-            $greetingServiceMock->expects($this->never())->method('saveGreeting');
-        }
+        $greetingServiceSpy = $this->createMock(GreetingMessageServiceInterface::class);
+        $greetingServiceSpy->expects($this->once())
+            ->method('saveGreetingForCurrentUser')
+            ->with($exampleMessage);
 
         $sut = $this->getSut(
-            moduleSettings: $moduleSettingsServiceStub,
-            trackerRepository: $trackerRepositoryMock,
-            greetingMessageService: $greetingServiceMock,
+            greetingSettings: $greetingSettingsStub,
+            greetingMessageService: $greetingServiceSpy,
+            saveGreetingRequest: $saveGreetingRequestStub,
         );
 
-        if ($hasUser) {
-            $sut->setUser($this->createTestUser());
-        }
+        $sut->updateGreeting();
+    }
+
+    #[Test]
+    public function testUpdateGreetingWithPersonalModeOff(): void
+    {
+        $greetingSettingsStub = $this->createConfiguredStub(GreetingSettingsInterface::class, [
+            'isPersonalGreetingMode' => false,
+        ]);
+
+        $greetingServiceSpy = $this->createMock(GreetingMessageServiceInterface::class);
+        $greetingServiceSpy->expects($this->never())->method('saveGreetingForCurrentUser');
+
+        $sut = $this->getSut(
+            greetingSettings: $greetingSettingsStub,
+            greetingMessageService: $greetingServiceSpy,
+        );
 
         $sut->updateGreeting();
-
-        /** @var ModuleUser $user */
-        $user = $this->loadTestUser();
-        $this->assertSame($expected, $user->getPersonalGreeting());
-
-        $tracker = $this->get(TrackerRepositoryInterface::class)
-            ->getTrackerByUserId(self::TEST_USER_ID);
-        $this->assertSame($count, $tracker->getCount());
     }
 
     /**
@@ -111,10 +104,10 @@ final class GreetingControllerTest extends IntegrationTestCase
     {
         $this->createTestTracker($expected['counter']);
 
-        $moduleSettingsServiceStub = $this->createStub(ModuleSettingsServiceInterface::class);
-        $moduleSettingsServiceStub
+        $greetingSettingsStub = $this->createStub(GreetingSettingsInterface::class);
+        $greetingSettingsStub
             ->method('isPersonalGreetingMode')
-            ->willReturn($mode === ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL);
+            ->willReturn($mode === GreetingSettingsInterface::GREETING_MODE_PERSONAL);
 
         $trackerStub = $this->createMock(TrackerModel::class);
         $trackerStub->method('getCount')->willReturn($expected['counter']);
@@ -125,14 +118,16 @@ final class GreetingControllerTest extends IntegrationTestCase
             ->with(self::TEST_USER_ID)
             ->willReturn($trackerStub);
 
-        $sut = $this->getSut(
-            moduleSettings: $moduleSettingsServiceStub,
-            trackerRepository: $this->get(TrackerRepositoryInterface::class),
-        );
-
+        $userRepositoryStub = $this->createStub(UserRepositoryInterface::class);
         if ($hasUser) {
-            $sut->setUser($this->createTestUser());
+            $userRepositoryStub->method('getActiveUser')->willReturn($this->createTestUser());
         }
+
+        $sut = $this->getSut(
+            greetingSettings: $greetingSettingsStub,
+            trackerRepository: $this->get(TrackerRepositoryInterface::class),
+            userRepository: $userRepositoryStub,
+        );
 
         $this->assertSame('@oe_examples_module/templates/greetingtemplate', $sut->render());
 
@@ -141,42 +136,12 @@ final class GreetingControllerTest extends IntegrationTestCase
         $this->assertSame($expected['counter'], $viewData[ModuleCore::OEEM_COUNTER_TEMPLATE_VARNAME]);
     }
 
-    public static function providerOeemGreeting(): array
-    {
-        return [
-            'without_user_generic' => [
-                'hasUser' => false,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_GENERIC,
-                'expected' => '',
-                'count' => 0,
-            ],
-            'without_user_personal' => [
-                'hasUser' => false,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL,
-                'expected' => '',
-                'count' => 0,
-            ],
-            'with_user_generic' => [
-                'hasUser' => true,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_GENERIC,
-                'expected' => self::TEST_GREETING,
-                'count' => 0,
-            ],
-            'with_user_personal' => [
-                'hasUser' => true,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL,
-                'expected' => self::TEST_GREETING_UPDATED,
-                'count' => 1,
-            ],
-        ];
-    }
-
     public static function providerRender(): array
     {
         return [
             'without_user_generic' => [
                 'hasUser' => false,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_GENERIC,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_GENERIC,
                 'expected' => [
                     'greeting' => '',
                     'counter' => 0,
@@ -184,7 +149,7 @@ final class GreetingControllerTest extends IntegrationTestCase
             ],
             'without_user_personal' => [
                 'hasUser' => false,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_PERSONAL,
                 'expected' => [
                     'greeting' => '',
                     'counter' => 0,
@@ -192,7 +157,7 @@ final class GreetingControllerTest extends IntegrationTestCase
             ],
             'with_user_generic' => [
                 'hasUser' => true,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_GENERIC,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_GENERIC,
                 'expected' => [
                     'greeting' => '',
                     'counter' => 0,
@@ -200,7 +165,7 @@ final class GreetingControllerTest extends IntegrationTestCase
             ],
             'with_user_personal' => [
                 'hasUser' => true,
-                'mode' => ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL,
+                'mode' => GreetingSettingsInterface::GREETING_MODE_PERSONAL,
                 'expected' => [
                     'greeting' => self::TEST_GREETING,
                     'counter' => 67,
@@ -236,25 +201,25 @@ final class GreetingControllerTest extends IntegrationTestCase
         $tracker->save();
     }
 
-    private function loadTestUser(): EshopModelUser
-    {
-        $user = oxNew(EshopModelUser::class);
-        $user->load(self::TEST_USER_ID);
-        return $user;
-    }
-
     private function getSut(
-        ?ModuleSettingsServiceInterface $moduleSettings = null,
+        ?GreetingSettingsInterface $greetingSettings = null,
         ?TrackerRepositoryInterface $trackerRepository = null,
         ?GreetingMessageServiceInterface $greetingMessageService = null,
+        ?SaveGreetingRequestInterface $saveGreetingRequest = null,
+        ?UserRepositoryInterface $userRepository = null,
     ): GreetingController {
-        $moduleSettings ??= $this->createStub(ModuleSettingsServiceInterface::class);
+        $greetingSettings ??= $this->createStub(GreetingSettingsInterface::class);
         $trackerRepository ??= $this->createStub(TrackerRepositoryInterface::class);
         $greetingMessageService ??= $this->createStub(GreetingMessageServiceInterface::class);
+        $saveGreetingRequest ??= $this->createStub(SaveGreetingRequestInterface::class);
+        $userRepository ??= $this->createStub(UserRepositoryInterface::class);
+
         return new GreetingController(
-            moduleSettings: $moduleSettings,
+            greetingSettings: $greetingSettings,
             trackerRepository: $trackerRepository,
             greetingService: $greetingMessageService,
+            saveGreetingRequest: $saveGreetingRequest,
+            userRepository: $userRepository,
         );
     }
 }

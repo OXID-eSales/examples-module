@@ -9,11 +9,11 @@ declare(strict_types=1);
 
 namespace OxidEsales\ExamplesModule\Tests\Integration\Greeting\Service;
 
-use OxidEsales\Eshop\Core\Language as CoreLanguage;
-use OxidEsales\Eshop\Core\Request as CoreRequest;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\ExamplesModule\Extension\Model\User;
+use OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\GreetingRepositoryInterface;
 use OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageService;
-use OxidEsales\ExamplesModule\Settings\Service\ModuleSettingsServiceInterface;
+use OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -27,13 +27,12 @@ final class GreetingMessageServiceTest extends TestCase
     public function testGenericGreetingWithUserForPersonalMode(): void
     {
         $sut = $this->getSut(
-            moduleSettings: $moduleSettingsStub = $this->createMock(ModuleSettingsServiceInterface::class),
-            shopRequest: $this->createStub(CoreRequest::class),
-            shopLanguage: $langStub = $this->createStub(CoreLanguage::class),
+            greetingSettings: $greetingSettingsStub = $this->createStub(GreetingSettingsInterface::class),
+            shopAdapter: $shopAdapterStub = $this->createStub(ShopAdapterInterface::class),
         );
 
-        $moduleSettingsStub->method('getGreetingMode')
-            ->willReturn(ModuleSettingsServiceInterface::GREETING_MODE_PERSONAL);
+        $greetingSettingsStub->method('getGreetingMode')
+            ->willReturn(GreetingSettingsInterface::GREETING_MODE_PERSONAL);
 
         $personalGreeting = 'someUserPersonalGreeting';
         /** @var User $userStub */
@@ -41,7 +40,7 @@ final class GreetingMessageServiceTest extends TestCase
         $userStub->method('getPersonalGreeting')->willReturn($personalGreeting);
 
         $expectedTranslation = 'translatedGreeting';
-        $langStub->method('translateString')
+        $shopAdapterStub->method('translateString')
             ->with($personalGreeting)
             ->willReturn($expectedTranslation);
 
@@ -49,15 +48,16 @@ final class GreetingMessageServiceTest extends TestCase
     }
 
     private function getSut(
-        ModuleSettingsServiceInterface $moduleSettings = null,
-        CoreRequest $shopRequest = null,
-        CoreLanguage $shopLanguage = null,
+        ?GreetingSettingsInterface $greetingSettings = null,
+        ?ShopAdapterInterface $shopAdapter = null,
+        ?string $shopName = null,
+        ?GreetingRepositoryInterface $greetingRepository = null,
     ): GreetingMessageService {
         return new GreetingMessageService(
-            moduleSettings: $moduleSettings ?? $this->createStub(ModuleSettingsServiceInterface::class),
-            shopRequest: $shopRequest ?? $this->createStub(CoreRequest::class),
-            shopLanguage: $shopLanguage ?? $this->createStub(CoreLanguage::class),
-            shopName: 'Test Shop',
+            greetingSettings: $greetingSettings ?? $this->createStub(GreetingSettingsInterface::class),
+            shopAdapter: $shopAdapter ?? $this->createStub(ShopAdapterInterface::class),
+            shopName: $shopName ?? uniqid(),
+            greetingRepository: $greetingRepository ?? $this->createStub(GreetingRepositoryInterface::class),
         );
     }
 }

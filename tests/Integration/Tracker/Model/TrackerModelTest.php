@@ -11,6 +11,7 @@ namespace OxidEsales\ExamplesModule\Tests\Integration\Tracker\Model;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use OxidEsales\ExamplesModule\Tracker\Model\TrackerInterface;
 use OxidEsales\ExamplesModule\Tracker\Model\TrackerModel;
 use PHPUnit\Framework\Attributes\CoversClass;
 
@@ -31,6 +32,12 @@ final class TrackerModelTest extends IntegrationTestCase
         $queryBuilder = $this->get(QueryBuilderFactoryInterface::class)->create();
         $queryBuilder->delete('oeem_tracker');
         $queryBuilder->execute();
+    }
+
+    public function testIsCorrectInterface(): void
+    {
+        $sut = oxNew(TrackerModel::class);
+        $this->assertInstanceOf(TrackerInterface::class, $sut);
     }
 
     public function testGetCount(): void

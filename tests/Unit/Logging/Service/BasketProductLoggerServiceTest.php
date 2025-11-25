@@ -7,10 +7,10 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tests\Logging\Service;
+namespace OxidEsales\ExamplesModule\Tests\Unit\Logging\Service;
 
 use OxidEsales\ExamplesModule\Logging\Service\BasketProductLoggerService;
-use OxidEsales\ExamplesModule\Settings\Service\ModuleSettingsServiceInterface;
+use OxidEsales\ExamplesModule\Logging\Settings\LoggingSettingsInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface as PsrLoggerInterface;
@@ -29,27 +29,45 @@ final class BasketProductLoggerServiceTest extends TestCase
                 sprintf(BasketProductLoggerService::MESSAGE, self::TEST_PRODUCT_ID)
             );
 
-        $moduleSettings = $this->createMock(ModuleSettingsServiceInterface::class);
-        $moduleSettings->expects($this->once())
-            ->method('isLoggingEnabled')
-            ->willReturn(true);
+        $loggingSettingsStub = $this->createStub(LoggingSettingsInterface::class);
+        $loggingSettingsStub->method('isLoggingEnabled')->willReturn(true);
 
-        $basketItemLogger = new BasketProductLoggerService($psrLoggerMock, $moduleSettings);
-        $basketItemLogger->log(self::TEST_PRODUCT_ID);
+        $sut = $this->getSut(
+            logger: $psrLoggerMock,
+            loggingSettings: $loggingSettingsStub
+        );
+
+        $sut->log(self::TEST_PRODUCT_ID);
     }
 
-    public function testLogWhenDisabled()
+    public function testLogWhenDisabled(): void
     {
         $psrLoggerMock = $this->createMock(PsrLoggerInterface::class);
         $psrLoggerMock->expects($this->never())
             ->method('info');
 
-        $moduleSettings = $this->createMock(ModuleSettingsServiceInterface::class);
-        $moduleSettings->expects($this->once())
-            ->method('isLoggingEnabled')
-            ->willReturn(false);
+        $loggingSettingsStub = $this->createConfiguredStub(LoggingSettingsInterface::class, [
+            'isLoggingEnabled' => false,
+        ]);
 
-        $basketItemLogger = new BasketProductLoggerService($psrLoggerMock, $moduleSettings);
-        $basketItemLogger->log(self::TEST_PRODUCT_ID);
+        $sut = $this->getSut(
+            logger: $psrLoggerMock,
+            loggingSettings: $loggingSettingsStub
+        );
+
+        $sut->log(self::TEST_PRODUCT_ID);
+    }
+
+    private function getSut(
+        ?PsrLoggerInterface $logger = null,
+        ?LoggingSettingsInterface $loggingSettings = null,
+    ): BasketProductLoggerService {
+        $logger ??= $this->createStub(PsrLoggerInterface::class);
+        $loggingSettings ??= $this->createStub(LoggingSettingsInterface::class);
+
+        return new BasketProductLoggerService(
+            logger: $logger,
+            loggingSettings: $loggingSettings
+        );
     }
 }

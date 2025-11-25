@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\ExamplesModule\Logging\Service;
 
-use OxidEsales\ExamplesModule\Settings\Service\ModuleSettingsServiceInterface;
+use OxidEsales\ExamplesModule\Logging\Settings\LoggingSettingsInterface;
 use Psr\Log\LoggerInterface as PsrLoggerInterface;
 
 /**
@@ -21,13 +21,13 @@ readonly class BasketProductLoggerService implements BasketProductLoggerServiceI
 
     public function __construct(
         private PsrLoggerInterface $logger,
-        private ModuleSettingsServiceInterface $moduleSettingService,
+        private LoggingSettingsInterface $loggingSettings,
     ) {
     }
 
     public function log(string $productID): void
     {
-        if ($this->moduleSettingService->isLoggingEnabled()) {
+        if ($this->loggingSettings->isLoggingEnabled()) {
             $message = sprintf(self::MESSAGE, $productID);
             $this->logger->info($message);
         }

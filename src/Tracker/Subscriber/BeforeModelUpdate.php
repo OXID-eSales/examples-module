@@ -11,9 +11,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\ExamplesModule\Tracker\Subscriber;
 
-use OxidEsales\Eshop\Application\Model\User as EshopModelUser;
+use OxidEsales\Eshop\Core\Model\BaseModel;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeModelUpdateEvent;
-use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUserInterface;
+use OxidEsales\ExamplesModule\Extension\Model\UserInterface;
 use OxidEsales\ExamplesModule\Tracker\Service\TrackerServiceInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -31,8 +31,8 @@ readonly class BeforeModelUpdate implements EventSubscriberInterface
     {
         $payload = $event->getModel();
 
-        if (is_a($payload, PersonalGreetingUserInterface::class)) {
-            /** @var EshopModelUser&PersonalGreetingUserInterface $payload */
+        if (is_a($payload, UserInterface::class)) {
+            /** @var BaseModel&UserInterface $payload */
             $this->trackerService->updateTracker($payload);
         }
 

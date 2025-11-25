@@ -1,13 +1,13 @@
+imports:
+  - { resource: Infrastructure/services.yaml }
+
 services:
   _defaults:
     public: false
     autowire: true
-    bind:
-      OxidEsales\Eshop\Core\Request: '@=service("OxidEsales\\ExamplesModule\\Core\\Registry").getRequest()'
-      OxidEsales\Eshop\Core\Language: '@=service("OxidEsales\\ExamplesModule\\Core\\Registry").getLang()'
 
-  OxidEsales\ExamplesModule\Greeting\Repository\GreetingRepositoryInterface:
-    class: OxidEsales\ExamplesModule\Greeting\Repository\GreetingRepository
+  OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface:
+    class: OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettings
     public: true
 
   OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageServiceInterface:
@@ -16,16 +16,20 @@ services:
       $shopName: '%env(OEEM_SHOP_NAME)%'
     public: true
 
-  OxidEsales\ExamplesModule\Greeting\Infrastructure\UserModelFactoryInterface:
-    class: OxidEsales\ExamplesModule\Greeting\Infrastructure\UserModelFactory
+  OxidEsales\ExamplesModule\Greeting\Service\Decorator\GreetingValidationDecorator:
+    decorates: OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageServiceInterface
+    arguments:
+      $originalService: '@.inner'
 
   OxidEsales\ExamplesModule\Greeting\Service\UserServiceInterface:
     class: OxidEsales\ExamplesModule\Greeting\Service\UserService
-    public: true
 
   OxidEsales\ExamplesModule\Greeting\Transput\AdminGreetingRequestInterface:
     class: OxidEsales\ExamplesModule\Greeting\Transput\AdminGreetingRequest
     public: true
+
+  OxidEsales\ExamplesModule\Greeting\Transput\SaveGreetingRequestInterface:
+    class: OxidEsales\ExamplesModule\Greeting\Transput\SaveGreetingRequest
 
   OxidEsales\ExamplesModule\Greeting\Controller\GreetingController:
     public: true

@@ -11,4 +11,5 @@ use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUserInterface;
 
 interface UserInterface extends PersonalGreetingUserInterface
 {
+    public function getId(): ?string;
 }

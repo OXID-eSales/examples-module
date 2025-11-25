@@ -67,7 +67,7 @@ We would like to encourage following ideas and principles in module development:
   * Factories are responsible for creating DTOs (e.g. from database rows)
     * Centralizes mapping logic and makes it reusable and testable
 * Hexagonal architecture ideas
-  * Ports(interfaces here) and adapters(implementations here)
+  * Ports (interfaces here) and adapters (implementations here)
   * Adapters depend on ports, not the other way round
   * Application core is independent of external systems (as much as possible in the current context)
 * Dependency injection

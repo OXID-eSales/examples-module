@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [v2.0.0] - 2025-11-25
+## [v2.0.0] - 2025-11-27
 
 ### Added
 - Added the UserInterface with getId method to rely on

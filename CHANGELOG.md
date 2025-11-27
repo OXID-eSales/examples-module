@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [v2.0.0] - Unreleased
+## [v2.0.0] - 2025-11-25
 
 ### Added
 - Added the UserInterface with getId method to rely on
@@ -30,3 +30,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - The module is extracted from the [Module template](https://github.com/OXID-eSales/module-template) repository.
+
+[v2.0.0]: https://github.com/OXID-eSales/examples-module/compare/v1.0.0...v2.0.0

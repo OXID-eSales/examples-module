@@ -58,28 +58,39 @@ We would like to encourage following ideas and principles in module development:
 * Separate contexts into their own folders (e.g. Greeting, Tracker, ProductVote)
   * Basics of DDD in module development
   * Controllers are our use cases and entry points
+    * No business logic should be in controllers except proxying the request data to services and preparing responses
   * Services contain business logic
-  * Infrastructure contains shop framework/database related code
-* Layered architecture within those contexts (e.g. Infrastructure, Service, Controller, Subscriber)
+  * Infrastructure contains:
+    * legacy/traditional shop framework related code, like Models
+    * database related code
+    * third party integrations that dont have clean interfaces
+      * the interface itself could go to higher level in this case
+* Layered architecture within those contexts (e.g. Infrastructure, Service, Controller, Subscriber, Command)
   * Changing the implementation should not affect other layers
   * Interfaces are the contracts between layers
-  * Data Transfer Objects (DTOs) used for data exchange between layers
-  * Factories are responsible for creating DTOs (e.g. from database rows)
+  * Data Transfer Objects (DTOs) used for data exchange between layers - not arrays
+  * Data Objects are entities or value objects - put together.
+  * No suffixes are going to DTOs and Data Objects - just use namespaces and folders to distinguish them
+  * Factories could be used for creating DTOs and Data Objects (e.g. from database rows)
     * Centralizes mapping logic and makes it reusable and testable
+  * Repositories are used for persisting and retrieving Data Objects/DTOs
 * Hexagonal architecture ideas
-  * Ports(interfaces here) and adapters(implementations here)
-  * Adapters depend on ports, not the other way round
+  * Implementations should depend on interfaces
   * Application core is independent of external systems (as much as possible in the current context)
 * Dependency injection
   * Allows awesome testability and flexibility
   * Avoids usage of global state (Registry, oxNew, static calls)
     * Use factories to create model objects instead of oxNew directly
+    * Static calls are still possible for simple utilities 
 * SOLID principles
-  * SRP and DIP in focus
+  * SRP, DIP and OCP in focus
 * Clean architecture ideas
   * Dependencies point inwards
-  * Business logic is independent of frameworks, databases, UIs
-* Avoid the extension of shop core classes as much as possible
+    * eg. dont call the services that are in higher layers from the Infrastructure layer
+    * you could skip the service layer to access the Repository from Controller if there are no additional logic needed
+  * Business logic (Services) is independent of frameworks, databases, UI
+    * eg. dont inject the request to the Service layer, but give only what service needs, from the Controller
+* Avoid the extension of the shop core classes as much as possible
   * Prefer event listeners, DI service decoration/replacement
   * If extension is necessary, follow minimal invasion principle
 * Tests are a good example of Unit usage

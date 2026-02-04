@@ -12,7 +12,10 @@ on:
           - 'PHP8.3/MariaDB11'
           - 'PHP8.4/MySQL8.0'
           - 'PHP8.4/MySQL8.4'
-          - 'PHP8.4/MariaDb11'
+          - 'PHP8.4/MariaDB11'
+          - 'PHP8.5/MySQL8.0'
+          - 'PHP8.5/MySQL8.4'
+          - 'PHP8.5/MariaDB11'
         default: 'PHP8.3/MySQL8.0'
         description: 'Limit to one PHP/MySQL combination'
       use_dev_version:
@@ -39,7 +42,10 @@ jobs:
             "PHP8.3/MariaDB11") LIMIT='~/defaults/php8.3_mariadb11_only.yaml,' ;;
             "PHP8.4/MySQL8.0") LIMIT='~/defaults/php8.4_mysql8.0_only.yaml,' ;;
             "PHP8.4/MySQL8.4") LIMIT='~/defaults/php8.4_mysql8.4_only.yaml,' ;;
-            "PHP8.4/MariaDb11") LIMIT='~/defaults/php8.4_mariadb11_only.yaml,' ;;
+            "PHP8.4/MariaDB11") LIMIT='~/defaults/php8.4_mariadb11_only.yaml,' ;;
+            "PHP8.5/MySQL8.0") LIMIT='~/defaults/php8.5_mysql8.0_only.yaml,' ;;
+            "PHP8.5/MySQL8.4") LIMIT='~/defaults/php8.5_mysql8.4_only.yaml,' ;;
+            "PHP8.5/MariaDB11") LIMIT='~/defaults/php8.5_mariadb11_only.yaml,' ;;
             *) echo "Illegal choice, fix the workflow"
               exit 1
               ;;

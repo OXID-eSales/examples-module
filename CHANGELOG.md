@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Undecided] - Unreleased
+
+### Changed
+- Updated for OXID eShop 7.5.x compatibility
+- PHP 8.3-8.5 support (removed PHP 8.2)
+
 ## [v2.0.0] - 2025-11-27
 
 ### Added

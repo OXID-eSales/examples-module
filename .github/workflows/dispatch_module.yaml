@@ -7,8 +7,6 @@ on:
         type: choice
         options:
           - 'no'
-          - 'PHP8.2/MySQL8.0'
-          - 'PHP8.2/MariaDB11'
           - 'PHP8.3/MySQL8.0'
           - 'PHP8.3/MySQL8.4'
           - 'PHP8.3/MariaDB11'
@@ -36,8 +34,6 @@ jobs:
           # shellcheck disable=SC2088
           case "${{ inputs.limit }}" in
             "no") LIMIT='';;
-            "PHP8.2/MySQL8.0") LIMIT='~/defaults/php8.2_mysql8.0_only.yaml,' ;;
-            "PHP8.2/MariaDB11") LIMIT='~/defaults/php8.2_mariadb11_only.yaml,' ;;
             "PHP8.3/MySQL8.0") LIMIT='~/defaults/php8.3_mysql8.0_only.yaml,' ;;
             "PHP8.3/MySQL8.4") LIMIT='~/defaults/php8.3_mysql8.4_only.yaml,' ;;
             "PHP8.3/MariaDB11") LIMIT='~/defaults/php8.3_mariadb11_only.yaml,' ;;

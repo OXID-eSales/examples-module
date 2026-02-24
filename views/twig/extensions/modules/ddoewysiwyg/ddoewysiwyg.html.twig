@@ -1,0 +1,22 @@
+{% extends '@ddoewysiwyg/ddoewysiwyg.html.twig' %}
+
+{% block ddoe_wysiwyg_plugins %}
+    {{ parent() }}
+    {{ script({ include: oViewConf.getModuleUrl('oe_examples_module', 'out/src/js/summernote-ext-print.js'), priority: 0, dynamic: __oxid_include_dynamic }) }}
+    {{ script({ include: oViewConf.getModuleUrl('oe_examples_module', 'out/src/js/summernote-cleaner.js'), priority: 0, dynamic: __oxid_include_dynamic }) }}
+{% endblock %}
+
+{% block ddoe_wysiwyg_summernote_options %}
+    {{ parent() }}
+    Object.assign(summernoteOptions, {
+        fontNames: [
+            'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Custom Font'
+        ],
+        fontNamesIgnoreCheck: ['Custom Font'],
+        toolbar: [
+            ['formatting', ['bold', 'italic']],
+            ['fontname', ['fontname', 'fontsize']],
+            ['misc', ['cleaner', 'print', 'codeview']]
+        ],
+    });
+{% endblock %}

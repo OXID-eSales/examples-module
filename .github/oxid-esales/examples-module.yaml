@@ -17,6 +17,8 @@ install:
     vendor/bin/oe-console oe:module:install ./
     vendor/bin/oe-eshop-doctrine_migration migrations:migrate
     vendor/bin/oe-console oe:module:activate oe_examples_module
+    vendor/bin/oe-console oe:module:activate ddoemedialibrary
+    vendor/bin/oe-console oe:module:activate ddoewysiwyg
     vendor/bin/oe-console oe:theme:activate apex
 
 runscript: &runscript

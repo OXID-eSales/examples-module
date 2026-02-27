@@ -1,5 +1,8 @@
-/* https://github.com/DiemenDesign/summernote-cleaner */
-/* Version: 1.1.0 */
+/*!
+ * summernote-cleaner v1.1.0
+ * Copyright (c) 2018 Diemen Design (https://github.com/DiemenDesign/summernote-cleaner)
+ * Licensed under the MIT License
+ */
 (function (factory) {
   if (typeof define === 'function' && define.amd) {
     define(['jquery'], factory);

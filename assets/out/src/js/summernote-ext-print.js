@@ -1,3 +1,8 @@
+/*!
+ * summernote-ext-print
+ * Copyright (c) lqez (https://github.com/lqez/summernote-ext-print)
+ * Licensed under the MIT License
+ */
 (function (factory) {
   /* global define */
   if (typeof define === 'function' && define.amd) {

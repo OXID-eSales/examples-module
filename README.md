@@ -122,6 +122,10 @@ The repository contains examples of following cases and more:
   * [extending of oxid theme templates or blocks](views/twig/extensions/themes)
     * extending a shop admin template block (`admin_user_main_form` - only an extension of a block, without functionality)
     * extending a shop template block (`start_newest_articles`)
+  * [extending another module's template blocks](views/twig/extensions/modules/ddoewysiwyg/ddoewysiwyg.html.twig)
+    * extending the `ddoe/wysiwyg-editor-module` (Summernote editor) to add custom plugins and options
+    * `ddoe_wysiwyg_plugins` block - load additional Summernote plugin scripts via `{{ script() }}`
+    * `ddoe_wysiwyg_summernote_options` block - customize editor options (toolbar, fonts, etc.) via `Object.assign()`
 
 * Using the translations for your module specific phrases
   * [in admin](views/admin_twig)

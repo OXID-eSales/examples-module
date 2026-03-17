@@ -101,7 +101,7 @@
       context.memo('button.print', function () {
         // create button
         var button = ui.button({
-          contents: '<i class="fa fa-print"/> ' + lang.print.print,
+          contents: '<i class="bi bi-printer-fill"></i> ' + lang.print.print,
           tooltip: lang.print.print,
           container: options.container,
           click: function () {

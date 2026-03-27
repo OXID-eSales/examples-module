@@ -31,7 +31,9 @@
         "codeception/module-webdriver": "^4.0",
         "oxid-esales/codeception-modules": "dev-b-7.5.x",
         "oxid-esales/codeception-page-objects": "dev-b-7.5.x",
-        "oxid-esales/developer-tools": "dev-b-7.5.x"
+        "oxid-esales/developer-tools": "dev-b-7.5.x",
+        "oxid-esales/jwt-authentication-component": "dev-b-7.5.x",
+        "oxid-esales/session-authentication-component": "dev-b-7.5.x"
     },
     "conflict": {
         "oxid-esales/oxideshop-ce": "<7.5"
@@ -87,6 +89,16 @@
         "allow-plugins": {
             "oxid-esales/oxideshop-composer-plugin": true,
             "oxid-esales/oxideshop-unified-namespace-generator": true
+        }
+    },
+    "repositories": {
+        "oxid-esales/jwt-authentication-component": {
+            "type": "git",
+            "url": "https://github.com/OXID-eSales/jwt-authentication-component"
+        },
+        "oxid-esales/session-authentication-component": {
+            "type": "git",
+            "url": "https://github.com/OXID-eSales/session-authentication-component"
         }
     }
 }

@@ -1,0 +1,5 @@
+imports:
+  - { resource: ProductInfo/services.yaml }
+  - { resource: CustomerGroup/services.yaml }
+  - { resource: UserInfo/services.yaml }
+  - { resource: AdminInfo/services.yaml }

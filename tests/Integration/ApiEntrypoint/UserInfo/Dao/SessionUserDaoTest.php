@@ -20,16 +20,12 @@ use PHPUnit\Framework\Attributes\Test;
 final class SessionUserDaoTest extends IntegrationTestCase
 {
     #[Test]
-    public function returnsFirstNameForExistingActiveUser(): void
+    public function returnsFirstNameByUsername(): void
     {
         $username = uniqid('user_', true) . '@example.com';
         $firstName = uniqid('name_', true);
 
-        $this->createUser(
-            username: $username,
-            firstName: $firstName,
-            active: true,
-        );
+        $this->createUser(username: $username, firstName: $firstName);
 
         $sut = $this->get(SessionUserDaoInterface::class);
 
@@ -47,48 +43,24 @@ final class SessionUserDaoTest extends IntegrationTestCase
     }
 
     #[Test]
-    public function returnsNullForInactiveUser(): void
-    {
-        $username = uniqid('user_', true) . '@example.com';
-
-        $this->createUser(
-            username: $username,
-            firstName: uniqid(),
-            active: false,
-        );
-
-        $sut = $this->get(SessionUserDaoInterface::class);
-
-        $this->assertNull($sut->getFirstNameByUsername($username));
-    }
-
-    #[Test]
     public function returnsEmptyStringWhenFirstNameNotSet(): void
     {
         $username = uniqid('user_', true) . '@example.com';
 
-        $this->createUser(
-            username: $username,
-            firstName: '',
-            active: true,
-        );
+        $this->createUser(username: $username, firstName: '');
 
         $sut = $this->get(SessionUserDaoInterface::class);
 
         $this->assertSame('', $sut->getFirstNameByUsername($username));
     }
 
-    private function createUser(
-        string $username,
-        string $firstName,
-        bool $active,
-    ): void {
+    private function createUser(string $username, string $firstName): void
+    {
         $user = oxNew(User::class);
         $user->setId('_tusr' . substr(uniqid('', true), 0, 22));
         $user->assign([
             'oxusername' => $username,
             'oxfname' => $firstName,
-            'oxactive' => (int) $active,
             'oxshopid' => 1,
         ]);
         $user->save();

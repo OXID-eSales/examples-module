@@ -26,7 +26,6 @@ readonly class SessionUserDao implements SessionUserDaoInterface
             ->select('oxfname')
             ->from('oxuser')
             ->where('oxusername = :username')
-            ->andWhere('oxactive = 1')
             ->setParameter('username', $username);
 
         /** @var Result $dbResult */

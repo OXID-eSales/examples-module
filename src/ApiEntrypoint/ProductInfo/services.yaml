@@ -3,13 +3,8 @@ services:
     public: false
     autowire: true
 
-  OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Dao\TableViewNameGenerator:
-    class: OxidEsales\Eshop\Core\TableViewNameGenerator
-
   OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Dao\ActiveProductCountDaoInterface:
     class: OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Dao\ActiveProductCountDao
-    arguments:
-      $viewNameGenerator: '@OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Dao\TableViewNameGenerator'
 
   OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Service\ProductInfoServiceInterface:
     class: OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Service\ProductInfoService

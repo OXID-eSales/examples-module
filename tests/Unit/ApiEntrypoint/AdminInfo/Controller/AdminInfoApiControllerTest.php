@@ -12,14 +12,12 @@ namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\AdminInfo\Controlle
 use OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\Controller\AdminInfoApiController;
 use OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\DataObject\AdminInfo;
 use OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\Service\AdminInfoServiceInterface;
+use OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\ApiEntrypointTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\User\InMemoryUser;
 
 #[CoversClass(AdminInfoApiController::class)]
-final class AdminInfoApiControllerTest extends TestCase
+final class AdminInfoApiControllerTest extends ApiEntrypointTestCase
 {
     public function testGetAdminInfoReturnsJsonResponseWithStatus200(): void
     {
@@ -46,7 +44,7 @@ final class AdminInfoApiControllerTest extends TestCase
         $sut = $this->getSut(adminInfoService: $serviceStub);
 
         $response = $sut->getAdminInfo($this->createRequestWithUser($email));
-        $data = $this->decodeJsonResponse($response);
+        $data = $this->decodeResponse($response);
 
         $this->assertSame($email, $data['email']);
         $this->assertSame($greeting, $data['greeting']);
@@ -57,7 +55,7 @@ final class AdminInfoApiControllerTest extends TestCase
         $sut = $this->getSut();
 
         $response = $sut->getAdminInfo($this->createRequestWithUser(uniqid()));
-        $data = $this->decodeJsonResponse($response);
+        $data = $this->decodeResponse($response);
 
         $this->assertArrayHasKey('email', $data);
         $this->assertArrayHasKey('greeting', $data);
@@ -79,19 +77,5 @@ final class AdminInfoApiControllerTest extends TestCase
         return new AdminInfoApiController(
             adminInfoService: $adminInfoService,
         );
-    }
-
-    private function createRequestWithUser(string $username): Request
-    {
-        $request = new Request();
-        $user = new InMemoryUser($username, null, ['ROLE_USER', 'ROLE_ADMIN']);
-        $request->attributes->set('_user', $user);
-
-        return $request;
-    }
-
-    private function decodeJsonResponse(JsonResponse $response): array
-    {
-        return json_decode($response->getContent(), true);
     }
 }

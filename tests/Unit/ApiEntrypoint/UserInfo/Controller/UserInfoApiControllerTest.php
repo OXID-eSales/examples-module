@@ -12,14 +12,12 @@ namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\UserInfo\Controller
 use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Controller\UserInfoApiController;
 use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\DataObject\UserInfo;
 use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Service\UserInfoServiceInterface;
+use OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\ApiEntrypointTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\User\InMemoryUser;
 
 #[CoversClass(UserInfoApiController::class)]
-final class UserInfoApiControllerTest extends TestCase
+final class UserInfoApiControllerTest extends ApiEntrypointTestCase
 {
     public function testGetUserInfoReturnsJsonResponseWithStatus200AndData(): void
     {
@@ -67,19 +65,5 @@ final class UserInfoApiControllerTest extends TestCase
         return new UserInfoApiController(
             userInfoService: $userInfoService,
         );
-    }
-
-    private function createRequestWithUser(string $username): Request
-    {
-        $request = new Request();
-        $user = new InMemoryUser($username, null, ['ROLE_USER']);
-        $request->attributes->set('_user', $user);
-
-        return $request;
-    }
-
-    private function decodeResponse(JsonResponse $response): array
-    {
-        return json_decode($response->getContent(), true);
     }
 }

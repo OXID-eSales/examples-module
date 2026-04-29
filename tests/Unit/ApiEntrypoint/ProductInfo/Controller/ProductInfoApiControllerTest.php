@@ -11,12 +11,12 @@ namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\ProductInfo\Control
 
 use OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Controller\ProductInfoApiController;
 use OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Service\ProductInfoServiceInterface;
+use OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\ApiEntrypointTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[CoversClass(ProductInfoApiController::class)]
-final class ProductInfoApiControllerTest extends TestCase
+final class ProductInfoApiControllerTest extends ApiEntrypointTestCase
 {
     public function testGetProductInfoReturnsJsonResponseWithStatus200(): void
     {
@@ -51,10 +51,5 @@ final class ProductInfoApiControllerTest extends TestCase
         return new ProductInfoApiController(
             productInfoService: $productInfoService,
         );
-    }
-
-    private function decodeResponse(JsonResponse $response): array
-    {
-        return json_decode($response->getContent(), true);
     }
 }

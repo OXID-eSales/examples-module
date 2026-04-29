@@ -12,12 +12,12 @@ namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\CustomerGroup\Contr
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Controller\CustomerGroupApiController;
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\DataObject\CustomerGroupCount;
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Service\CustomerGroupServiceInterface;
+use OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\ApiEntrypointTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[CoversClass(CustomerGroupApiController::class)]
-final class CustomerGroupApiControllerTest extends TestCase
+final class CustomerGroupApiControllerTest extends ApiEntrypointTestCase
 {
     public function testGetCustomerGroupsReturnsJsonResponseWithStatus200(): void
     {
@@ -60,10 +60,5 @@ final class CustomerGroupApiControllerTest extends TestCase
         return new CustomerGroupApiController(
             customerGroupService: $customerGroupService,
         );
-    }
-
-    private function decodeResponse(JsonResponse $response): array
-    {
-        return json_decode($response->getContent(), true);
     }
 }

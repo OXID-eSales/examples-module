@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Service;
 
-use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Dao\SessionUserDaoInterface;
+use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Infrastructure\UserRepositoryInterface;
 use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\DataObject\UserInfo;
 
 readonly class UserInfoService implements UserInfoServiceInterface
@@ -17,13 +17,13 @@ readonly class UserInfoService implements UserInfoServiceInterface
     private const GREETING_CONTROLLER_URL = 'index.php?cl=oeem_greeting';
 
     public function __construct(
-        private SessionUserDaoInterface $sessionUserDao,
+        private UserRepositoryInterface $userRepository,
     ) {
     }
 
     public function getUserInfo(string $username): ?UserInfo
     {
-        $firstName = $this->sessionUserDao->getFirstNameByUsername($username);
+        $firstName = $this->userRepository->getFirstNameByUsername($username);
 
         if ($firstName === null) {
             return null;

@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Dao;
+namespace OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Infrastructure;
 
-interface ActiveProductCountDaoInterface
+interface ProductRepositoryInterface
 {
     public function getActiveProductCount(): int;
 }

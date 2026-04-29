@@ -7,14 +7,14 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Dao;
+namespace OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Infrastructure;
 
 use Doctrine\DBAL\Result;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
-readonly class ActiveProductCountDao implements ActiveProductCountDaoInterface
+readonly class ProductRepository implements ProductRepositoryInterface
 {
     public function __construct(
         private QueryBuilderFactoryInterface $queryBuilderFactory,
@@ -41,6 +41,6 @@ readonly class ActiveProductCountDao implements ActiveProductCountDaoInterface
         /** @var Result $result */
         $result = $queryBuilder->execute();
 
-        return (int)$result->fetchOne();
+        return (int) $result->fetchOne();
     }
 }

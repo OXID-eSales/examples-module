@@ -7,11 +7,11 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Dao;
+namespace OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure;
 
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\DataObject\CustomerGroupCount;
 
-interface CustomerGroupCountDaoInterface
+interface CustomerGroupCountRepositoryInterface
 {
     /** @return list<CustomerGroupCount> */
     public function getCustomerGroupCounts(): array;

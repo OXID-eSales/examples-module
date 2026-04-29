@@ -9,25 +9,25 @@ declare(strict_types=1);
 
 namespace OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Service;
 
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Dao\CustomerGroupCountDaoInterface;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure\CustomerGroupCountRepositoryInterface;
 
 readonly class CustomerGroupService implements CustomerGroupServiceInterface
 {
     public function __construct(
-        private CustomerGroupCountDaoInterface $groupCountDao,
+        private CustomerGroupCountRepositoryInterface $groupCountRepository,
     ) {
     }
 
     /** @inheritDoc */
     public function getCustomerGroupCounts(): array
     {
-        return $this->groupCountDao->getCustomerGroupCounts();
+        return $this->groupCountRepository->getCustomerGroupCounts();
     }
 
     public function getTotalCustomerCount(): int
     {
         $total = 0;
-        foreach ($this->groupCountDao->getCustomerGroupCounts() as $group) {
+        foreach ($this->groupCountRepository->getCustomerGroupCounts() as $group) {
             $total += $group->getCount();
         }
 

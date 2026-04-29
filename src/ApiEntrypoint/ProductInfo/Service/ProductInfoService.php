@@ -11,19 +11,19 @@ namespace OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Service;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
-use OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Dao\ActiveProductCountDaoInterface;
+use OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Infrastructure\ProductRepositoryInterface;
 
 readonly class ProductInfoService implements ProductInfoServiceInterface
 {
     public function __construct(
-        private ActiveProductCountDaoInterface $productCountDao,
+        private ProductRepositoryInterface $productRepository,
         private ShopAdapterInterface $shopAdapter,
     ) {
     }
 
     public function getActiveProductCount(): int
     {
-        return $this->productCountDao->getActiveProductCount();
+        return $this->productRepository->getActiveProductCount();
     }
 
     public function getGreetingMessage(): string

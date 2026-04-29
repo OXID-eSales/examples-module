@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\UserInfo\Service;
 
-use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Dao\SessionUserDaoInterface;
+use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Infrastructure\UserRepositoryInterface;
 use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\DataObject\UserInfo;
 use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Service\UserInfoService;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -23,11 +23,11 @@ final class UserInfoServiceTest extends TestCase
         $username = uniqid('user_');
         $expectedFirstName = uniqid('name_');
 
-        $daoStub = $this->createConfiguredStub(SessionUserDaoInterface::class, [
+        $repositoryStub = $this->createConfiguredStub(UserRepositoryInterface::class, [
             'getFirstNameByUsername' => $expectedFirstName,
         ]);
 
-        $sut = $this->getSut(sessionUserDao: $daoStub);
+        $sut = $this->getSut(userRepository: $repositoryStub);
         $result = $sut->getUserInfo($username);
 
         $this->assertInstanceOf(UserInfo::class, $result);
@@ -39,23 +39,23 @@ final class UserInfoServiceTest extends TestCase
     {
         $username = uniqid('unknown_');
 
-        $daoMock = $this->createStub(SessionUserDaoInterface::class);
-        $daoMock->method('getFirstNameByUsername')
+        $repositoryStub = $this->createStub(UserRepositoryInterface::class);
+        $repositoryStub->method('getFirstNameByUsername')
             ->with($username)
             ->willReturn(null);
 
-        $sut = $this->getSut(sessionUserDao: $daoMock);
+        $sut = $this->getSut(userRepository: $repositoryStub);
 
         $this->assertNull($sut->getUserInfo($username));
     }
 
     private function getSut(
-        ?SessionUserDaoInterface $sessionUserDao = null,
+        ?UserRepositoryInterface $userRepository = null,
     ): UserInfoService {
-        $sessionUserDao ??= $this->createStub(SessionUserDaoInterface::class);
+        $userRepository ??= $this->createStub(UserRepositoryInterface::class);
 
         return new UserInfoService(
-            sessionUserDao: $sessionUserDao,
+            userRepository: $userRepository,
         );
     }
 }

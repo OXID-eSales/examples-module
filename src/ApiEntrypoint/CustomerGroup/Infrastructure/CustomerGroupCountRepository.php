@@ -7,13 +7,13 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Dao;
+namespace OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure;
 
 use Doctrine\DBAL\Result;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\DataObject\CustomerGroupCount;
 
-readonly class CustomerGroupCountDao implements CustomerGroupCountDaoInterface
+readonly class CustomerGroupCountRepository implements CustomerGroupCountRepositoryInterface
 {
     public function __construct(
         private QueryBuilderFactoryInterface $queryBuilderFactory,

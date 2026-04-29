@@ -7,20 +7,20 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tests\Integration\ApiEntrypoint\ProductInfo\Dao;
+namespace OxidEsales\ExamplesModule\Tests\Integration\ApiEntrypoint\ProductInfo\Infrastructure;
 
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Dao\ActiveProductCountDao;
+use OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Infrastructure\ProductRepository;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 
-#[CoversClass(ActiveProductCountDao::class)]
-final class ActiveProductCountDaoTest extends IntegrationTestCase
+#[CoversClass(ProductRepository::class)]
+final class ProductRepositoryTest extends IntegrationTestCase
 {
     #[Before]
     public function cleanTables(): void
@@ -72,9 +72,9 @@ final class ActiveProductCountDaoTest extends IntegrationTestCase
         $this->assertSame($count, $sut->getActiveProductCount());
     }
 
-    private function getSut(): ActiveProductCountDao
+    private function getSut(): ProductRepository
     {
-        return new ActiveProductCountDao(
+        return new ProductRepository(
             queryBuilderFactory: $this->get(QueryBuilderFactoryInterface::class),
             shopAdapter: $this->get(ShopAdapterInterface::class),
             context: $this->get(ContextInterface::class),

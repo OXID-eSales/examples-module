@@ -3,8 +3,8 @@ services:
     public: false
     autowire: true
 
-  OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Dao\CustomerGroupCountDaoInterface:
-    class: OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Dao\CustomerGroupCountDao
+  OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure\CustomerGroupCountRepositoryInterface:
+    class: OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure\CustomerGroupCountRepository
 
   OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Service\CustomerGroupServiceInterface:
     class: OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Service\CustomerGroupService

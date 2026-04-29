@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\CustomerGroup\Service;
 
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Dao\CustomerGroupCountDaoInterface;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure\CustomerGroupCountRepositoryInterface;
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\DataObject\CustomerGroupCount;
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Service\CustomerGroupService;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(CustomerGroupService::class)]
 final class CustomerGroupServiceTest extends TestCase
 {
-    public function testGetCustomerGroupCountsDelegatesToDao(): void
+    public function testGetCustomerGroupCountsDelegatesToRepository(): void
     {
         $expectedCounts = [
             new CustomerGroupCount(
@@ -33,22 +33,22 @@ final class CustomerGroupServiceTest extends TestCase
             ),
         ];
 
-        $daoStub = $this->createStub(CustomerGroupCountDaoInterface::class);
-        $daoStub->method('getCustomerGroupCounts')
+        $repositoryStub = $this->createStub(CustomerGroupCountRepositoryInterface::class);
+        $repositoryStub->method('getCustomerGroupCounts')
             ->willReturn($expectedCounts);
 
-        $sut = $this->getSut(groupCountDao: $daoStub);
+        $sut = $this->getSut(groupCountRepository: $repositoryStub);
 
         $this->assertSame($expectedCounts, $sut->getCustomerGroupCounts());
     }
 
     public function testGetCustomerGroupCountsReturnsEmptyArrayWhenNoGroups(): void
     {
-        $daoStub = $this->createStub(CustomerGroupCountDaoInterface::class);
-        $daoStub->method('getCustomerGroupCounts')
+        $repositoryStub = $this->createStub(CustomerGroupCountRepositoryInterface::class);
+        $repositoryStub->method('getCustomerGroupCounts')
             ->willReturn([]);
 
-        $sut = $this->getSut(groupCountDao: $daoStub);
+        $sut = $this->getSut(groupCountRepository: $repositoryStub);
 
         $this->assertSame([], $sut->getCustomerGroupCounts());
     }
@@ -58,8 +58,8 @@ final class CustomerGroupServiceTest extends TestCase
         $count1 = mt_rand(1, 500);
         $count2 = mt_rand(1, 500);
 
-        $daoStub = $this->createStub(CustomerGroupCountDaoInterface::class);
-        $daoStub->method('getCustomerGroupCounts')
+        $repositoryStub = $this->createStub(CustomerGroupCountRepositoryInterface::class);
+        $repositoryStub->method('getCustomerGroupCounts')
             ->willReturn([
                 new CustomerGroupCount(
                     groupId: uniqid(),
@@ -73,29 +73,29 @@ final class CustomerGroupServiceTest extends TestCase
                 ),
             ]);
 
-        $sut = $this->getSut(groupCountDao: $daoStub);
+        $sut = $this->getSut(groupCountRepository: $repositoryStub);
 
         $this->assertSame($count1 + $count2, $sut->getTotalCustomerCount());
     }
 
     public function testGetTotalCustomerCountReturnsZeroWhenNoGroups(): void
     {
-        $daoStub = $this->createStub(CustomerGroupCountDaoInterface::class);
-        $daoStub->method('getCustomerGroupCounts')
+        $repositoryStub = $this->createStub(CustomerGroupCountRepositoryInterface::class);
+        $repositoryStub->method('getCustomerGroupCounts')
             ->willReturn([]);
 
-        $sut = $this->getSut(groupCountDao: $daoStub);
+        $sut = $this->getSut(groupCountRepository: $repositoryStub);
 
         $this->assertSame(0, $sut->getTotalCustomerCount());
     }
 
     private function getSut(
-        ?CustomerGroupCountDaoInterface $groupCountDao = null,
+        ?CustomerGroupCountRepositoryInterface $groupCountRepository = null,
     ): CustomerGroupService {
-        $groupCountDao ??= $this->createStub(CustomerGroupCountDaoInterface::class);
+        $groupCountRepository ??= $this->createStub(CustomerGroupCountRepositoryInterface::class);
 
         return new CustomerGroupService(
-            groupCountDao: $groupCountDao,
+            groupCountRepository: $groupCountRepository,
         );
     }
 }

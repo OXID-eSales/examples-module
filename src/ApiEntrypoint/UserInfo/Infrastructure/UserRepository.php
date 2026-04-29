@@ -7,12 +7,12 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Dao;
+namespace OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Infrastructure;
 
 use Doctrine\DBAL\Result;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 
-readonly class SessionUserDao implements SessionUserDaoInterface
+readonly class UserRepository implements UserRepositoryInterface
 {
     public function __construct(
         private QueryBuilderFactoryInterface $queryBuilderFactory,

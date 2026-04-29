@@ -7,17 +7,17 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tests\Integration\ApiEntrypoint\UserInfo\Dao;
+namespace OxidEsales\ExamplesModule\Tests\Integration\ApiEntrypoint\UserInfo\Infrastructure;
 
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Dao\SessionUserDao;
-use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Dao\SessionUserDaoInterface;
+use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Infrastructure\UserRepository;
+use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Infrastructure\UserRepositoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 
-#[CoversClass(SessionUserDao::class)]
-final class SessionUserDaoTest extends IntegrationTestCase
+#[CoversClass(UserRepository::class)]
+final class UserRepositoryTest extends IntegrationTestCase
 {
     #[Test]
     public function returnsFirstNameByUsername(): void
@@ -27,7 +27,7 @@ final class SessionUserDaoTest extends IntegrationTestCase
 
         $this->createUser(username: $username, firstName: $firstName);
 
-        $sut = $this->get(SessionUserDaoInterface::class);
+        $sut = $this->get(UserRepositoryInterface::class);
 
         $this->assertSame($firstName, $sut->getFirstNameByUsername($username));
     }
@@ -35,7 +35,7 @@ final class SessionUserDaoTest extends IntegrationTestCase
     #[Test]
     public function returnsNullForNonExistentUser(): void
     {
-        $sut = $this->get(SessionUserDaoInterface::class);
+        $sut = $this->get(UserRepositoryInterface::class);
 
         $this->assertNull(
             $sut->getFirstNameByUsername(uniqid('unknown_') . '@example.com')
@@ -49,7 +49,7 @@ final class SessionUserDaoTest extends IntegrationTestCase
 
         $this->createUser(username: $username, firstName: '');
 
-        $sut = $this->get(SessionUserDaoInterface::class);
+        $sut = $this->get(UserRepositoryInterface::class);
 
         $this->assertSame('', $sut->getFirstNameByUsername($username));
     }

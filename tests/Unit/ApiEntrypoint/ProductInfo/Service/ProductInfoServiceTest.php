@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\ProductInfo\Service;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
-use OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Dao\ActiveProductCountDaoInterface;
+use OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Infrastructure\ProductRepositoryInterface;
 use OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Service\ProductInfoService;
 use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -19,15 +19,15 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(ProductInfoService::class)]
 final class ProductInfoServiceTest extends TestCase
 {
-    public function testGetActiveProductCountDelegatesToDao(): void
+    public function testGetActiveProductCountDelegatesToRepository(): void
     {
         $expectedCount = mt_rand(0, 3);
 
-        $daoStub = $this->createStub(ActiveProductCountDaoInterface::class);
-        $daoStub->method('getActiveProductCount')
+        $repositoryStub = $this->createStub(ProductRepositoryInterface::class);
+        $repositoryStub->method('getActiveProductCount')
             ->willReturn($expectedCount);
 
-        $sut = $this->getSut(productCountDao: $daoStub);
+        $sut = $this->getSut(productRepository: $repositoryStub);
 
         $this->assertSame($expectedCount, $sut->getActiveProductCount());
     }
@@ -47,14 +47,14 @@ final class ProductInfoServiceTest extends TestCase
     }
 
     private function getSut(
-        ?ActiveProductCountDaoInterface $productCountDao = null,
+        ?ProductRepositoryInterface $productRepository = null,
         ?ShopAdapterInterface $shopAdapter = null,
     ): ProductInfoService {
-        $productCountDao ??= $this->createStub(ActiveProductCountDaoInterface::class);
+        $productRepository ??= $this->createStub(ProductRepositoryInterface::class);
         $shopAdapter ??= $this->createStub(ShopAdapterInterface::class);
 
         return new ProductInfoService(
-            productCountDao: $productCountDao,
+            productRepository: $productRepository,
             shopAdapter: $shopAdapter,
         );
     }

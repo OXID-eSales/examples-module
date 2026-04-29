@@ -7,18 +7,18 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tests\Integration\ApiEntrypoint\CustomerGroup\Dao;
+namespace OxidEsales\ExamplesModule\Tests\Integration\ApiEntrypoint\CustomerGroup\Infrastructure;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Dao\CustomerGroupCountDao;
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Dao\CustomerGroupCountDaoInterface;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure\CustomerGroupCountRepository;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure\CustomerGroupCountRepositoryInterface;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 
-#[CoversClass(CustomerGroupCountDao::class)]
-final class CustomerGroupCountDaoTest extends IntegrationTestCase
+#[CoversClass(CustomerGroupCountRepository::class)]
+final class CustomerGroupCountRepositoryTest extends IntegrationTestCase
 {
     #[Before]
     public function cleanTables(): void
@@ -30,7 +30,7 @@ final class CustomerGroupCountDaoTest extends IntegrationTestCase
     #[Test]
     public function returnsEmptyArrayWhenNoActiveGroups(): void
     {
-        $sut = $this->get(CustomerGroupCountDaoInterface::class);
+        $sut = $this->get(CustomerGroupCountRepositoryInterface::class);
 
         $this->assertSame([], $sut->getCustomerGroupCounts());
     }
@@ -42,7 +42,7 @@ final class CustomerGroupCountDaoTest extends IntegrationTestCase
         $groupTitle = uniqid('group_');
         $this->createGroup($groupId, $groupTitle);
 
-        $sut = $this->get(CustomerGroupCountDaoInterface::class);
+        $sut = $this->get(CustomerGroupCountRepositoryInterface::class);
 
         $result = $sut->getCustomerGroupCounts();
         $this->assertCount(1, $result);
@@ -65,7 +65,7 @@ final class CustomerGroupCountDaoTest extends IntegrationTestCase
             );
         }
 
-        $sut = $this->get(CustomerGroupCountDaoInterface::class);
+        $sut = $this->get(CustomerGroupCountRepositoryInterface::class);
 
         $result = $sut->getCustomerGroupCounts();
         $this->assertSame($userCount, $result[0]->getCount());
@@ -80,7 +80,7 @@ final class CustomerGroupCountDaoTest extends IntegrationTestCase
             active: false,
         );
 
-        $sut = $this->get(CustomerGroupCountDaoInterface::class);
+        $sut = $this->get(CustomerGroupCountRepositoryInterface::class);
 
         $this->assertSame([], $sut->getCustomerGroupCounts());
     }

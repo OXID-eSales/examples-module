@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Dao;
+namespace OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Infrastructure;
 
-interface SessionUserDaoInterface
+interface UserRepositoryInterface
 {
     public function getFirstNameByUsername(string $username): ?string;
 }

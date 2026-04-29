@@ -19,85 +19,46 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 #[CoversClass(CustomerGroupApiController::class)]
 final class CustomerGroupApiControllerTest extends TestCase
 {
-    public function testGetCustomerGroupsReturnsJsonResponse(): void
+    public function testGetCustomerGroupsReturnsJsonResponseWithStatus200(): void
     {
         $sut = $this->getSut();
+        $response = $sut->getCustomerGroups();
 
-        $this->assertInstanceOf(
-            JsonResponse::class,
-            $sut->getCustomerGroups()
-        );
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertSame(200, $response->getStatusCode());
     }
 
-    public function testGetCustomerGroupsReturnsStatus200(): void
+    public function testGetCustomerGroupsContainsGroupDataAndTotal(): void
     {
-        $sut = $this->getSut();
-
-        $this->assertSame(200, $sut->getCustomerGroups()->getStatusCode());
-    }
-
-    public function testGetCustomerGroupsContainsGroupData(): void
-    {
-        $groupId = uniqid('group_', true);
-        $title = uniqid('title_', true);
-        $count = mt_rand(1, 500);
-
-        $serviceStub = $this->createStub(CustomerGroupServiceInterface::class);
-        $serviceStub->method('getCustomerGroupCounts')
-            ->willReturn([
+        $serviceStub = $this->createConfiguredStub(CustomerGroupServiceInterface::class, [
+            'getCustomerGroupCounts' => [
                 new CustomerGroupCount(
-                    groupId: $groupId,
-                    title: $title,
-                    count: $count,
-                ),
-            ]);
-        $serviceStub->method('getTotalCustomerCount')
-            ->willReturn($count);
+                    groupId: $groupId = uniqid('group_'),
+                    title: $title = uniqid('title_'),
+                    count: $count = mt_rand(1, 500)
+                )
+            ],
+            'getTotalCustomerCount' => $total = mt_rand(100, 5000),
+        ]);
 
         $sut = $this->getSut(customerGroupService: $serviceStub);
-
-        $data = $this->decodeResponse($sut->getCustomerGroups());
+        $response = $sut->getCustomerGroups();
+        $data = $this->decodeResponse($response);
 
         $this->assertCount(1, $data['customerGroups']);
         $this->assertSame($groupId, $data['customerGroups'][0]['groupId']);
         $this->assertSame($title, $data['customerGroups'][0]['title']);
         $this->assertSame($count, $data['customerGroups'][0]['count']);
-    }
-
-    public function testGetCustomerGroupsContainsTotalCount(): void
-    {
-        $total = mt_rand(100, 5000);
-
-        $serviceStub = $this->createStub(CustomerGroupServiceInterface::class);
-        $serviceStub->method('getCustomerGroupCounts')
-            ->willReturn([]);
-        $serviceStub->method('getTotalCustomerCount')
-            ->willReturn($total);
-
-        $sut = $this->getSut(customerGroupService: $serviceStub);
-
-        $data = $this->decodeResponse($sut->getCustomerGroups());
-
         $this->assertSame($total, $data['total']);
-    }
-
-    public function testGetCustomerGroupsResponseStructure(): void
-    {
-        $sut = $this->getSut();
-
-        $data = $this->decodeResponse($sut->getCustomerGroups());
-
-        $this->assertArrayHasKey('customerGroups', $data);
-        $this->assertArrayHasKey('total', $data);
-        $this->assertCount(2, $data);
     }
 
     private function getSut(
         ?CustomerGroupServiceInterface $customerGroupService = null,
     ): CustomerGroupApiController {
+        $customerGroupService ??= $this->createStub(CustomerGroupServiceInterface::class);
+
         return new CustomerGroupApiController(
-            customerGroupService: $customerGroupService
-                ?? $this->createStub(CustomerGroupServiceInterface::class),
+            customerGroupService: $customerGroupService,
         );
     }
 

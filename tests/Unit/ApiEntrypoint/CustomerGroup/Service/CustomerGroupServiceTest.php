@@ -22,13 +22,13 @@ final class CustomerGroupServiceTest extends TestCase
     {
         $expectedCounts = [
             new CustomerGroupCount(
-                groupId: uniqid('group_', true),
-                title: uniqid('title_', true),
+                groupId: uniqid('group_'),
+                title: uniqid('title_'),
                 count: mt_rand(1, 500),
             ),
             new CustomerGroupCount(
-                groupId: uniqid('group_', true),
-                title: uniqid('title_', true),
+                groupId: uniqid('group_'),
+                title: uniqid('title_'),
                 count: mt_rand(1, 500),
             ),
         ];

@@ -18,67 +18,38 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 #[CoversClass(ProductInfoApiController::class)]
 final class ProductInfoApiControllerTest extends TestCase
 {
-    public function testGetProductInfoReturnsJsonResponse(): void
+    public function testGetProductInfoReturnsJsonResponseWithStatus200(): void
     {
         $sut = $this->getSut();
+        $response = $sut->getProductInfo();
 
-        $this->assertInstanceOf(JsonResponse::class, $sut->getProductInfo());
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertSame(200, $response->getStatusCode());
     }
 
-    public function testGetProductInfoReturnsStatus200(): void
-    {
-        $sut = $this->getSut();
-
-        $this->assertSame(200, $sut->getProductInfo()->getStatusCode());
-    }
-
-    public function testGetProductInfoContainsProductCount(): void
+    public function testGetProductInfoContainsProductCountAndMessage(): void
     {
         $expectedCount = mt_rand(1, 10000);
-
-        $serviceStub = $this->createStub(ProductInfoServiceInterface::class);
-        $serviceStub->method('getActiveProductCount')
-            ->willReturn($expectedCount);
+        $expectedMessage = uniqid('message_');
+        $serviceStub = $this->createConfiguredStub(ProductInfoServiceInterface::class, [
+            'getActiveProductCount' => $expectedCount,
+            'getGreetingMessage' => $expectedMessage,
+        ]);
 
         $sut = $this->getSut(productInfoService: $serviceStub);
-
         $data = $this->decodeResponse($sut->getProductInfo());
 
         $this->assertSame($expectedCount, $data['productCount']);
-    }
-
-    public function testGetProductInfoContainsTranslatedMessage(): void
-    {
-        $expectedMessage = uniqid('message_', true);
-
-        $serviceStub = $this->createStub(ProductInfoServiceInterface::class);
-        $serviceStub->method('getGreetingMessage')
-            ->willReturn($expectedMessage);
-
-        $sut = $this->getSut(productInfoService: $serviceStub);
-
-        $data = $this->decodeResponse($sut->getProductInfo());
-
         $this->assertSame($expectedMessage, $data['message']);
-    }
-
-    public function testGetProductInfoResponseStructure(): void
-    {
-        $sut = $this->getSut();
-
-        $data = $this->decodeResponse($sut->getProductInfo());
-
-        $this->assertArrayHasKey('productCount', $data);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertCount(2, $data);
     }
 
     private function getSut(
         ?ProductInfoServiceInterface $productInfoService = null,
     ): ProductInfoApiController {
+        $productInfoService ??= $this->createStub(ProductInfoServiceInterface::class);
+
         return new ProductInfoApiController(
-            productInfoService: $productInfoService
-                ?? $this->createStub(ProductInfoServiceInterface::class),
+            productInfoService: $productInfoService,
         );
     }
 

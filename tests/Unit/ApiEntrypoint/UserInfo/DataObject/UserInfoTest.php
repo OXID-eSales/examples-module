@@ -16,27 +16,17 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(UserInfo::class)]
 final class UserInfoTest extends TestCase
 {
-    public function testGetFirstName(): void
+    public function testStoresFirstNameAndGreetingUrl(): void
     {
-        $firstName = uniqid('name_', true);
+        $firstName = uniqid('name_');
+        $greetingUrl = uniqid('url_');
 
         $sut = new UserInfo(
             firstName: $firstName,
-            greetingUrl: uniqid(),
-        );
-
-        $this->assertSame($firstName, $sut->getFirstName());
-    }
-
-    public function testGetGreetingUrl(): void
-    {
-        $greetingUrl = uniqid('url_', true);
-
-        $sut = new UserInfo(
-            firstName: uniqid(),
             greetingUrl: $greetingUrl,
         );
 
+        $this->assertSame($firstName, $sut->getFirstName());
         $this->assertSame($greetingUrl, $sut->getGreetingUrl());
     }
 }

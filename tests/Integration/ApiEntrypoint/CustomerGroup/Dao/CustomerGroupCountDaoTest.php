@@ -13,18 +13,23 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Dao\CustomerGroupCountDao;
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Dao\CustomerGroupCountDaoInterface;
+use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 
 #[CoversClass(CustomerGroupCountDao::class)]
 final class CustomerGroupCountDaoTest extends IntegrationTestCase
 {
-    #[Test]
-    public function returnsEmptyArrayWhenNoActiveGroups(): void
+    #[Before]
+    public function cleanTables(): void
     {
         $this->deleteTableContent('oxobject2group');
         $this->deleteTableContent('oxgroups');
+    }
 
+    #[Test]
+    public function returnsEmptyArrayWhenNoActiveGroups(): void
+    {
         $sut = $this->get(CustomerGroupCountDaoInterface::class);
 
         $this->assertSame([], $sut->getCustomerGroupCounts());
@@ -33,11 +38,8 @@ final class CustomerGroupCountDaoTest extends IntegrationTestCase
     #[Test]
     public function returnsGroupWithZeroCountWhenNoUsersAssigned(): void
     {
-        $this->deleteTableContent('oxobject2group');
-        $this->deleteTableContent('oxgroups');
-
-        $groupId = '_tgrp' . substr(uniqid('', true), 0, 22);
-        $groupTitle = uniqid('group_', true);
+        $groupId = '_tgrp' . substr(uniqid(''), 0, 22);
+        $groupTitle = uniqid('group_');
         $this->createGroup($groupId, $groupTitle);
 
         $sut = $this->get(CustomerGroupCountDaoInterface::class);
@@ -52,16 +54,13 @@ final class CustomerGroupCountDaoTest extends IntegrationTestCase
     #[Test]
     public function returnsCorrectCountPerGroup(): void
     {
-        $this->deleteTableContent('oxobject2group');
-        $this->deleteTableContent('oxgroups');
-
-        $groupId = '_tgrp' . substr(uniqid('', true), 0, 22);
+        $groupId = '_tgrp' . substr(uniqid(''), 0, 22);
         $this->createGroup($groupId, uniqid());
 
         $userCount = mt_rand(2, 5);
         for ($i = 0; $i < $userCount; $i++) {
             $this->assignUserToGroup(
-                '_tusr' . substr(uniqid('', true), 0, 22),
+                '_tusr' . substr(uniqid(''), 0, 22),
                 $groupId,
             );
         }
@@ -75,11 +74,8 @@ final class CustomerGroupCountDaoTest extends IntegrationTestCase
     #[Test]
     public function inactiveGroupsAreExcluded(): void
     {
-        $this->deleteTableContent('oxobject2group');
-        $this->deleteTableContent('oxgroups');
-
         $this->createGroup(
-            '_tgrp' . substr(uniqid('', true), 0, 22),
+            '_tgrp' . substr(uniqid(''), 0, 22),
             uniqid(),
             active: false,
         );

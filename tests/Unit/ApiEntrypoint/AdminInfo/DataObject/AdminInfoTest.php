@@ -16,27 +16,14 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(AdminInfo::class)]
 final class AdminInfoTest extends TestCase
 {
-    public function testGetEmail(): void
+    public function testStoresEmailAndGreeting(): void
     {
-        $email = uniqid('admin_', true) . '@example.com';
+        $email = uniqid() . '@example.com';
+        $greeting = uniqid();
 
-        $sut = new AdminInfo(
-            email: $email,
-            greeting: uniqid(),
-        );
+        $sut = new AdminInfo(email: $email, greeting: $greeting);
 
         $this->assertSame($email, $sut->getEmail());
-    }
-
-    public function testGetGreeting(): void
-    {
-        $greeting = uniqid('greeting_', true);
-
-        $sut = new AdminInfo(
-            email: uniqid() . '@example.com',
-            greeting: $greeting,
-        );
-
         $this->assertSame($greeting, $sut->getGreeting());
     }
 }

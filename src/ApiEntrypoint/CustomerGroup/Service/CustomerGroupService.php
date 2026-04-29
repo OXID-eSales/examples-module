@@ -24,6 +24,7 @@ readonly class CustomerGroupService implements CustomerGroupServiceInterface
         return $this->groupCountDao->getCustomerGroupCounts();
     }
 
+    // todo-critical: direct usage of interface method is not possible
     public function getTotalCustomerCount(): int
     {
         return array_sum(

@@ -20,7 +20,7 @@ final class AdminInfoServiceTest extends TestCase
 {
     public function testGetAdminInfoReturnsEmail(): void
     {
-        $username = uniqid('admin_', true) . '@example.com';
+        $username = uniqid('admin_') . '@example.com';
 
         $sut = $this->getSut();
 
@@ -29,8 +29,8 @@ final class AdminInfoServiceTest extends TestCase
 
     public function testGetAdminInfoReturnsTranslatedGreetingWithEmail(): void
     {
-        $username = uniqid('admin_', true) . '@example.com';
-        $translatedPattern = uniqid('hello_', true) . ' %s';
+        $username = uniqid('admin_') . '@example.com';
+        $translatedPattern = uniqid('hello_') . ' %s';
 
         $shopAdapterStub = $this->createStub(ShopAdapterInterface::class);
         $shopAdapterStub->method('translateString')
@@ -48,9 +48,10 @@ final class AdminInfoServiceTest extends TestCase
     private function getSut(
         ?ShopAdapterInterface $shopAdapter = null,
     ): AdminInfoService {
+        $shopAdapter ??= $this->createStub(ShopAdapterInterface::class);
+
         return new AdminInfoService(
-            shopAdapter: $shopAdapter
-                ?? $this->createStub(ShopAdapterInterface::class),
+            shopAdapter: $shopAdapter,
         );
     }
 }

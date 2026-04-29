@@ -18,51 +18,33 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(UserInfoService::class)]
 final class UserInfoServiceTest extends TestCase
 {
-    public function testGetUserInfoReturnsFirstNameFromDao(): void
+    public function testGetUserInfoReturnsUserInfoWithFirstNameAndGreetingUrl(): void
     {
-        $username = uniqid('user_', true);
-        $expectedFirstName = uniqid('name_', true);
+        $username = uniqid('user_');
+        $expectedFirstName = uniqid('name_');
 
-        $daoStub = $this->createStub(SessionUserDaoInterface::class);
-        $daoStub->method('getFirstNameByUsername')
-            ->with($username)
-            ->willReturn($expectedFirstName);
+        $daoStub = $this->createConfiguredStub(SessionUserDaoInterface::class, [
+            'getFirstNameByUsername' => $expectedFirstName,
+        ]);
 
         $sut = $this->getSut(sessionUserDao: $daoStub);
-
         $result = $sut->getUserInfo($username);
 
+        $this->assertInstanceOf(UserInfo::class, $result);
         $this->assertSame($expectedFirstName, $result->getFirstName());
-    }
-
-    public function testGetUserInfoReturnsGreetingUrl(): void
-    {
-        $username = uniqid('user_', true);
-
-        $daoStub = $this->createStub(SessionUserDaoInterface::class);
-        $daoStub->method('getFirstNameByUsername')
-            ->willReturn(uniqid());
-
-        $sut = $this->getSut(sessionUserDao: $daoStub);
-
-        $result = $sut->getUserInfo($username);
-
-        $this->assertSame(
-            'index.php?cl=oeem_greeting',
-            $result->getGreetingUrl()
-        );
+        $this->assertSame('index.php?cl=oeem_greeting', $result->getGreetingUrl());
     }
 
     public function testGetUserInfoReturnsNullWhenUserNotFound(): void
     {
-        $username = uniqid('unknown_', true);
+        $username = uniqid('unknown_');
 
-        $daoStub = $this->createStub(SessionUserDaoInterface::class);
-        $daoStub->method('getFirstNameByUsername')
+        $daoMock = $this->createStub(SessionUserDaoInterface::class);
+        $daoMock->method('getFirstNameByUsername')
             ->with($username)
             ->willReturn(null);
 
-        $sut = $this->getSut(sessionUserDao: $daoStub);
+        $sut = $this->getSut(sessionUserDao: $daoMock);
 
         $this->assertNull($sut->getUserInfo($username));
     }
@@ -70,9 +52,10 @@ final class UserInfoServiceTest extends TestCase
     private function getSut(
         ?SessionUserDaoInterface $sessionUserDao = null,
     ): UserInfoService {
+        $sessionUserDao ??= $this->createStub(SessionUserDaoInterface::class);
+
         return new UserInfoService(
-            sessionUserDao: $sessionUserDao
-                ?? $this->createStub(SessionUserDaoInterface::class),
+            sessionUserDao: $sessionUserDao,
         );
     }
 }

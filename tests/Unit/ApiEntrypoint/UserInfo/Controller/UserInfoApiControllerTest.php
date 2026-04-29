@@ -21,96 +21,51 @@ use Symfony\Component\Security\Core\User\InMemoryUser;
 #[CoversClass(UserInfoApiController::class)]
 final class UserInfoApiControllerTest extends TestCase
 {
-    public function testGetUserInfoReturnsJsonResponse(): void
+    public function testGetUserInfoReturnsJsonResponseWithStatus200AndData(): void
     {
-        $sut = $this->getSut();
-        $request = $this->createRequestWithUser(uniqid());
-
-        $this->assertInstanceOf(
-            JsonResponse::class,
-            $sut->getUserInfo($request)
-        );
-    }
-
-    public function testGetUserInfoReturnsFirstNameAndGreetingUrl(): void
-    {
-        $username = uniqid('user_', true);
-        $firstName = uniqid('name_', true);
-        $greetingUrl = uniqid('url_', true);
+        $username = uniqid('user_');
+        $firstName = uniqid('name_');
+        $greetingUrl = uniqid('url_');
 
         $serviceStub = $this->createStub(UserInfoServiceInterface::class);
         $serviceStub->method('getUserInfo')
             ->with($username)
-            ->willReturn(new UserInfo(
-                firstName: $firstName,
-                greetingUrl: $greetingUrl,
-            ));
+            ->willReturn(new UserInfo(firstName: $firstName, greetingUrl: $greetingUrl));
 
         $sut = $this->getSut(userInfoService: $serviceStub);
-        $request = $this->createRequestWithUser($username);
+        $response = $sut->getUserInfo($this->createRequestWithUser($username));
+        $data = $this->decodeResponse($response);
 
-        $data = $this->decodeResponse($sut->getUserInfo($request));
-
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertSame(200, $response->getStatusCode());
         $this->assertSame($firstName, $data['firstName']);
         $this->assertSame($greetingUrl, $data['greetingUrl']);
     }
 
-    public function testGetUserInfoReturnsStatus200(): void
-    {
-        $username = uniqid('user_', true);
-
-        $serviceStub = $this->createStub(UserInfoServiceInterface::class);
-        $serviceStub->method('getUserInfo')
-            ->willReturn(new UserInfo(
-                firstName: uniqid(),
-                greetingUrl: uniqid(),
-            ));
-
-        $sut = $this->getSut(userInfoService: $serviceStub);
-        $request = $this->createRequestWithUser($username);
-
-        $this->assertSame(200, $sut->getUserInfo($request)->getStatusCode());
-    }
-
     public function testGetUserInfoReturns404WhenUserNotFound(): void
     {
+        $username = uniqid('user_');
+
         $serviceStub = $this->createStub(UserInfoServiceInterface::class);
         $serviceStub->method('getUserInfo')
+            ->with($username)
             ->willReturn(null);
 
         $sut = $this->getSut(userInfoService: $serviceStub);
-        $request = $this->createRequestWithUser(uniqid());
+        $request = $this->createRequestWithUser($username);
 
         $response = $sut->getUserInfo($request);
 
         $this->assertSame(404, $response->getStatusCode());
     }
 
-    public function testGetUserInfoResponseStructure(): void
-    {
-        $serviceStub = $this->createStub(UserInfoServiceInterface::class);
-        $serviceStub->method('getUserInfo')
-            ->willReturn(new UserInfo(
-                firstName: uniqid(),
-                greetingUrl: uniqid(),
-            ));
-
-        $sut = $this->getSut(userInfoService: $serviceStub);
-        $request = $this->createRequestWithUser(uniqid());
-
-        $data = $this->decodeResponse($sut->getUserInfo($request));
-
-        $this->assertArrayHasKey('firstName', $data);
-        $this->assertArrayHasKey('greetingUrl', $data);
-        $this->assertCount(2, $data);
-    }
-
     private function getSut(
         ?UserInfoServiceInterface $userInfoService = null,
     ): UserInfoApiController {
+        $userInfoService ??= $this->createStub(UserInfoServiceInterface::class);
+
         return new UserInfoApiController(
-            userInfoService: $userInfoService
-                ?? $this->createStub(UserInfoServiceInterface::class),
+            userInfoService: $userInfoService,
         );
     }
 

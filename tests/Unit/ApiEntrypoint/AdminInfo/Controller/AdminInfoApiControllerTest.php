@@ -21,20 +21,19 @@ use Symfony\Component\Security\Core\User\InMemoryUser;
 #[CoversClass(AdminInfoApiController::class)]
 final class AdminInfoApiControllerTest extends TestCase
 {
-    public function testGetAdminInfoReturnsJsonResponse(): void
+    public function testGetAdminInfoReturnsJsonResponseWithStatus200(): void
     {
-        $sut = $this->getSutWithStubService(uniqid() . '@example.com');
+        $sut = $this->getSut();
+        $response = $sut->getAdminInfo($this->createRequestWithUser(uniqid()));
 
-        $this->assertInstanceOf(
-            JsonResponse::class,
-            $sut->getAdminInfo($this->createRequestWithUser(uniqid()))
-        );
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertSame(200, $response->getStatusCode());
     }
 
     public function testGetAdminInfoReturnsEmailAndGreeting(): void
     {
-        $email = uniqid('admin_', true) . '@example.com';
-        $greeting = uniqid('greeting_', true);
+        $email = uniqid('admin_') . '@example.com';
+        $greeting = uniqid('greeting_');
 
         $serviceStub = $this->createStub(AdminInfoServiceInterface::class);
         $serviceStub->method('getAdminInfo')
@@ -45,55 +44,40 @@ final class AdminInfoApiControllerTest extends TestCase
             ));
 
         $sut = $this->getSut(adminInfoService: $serviceStub);
-        $data = $this->decodeResponse(
-            $sut->getAdminInfo($this->createRequestWithUser($email))
-        );
+
+        $response = $sut->getAdminInfo($this->createRequestWithUser($email));
+        $data = $this->decodeJsonResponse($response);
 
         $this->assertSame($email, $data['email']);
         $this->assertSame($greeting, $data['greeting']);
     }
 
-    public function testGetAdminInfoReturnsStatus200(): void
-    {
-        $sut = $this->getSutWithStubService(uniqid() . '@example.com');
-
-        $this->assertSame(
-            200,
-            $sut->getAdminInfo($this->createRequestWithUser(uniqid()))->getStatusCode()
-        );
-    }
-
     public function testGetAdminInfoResponseStructure(): void
     {
-        $sut = $this->getSutWithStubService(uniqid() . '@example.com');
+        $sut = $this->getSut();
 
-        $data = $this->decodeResponse(
-            $sut->getAdminInfo($this->createRequestWithUser(uniqid()))
-        );
+        $response = $sut->getAdminInfo($this->createRequestWithUser(uniqid()));
+        $data = $this->decodeJsonResponse($response);
 
         $this->assertArrayHasKey('email', $data);
         $this->assertArrayHasKey('greeting', $data);
         $this->assertCount(2, $data);
     }
 
-    private function getSutWithStubService(string $email): AdminInfoApiController
-    {
-        $serviceStub = $this->createStub(AdminInfoServiceInterface::class);
-        $serviceStub->method('getAdminInfo')
-            ->willReturn(new AdminInfo(
-                email: $email,
-                greeting: uniqid(),
-            ));
-
-        return $this->getSut(adminInfoService: $serviceStub);
-    }
-
     private function getSut(
         ?AdminInfoServiceInterface $adminInfoService = null,
     ): AdminInfoApiController {
+        if ($adminInfoService === null) {
+            $adminInfoService = $this->createStub(AdminInfoServiceInterface::class);
+            $adminInfoService->method('getAdminInfo')
+                ->willReturn(new AdminInfo(
+                    email: uniqid() . '@example.com',
+                    greeting: uniqid(),
+                ));
+        }
+
         return new AdminInfoApiController(
-            adminInfoService: $adminInfoService
-                ?? $this->createStub(AdminInfoServiceInterface::class),
+            adminInfoService: $adminInfoService,
         );
     }
 
@@ -106,7 +90,7 @@ final class AdminInfoApiControllerTest extends TestCase
         return $request;
     }
 
-    private function decodeResponse(JsonResponse $response): array
+    private function decodeJsonResponse(JsonResponse $response): array
     {
         return json_decode($response->getContent(), true);
     }

@@ -22,8 +22,8 @@ final class SessionUserDaoTest extends IntegrationTestCase
     #[Test]
     public function returnsFirstNameByUsername(): void
     {
-        $username = uniqid('user_', true) . '@example.com';
-        $firstName = uniqid('name_', true);
+        $username = uniqid('user_') . '@example.com';
+        $firstName = uniqid('name_');
 
         $this->createUser(username: $username, firstName: $firstName);
 
@@ -38,14 +38,14 @@ final class SessionUserDaoTest extends IntegrationTestCase
         $sut = $this->get(SessionUserDaoInterface::class);
 
         $this->assertNull(
-            $sut->getFirstNameByUsername(uniqid('unknown_', true) . '@example.com')
+            $sut->getFirstNameByUsername(uniqid('unknown_') . '@example.com')
         );
     }
 
     #[Test]
     public function returnsEmptyStringWhenFirstNameNotSet(): void
     {
-        $username = uniqid('user_', true) . '@example.com';
+        $username = uniqid('user_') . '@example.com';
 
         $this->createUser(username: $username, firstName: '');
 
@@ -57,7 +57,7 @@ final class SessionUserDaoTest extends IntegrationTestCase
     private function createUser(string $username, string $firstName): void
     {
         $user = oxNew(User::class);
-        $user->setId('_tusr' . substr(uniqid('', true), 0, 22));
+        $user->setId('_tusr' . substr(uniqid(''), 0, 22));
         $user->assign([
             'oxusername' => $username,
             'oxfname' => $firstName,

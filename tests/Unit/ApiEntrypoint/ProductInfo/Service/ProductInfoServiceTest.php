@@ -21,7 +21,7 @@ final class ProductInfoServiceTest extends TestCase
 {
     public function testGetActiveProductCountDelegatesToDao(): void
     {
-        $expectedCount = mt_rand(1, 10000);
+        $expectedCount = mt_rand(0, 3);
 
         $daoStub = $this->createStub(ActiveProductCountDaoInterface::class);
         $daoStub->method('getActiveProductCount')
@@ -32,27 +32,16 @@ final class ProductInfoServiceTest extends TestCase
         $this->assertSame($expectedCount, $sut->getActiveProductCount());
     }
 
-    public function testGetActiveProductCountReturnsZeroWhenNoProducts(): void
-    {
-        $daoStub = $this->createStub(ActiveProductCountDaoInterface::class);
-        $daoStub->method('getActiveProductCount')
-            ->willReturn(0);
-
-        $sut = $this->getSut(productCountDao: $daoStub);
-
-        $this->assertSame(0, $sut->getActiveProductCount());
-    }
-
     public function testGetGreetingMessageTranslatesLanguageConstant(): void
     {
-        $expectedTranslation = uniqid('translation_', true);
+        $expectedTranslation = uniqid('translation_');
 
-        $shopAdapterStub = $this->createStub(ShopAdapterInterface::class);
-        $shopAdapterStub->method('translateString')
+        $shopAdapterMock = $this->createStub(ShopAdapterInterface::class);
+        $shopAdapterMock->method('translateString')
             ->with(ModuleCore::API_HELLO_LANGUAGE_CONST)
             ->willReturn($expectedTranslation);
 
-        $sut = $this->getSut(shopAdapter: $shopAdapterStub);
+        $sut = $this->getSut(shopAdapter: $shopAdapterMock);
 
         $this->assertSame($expectedTranslation, $sut->getGreetingMessage());
     }
@@ -61,11 +50,12 @@ final class ProductInfoServiceTest extends TestCase
         ?ActiveProductCountDaoInterface $productCountDao = null,
         ?ShopAdapterInterface $shopAdapter = null,
     ): ProductInfoService {
+        $productCountDao ??= $this->createStub(ActiveProductCountDaoInterface::class);
+        $shopAdapter ??= $this->createStub(ShopAdapterInterface::class);
+
         return new ProductInfoService(
-            productCountDao: $productCountDao
-                ?? $this->createStub(ActiveProductCountDaoInterface::class),
-            shopAdapter: $shopAdapter
-                ?? $this->createStub(ShopAdapterInterface::class),
+            productCountDao: $productCountDao,
+            shopAdapter: $shopAdapter,
         );
     }
 }

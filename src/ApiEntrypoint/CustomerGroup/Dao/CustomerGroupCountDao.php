@@ -45,13 +45,15 @@ readonly class CustomerGroupCountDao implements CustomerGroupCountDaoInterface
         $result = $queryBuilder->execute();
         $rows = $result->fetchAllAssociative();
 
-        return array_values(array_map(
-            static fn(array $row) => new CustomerGroupCount(
+        $counts = [];
+        foreach ($rows as $row) {
+            $counts[] = new CustomerGroupCount(
                 groupId: $row['groupId'],
                 title: $row['title'],
                 count: (int) $row['customerCount'],
-            ),
-            $rows,
-        ));
+            );
+        }
+
+        return $counts;
     }
 }

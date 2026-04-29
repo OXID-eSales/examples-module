@@ -92,9 +92,10 @@ final class CustomerGroupServiceTest extends TestCase
     private function getSut(
         ?CustomerGroupCountDaoInterface $groupCountDao = null,
     ): CustomerGroupService {
+        $groupCountDao ??= $this->createStub(CustomerGroupCountDaoInterface::class);
+
         return new CustomerGroupService(
-            groupCountDao: $groupCountDao
-                ?? $this->createStub(CustomerGroupCountDaoInterface::class),
+            groupCountDao: $groupCountDao,
         );
     }
 }

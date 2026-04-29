@@ -27,15 +27,17 @@ readonly class CustomerGroupApiController
     {
         $groups = $this->customerGroupService->getCustomerGroupCounts();
 
+        $groupsData = [];
+        foreach ($groups as $group) {
+            $groupsData[] = [
+                'groupId' => $group->getGroupId(),
+                'title' => $group->getTitle(),
+                'count' => $group->getCount(),
+            ];
+        }
+
         return new JsonResponse([
-            'customerGroups' => array_map(
-                static fn($group) => [
-                    'groupId' => $group->getGroupId(),
-                    'title' => $group->getTitle(),
-                    'count' => $group->getCount(),
-                ],
-                $groups,
-            ),
+            'customerGroups' => $groupsData,
             'total' => $this->customerGroupService->getTotalCustomerCount(),
         ]);
     }

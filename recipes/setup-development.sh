@@ -46,10 +46,6 @@ make up
 
 docker compose exec php composer update --no-interaction
 
-perl -pi\
-  -e 'print "SetEnvIf Authorization \"(.*)\" HTTP_AUTHORIZATION=\$1\n\n" if $. == 1'\
-  source/source/.htaccess
-
 $SCRIPT_PATH/parts/shared/setup_database.sh --no-demodata
 
 docker compose exec -T php vendor/bin/oe-console oe:module:install ./

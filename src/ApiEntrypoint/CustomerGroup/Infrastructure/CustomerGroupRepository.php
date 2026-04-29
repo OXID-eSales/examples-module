@@ -11,9 +11,9 @@ namespace OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure;
 
 use Doctrine\DBAL\Result;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\DataObject\CustomerGroupCount;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\DTO\CustomerGroupCount;
 
-readonly class CustomerGroupCountRepository implements CustomerGroupCountRepositoryInterface
+readonly class CustomerGroupRepository implements CustomerGroupRepositoryInterface
 {
     public function __construct(
         private QueryBuilderFactoryInterface $queryBuilderFactory,

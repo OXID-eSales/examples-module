@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\UserInfo\DataObject;
+namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\UserInfo\DTO;
 
-use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\DataObject\UserInfo;
+use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\DTO\UserInfo;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

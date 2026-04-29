@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\UserInfo\Service;
 
 use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Infrastructure\UserRepositoryInterface;
-use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\DataObject\UserInfo;
+use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\DTO\UserInfoInterface;
 use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Service\UserInfoService;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -30,7 +30,7 @@ final class UserInfoServiceTest extends TestCase
         $sut = $this->getSut(userRepository: $repositoryStub);
         $result = $sut->getUserInfo($username);
 
-        $this->assertInstanceOf(UserInfo::class, $result);
+        $this->assertInstanceOf(UserInfoInterface::class, $result);
         $this->assertSame($expectedFirstName, $result->getFirstName());
         $this->assertSame('index.php?cl=oeem_greeting', $result->getGreetingUrl());
     }

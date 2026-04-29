@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\CustomerGroup\Controller;
 
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Controller\CustomerGroupApiController;
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\DataObject\CustomerGroupCount;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\DTO\CustomerGroupCountInterface;
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Service\CustomerGroupServiceInterface;
 use OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\ApiEntrypointTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -30,15 +30,20 @@ final class CustomerGroupApiControllerTest extends ApiEntrypointTestCase
 
     public function testGetCustomerGroupsContainsGroupDataAndTotal(): void
     {
+        $groupId = uniqid('group_');
+        $title = uniqid('title_');
+        $count = mt_rand(1, 500);
+        $total = mt_rand(100, 5000);
+
+        $groupStub = $this->createConfiguredStub(CustomerGroupCountInterface::class, [
+            'getGroupId' => $groupId,
+            'getTitle' => $title,
+            'getCount' => $count,
+        ]);
+
         $serviceStub = $this->createConfiguredStub(CustomerGroupServiceInterface::class, [
-            'getCustomerGroupCounts' => [
-                new CustomerGroupCount(
-                    groupId: $groupId = uniqid('group_'),
-                    title: $title = uniqid('title_'),
-                    count: $count = mt_rand(1, 500)
-                )
-            ],
-            'getTotalCustomerCount' => $total = mt_rand(100, 5000),
+            'getCustomerGroupCounts' => [$groupStub],
+            'getTotalCustomerCount' => $total,
         ]);
 
         $sut = $this->getSut(customerGroupService: $serviceStub);

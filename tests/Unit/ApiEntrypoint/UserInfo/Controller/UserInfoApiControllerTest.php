@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\UserInfo\Controller;
 
 use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Controller\UserInfoApiController;
-use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\DataObject\UserInfo;
+use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\DTO\UserInfoInterface;
 use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Service\UserInfoServiceInterface;
 use OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\ApiEntrypointTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -25,10 +25,15 @@ final class UserInfoApiControllerTest extends ApiEntrypointTestCase
         $firstName = uniqid('name_');
         $greetingUrl = uniqid('url_');
 
+        $userInfoStub = $this->createConfiguredStub(UserInfoInterface::class, [
+            'getFirstName' => $firstName,
+            'getGreetingUrl' => $greetingUrl,
+        ]);
+
         $serviceStub = $this->createStub(UserInfoServiceInterface::class);
         $serviceStub->method('getUserInfo')
             ->with($username)
-            ->willReturn(new UserInfo(firstName: $firstName, greetingUrl: $greetingUrl));
+            ->willReturn($userInfoStub);
 
         $sut = $this->getSut(userInfoService: $serviceStub);
         $response = $sut->getUserInfo($this->createRequestWithUser($username));

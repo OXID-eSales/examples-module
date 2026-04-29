@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\DataObject;
+namespace OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\DTO;
 
-readonly class UserInfo
+readonly class UserInfo implements UserInfoInterface
 {
     public function __construct(
         private string $firstName,

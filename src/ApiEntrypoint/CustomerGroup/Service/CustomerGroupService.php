@@ -9,12 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Service;
 
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure\CustomerGroupCountRepositoryInterface;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure\CustomerGroupRepositoryInterface;
 
 readonly class CustomerGroupService implements CustomerGroupServiceInterface
 {
     public function __construct(
-        private CustomerGroupCountRepositoryInterface $groupCountRepository,
+        private CustomerGroupRepositoryInterface $groupCountRepository,
     ) {
     }
 

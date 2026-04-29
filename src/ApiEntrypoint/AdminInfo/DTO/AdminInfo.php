@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\DataObject;
+namespace OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\DTO;
 
-readonly class AdminInfo
+readonly class AdminInfo implements AdminInfoInterface
 {
     public function __construct(
         private string $email,

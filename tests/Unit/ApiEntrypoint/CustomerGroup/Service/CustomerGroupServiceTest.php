@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\CustomerGroup\Service;
 
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure\CustomerGroupCountRepositoryInterface;
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\DataObject\CustomerGroupCount;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure\CustomerGroupRepositoryInterface;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\DTO\CustomerGroupCountInterface;
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Service\CustomerGroupService;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -21,19 +21,11 @@ final class CustomerGroupServiceTest extends TestCase
     public function testGetCustomerGroupCountsDelegatesToRepository(): void
     {
         $expectedCounts = [
-            new CustomerGroupCount(
-                groupId: uniqid('group_'),
-                title: uniqid('title_'),
-                count: mt_rand(1, 500),
-            ),
-            new CustomerGroupCount(
-                groupId: uniqid('group_'),
-                title: uniqid('title_'),
-                count: mt_rand(1, 500),
-            ),
+            $this->createStub(CustomerGroupCountInterface::class),
+            $this->createStub(CustomerGroupCountInterface::class),
         ];
 
-        $repositoryStub = $this->createStub(CustomerGroupCountRepositoryInterface::class);
+        $repositoryStub = $this->createStub(CustomerGroupRepositoryInterface::class);
         $repositoryStub->method('getCustomerGroupCounts')
             ->willReturn($expectedCounts);
 
@@ -44,7 +36,7 @@ final class CustomerGroupServiceTest extends TestCase
 
     public function testGetCustomerGroupCountsReturnsEmptyArrayWhenNoGroups(): void
     {
-        $repositoryStub = $this->createStub(CustomerGroupCountRepositoryInterface::class);
+        $repositoryStub = $this->createStub(CustomerGroupRepositoryInterface::class);
         $repositoryStub->method('getCustomerGroupCounts')
             ->willReturn([]);
 
@@ -58,20 +50,12 @@ final class CustomerGroupServiceTest extends TestCase
         $count1 = mt_rand(1, 500);
         $count2 = mt_rand(1, 500);
 
-        $repositoryStub = $this->createStub(CustomerGroupCountRepositoryInterface::class);
+        $group1 = $this->createConfiguredStub(CustomerGroupCountInterface::class, ['getCount' => $count1]);
+        $group2 = $this->createConfiguredStub(CustomerGroupCountInterface::class, ['getCount' => $count2]);
+
+        $repositoryStub = $this->createStub(CustomerGroupRepositoryInterface::class);
         $repositoryStub->method('getCustomerGroupCounts')
-            ->willReturn([
-                new CustomerGroupCount(
-                    groupId: uniqid(),
-                    title: uniqid(),
-                    count: $count1,
-                ),
-                new CustomerGroupCount(
-                    groupId: uniqid(),
-                    title: uniqid(),
-                    count: $count2,
-                ),
-            ]);
+            ->willReturn([$group1, $group2]);
 
         $sut = $this->getSut(groupCountRepository: $repositoryStub);
 
@@ -80,7 +64,7 @@ final class CustomerGroupServiceTest extends TestCase
 
     public function testGetTotalCustomerCountReturnsZeroWhenNoGroups(): void
     {
-        $repositoryStub = $this->createStub(CustomerGroupCountRepositoryInterface::class);
+        $repositoryStub = $this->createStub(CustomerGroupRepositoryInterface::class);
         $repositoryStub->method('getCustomerGroupCounts')
             ->willReturn([]);
 
@@ -90,9 +74,9 @@ final class CustomerGroupServiceTest extends TestCase
     }
 
     private function getSut(
-        ?CustomerGroupCountRepositoryInterface $groupCountRepository = null,
+        ?CustomerGroupRepositoryInterface $groupCountRepository = null,
     ): CustomerGroupService {
-        $groupCountRepository ??= $this->createStub(CustomerGroupCountRepositoryInterface::class);
+        $groupCountRepository ??= $this->createStub(CustomerGroupRepositoryInterface::class);
 
         return new CustomerGroupService(
             groupCountRepository: $groupCountRepository,

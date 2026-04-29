@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\DataObject;
+namespace OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\DTO;
 
-readonly class CustomerGroupCount
+readonly class CustomerGroupCount implements CustomerGroupCountInterface
 {
     public function __construct(
         private string $groupId,

@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\Service;
 
-use OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\DataObject\AdminInfo;
+use OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\DTO\AdminInfoInterface;
 
 interface AdminInfoServiceInterface
 {
-    public function getAdminInfo(string $username): AdminInfo;
+    public function getAdminInfo(string $username): AdminInfoInterface;
 }

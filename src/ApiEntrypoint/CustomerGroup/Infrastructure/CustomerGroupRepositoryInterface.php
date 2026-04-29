@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure;
 
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\DataObject\CustomerGroupCount;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\DTO\CustomerGroupCountInterface;
 
-interface CustomerGroupCountRepositoryInterface
+interface CustomerGroupRepositoryInterface
 {
-    /** @return list<CustomerGroupCount> */
+    /** @return list<CustomerGroupCountInterface> */
     public function getCustomerGroupCounts(): array;
 }

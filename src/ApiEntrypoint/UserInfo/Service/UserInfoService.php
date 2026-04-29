@@ -10,7 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Service;
 
 use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Infrastructure\UserRepositoryInterface;
-use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\DataObject\UserInfo;
+use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\DTO\UserInfo;
+use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\DTO\UserInfoInterface;
 
 readonly class UserInfoService implements UserInfoServiceInterface
 {
@@ -21,7 +22,7 @@ readonly class UserInfoService implements UserInfoServiceInterface
     ) {
     }
 
-    public function getUserInfo(string $username): ?UserInfo
+    public function getUserInfo(string $username): ?UserInfoInterface
     {
         $firstName = $this->userRepository->getFirstNameByUsername($username);
 

@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\AdminInfo\Controller;
 
 use OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\Controller\AdminInfoApiController;
-use OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\DataObject\AdminInfo;
+use OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\DTO\AdminInfoInterface;
 use OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\Service\AdminInfoServiceInterface;
 use OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\ApiEntrypointTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -34,12 +34,13 @@ final class AdminInfoApiControllerTest extends ApiEntrypointTestCase
         $greeting = uniqid('greeting_');
 
         $serviceStub = $this->createStub(AdminInfoServiceInterface::class);
+        $adminInfoStub = $this->createConfiguredStub(AdminInfoInterface::class, [
+            'getEmail' => $email,
+            'getGreeting' => $greeting,
+        ]);
         $serviceStub->method('getAdminInfo')
             ->with($email)
-            ->willReturn(new AdminInfo(
-                email: $email,
-                greeting: $greeting,
-            ));
+            ->willReturn($adminInfoStub);
 
         $sut = $this->getSut(adminInfoService: $serviceStub);
 
@@ -68,10 +69,7 @@ final class AdminInfoApiControllerTest extends ApiEntrypointTestCase
         if ($adminInfoService === null) {
             $adminInfoService = $this->createStub(AdminInfoServiceInterface::class);
             $adminInfoService->method('getAdminInfo')
-                ->willReturn(new AdminInfo(
-                    email: uniqid() . '@example.com',
-                    greeting: uniqid(),
-                ));
+                ->willReturn($this->createStub(AdminInfoInterface::class));
         }
 
         return new AdminInfoApiController(

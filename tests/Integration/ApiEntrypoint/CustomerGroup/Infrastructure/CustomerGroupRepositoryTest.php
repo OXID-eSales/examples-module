@@ -11,14 +11,14 @@ namespace OxidEsales\ExamplesModule\Tests\Integration\ApiEntrypoint\CustomerGrou
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure\CustomerGroupCountRepository;
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure\CustomerGroupCountRepositoryInterface;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure\CustomerGroupRepository;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure\CustomerGroupRepositoryInterface;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 
-#[CoversClass(CustomerGroupCountRepository::class)]
-final class CustomerGroupCountRepositoryTest extends IntegrationTestCase
+#[CoversClass(CustomerGroupRepository::class)]
+final class CustomerGroupRepositoryTest extends IntegrationTestCase
 {
     #[Before]
     public function cleanTables(): void
@@ -30,7 +30,7 @@ final class CustomerGroupCountRepositoryTest extends IntegrationTestCase
     #[Test]
     public function returnsEmptyArrayWhenNoActiveGroups(): void
     {
-        $sut = $this->get(CustomerGroupCountRepositoryInterface::class);
+        $sut = $this->get(CustomerGroupRepositoryInterface::class);
 
         $this->assertSame([], $sut->getCustomerGroupCounts());
     }
@@ -42,7 +42,7 @@ final class CustomerGroupCountRepositoryTest extends IntegrationTestCase
         $groupTitle = uniqid('group_');
         $this->createGroup($groupId, $groupTitle);
 
-        $sut = $this->get(CustomerGroupCountRepositoryInterface::class);
+        $sut = $this->get(CustomerGroupRepositoryInterface::class);
 
         $result = $sut->getCustomerGroupCounts();
         $this->assertCount(1, $result);
@@ -65,7 +65,7 @@ final class CustomerGroupCountRepositoryTest extends IntegrationTestCase
             );
         }
 
-        $sut = $this->get(CustomerGroupCountRepositoryInterface::class);
+        $sut = $this->get(CustomerGroupRepositoryInterface::class);
 
         $result = $sut->getCustomerGroupCounts();
         $this->assertSame($userCount, $result[0]->getCount());
@@ -80,7 +80,7 @@ final class CustomerGroupCountRepositoryTest extends IntegrationTestCase
             active: false,
         );
 
-        $sut = $this->get(CustomerGroupCountRepositoryInterface::class);
+        $sut = $this->get(CustomerGroupRepositoryInterface::class);
 
         $this->assertSame([], $sut->getCustomerGroupCounts());
     }

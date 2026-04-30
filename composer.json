@@ -13,7 +13,9 @@
     "require": {
         "php": "^8.3",
         "symfony/filesystem": "^6.4",
-        "ddoe/wysiwyg-editor-module": "dev-b-7.5.x"
+        "ddoe/wysiwyg-editor-module": "dev-b-7.5.x",
+        "oxid-esales/jwt-authentication-component": "dev-b-7.5.x",
+        "oxid-esales/session-authentication-component": "dev-b-7.5.x"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -31,9 +33,7 @@
         "codeception/module-webdriver": "^4.0",
         "oxid-esales/codeception-modules": "dev-b-7.5.x",
         "oxid-esales/codeception-page-objects": "dev-b-7.5.x",
-        "oxid-esales/developer-tools": "dev-b-7.5.x",
-        "oxid-esales/jwt-authentication-component": "dev-b-7.5.x",
-        "oxid-esales/session-authentication-component": "dev-b-7.5.x"
+        "oxid-esales/developer-tools": "dev-b-7.5.x"
     },
     "conflict": {
         "oxid-esales/oxideshop-ce": "<7.5"

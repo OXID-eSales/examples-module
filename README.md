@@ -150,25 +150,27 @@ The repository contains examples of following cases and more:
   * **Public endpoint** — [ProductInfo](src/ApiEntrypoint/ProductInfo/Controller/ProductInfoApiController.php): `GET /api/product-info`
     * No authentication required
     * Returns JSON with active product count of current shop and translated greeting message
-    * Demonstrates `#[Route]` attribute, service injection, DAO pattern, and translation via `ShopAdapterInterface`
+    * Demonstrates:
+      * `#[Route]` attribute
+      * service injection
+      * shop/language-aware database view via `ShopAdapterInterface::generateDatabaseViewName()`
+      * translation via `ShopAdapterInterface`
   * **JWT-protected endpoint** — [CustomerGroup](src/ApiEntrypoint/CustomerGroup/Controller/CustomerGroupApiController.php): `GET /api/customer-groups`
     * Requires `#[IsGranted('ROLE_ADMIN')]` — admin JWT token via `Authorization: Bearer`
-    * Returns customer counts per user group (sensitive business data)
-    * Demonstrates readonly DTO ([CustomerGroupCount](src/ApiEntrypoint/CustomerGroup/DataObject/CustomerGroupCount.php)), LEFT JOIN in DAO
     * Requires `oxid-esales/jwt-authentication-component` — obtain a token via `POST /api/login` (see [JWT component README](https://github.com/OXID-eSales/jwt-authentication-component#login) for details)
+    * Returns customer counts per user group (sensitive business data)
   * **Frontend session endpoint** — [UserInfo](src/ApiEntrypoint/UserInfo/Controller/UserInfoApiController.php): `GET /api/user-info`
     * Requires `#[SessionUser]` — active frontend session (`sid` cookie)
+    * Requires `oxid-esales/session-authentication-component`
     * Returns logged-in user's first name and greeting controller URL
     * Demonstrates storefront AJAX use case: [header button](views/twig/extensions/themes/default/layout/header.html.twig) fetches endpoint and shows personalized greeting link
-    * Requires `oxid-esales/session-authentication-component`
   * **Admin session endpoint** — [AdminInfo](src/ApiEntrypoint/AdminInfo/Controller/AdminInfoApiController.php): `GET /api/admin-info`
     * Requires `#[AdminSessionUser(roles: ['ROLE_ADMIN'])]` — active admin session (`admin_sid` cookie)
+    * Requires `oxid-esales/session-authentication-component`
     * Returns translated greeting with admin email (e.g. "Hello, Admin admin@example.com")
     * Demonstrates admin AJAX use case: [admin header greeting](views/twig/extensions/themes/admin_twig/include/header_links.html.twig)
-    * Requires `oxid-esales/session-authentication-component`
-  * Each example follows the same layered structure: Controller → Service (interface) → DAO (interface) → DataObject
-  * [Service wiring](src/ApiEntrypoint/ProductInfo/services.yaml) — public controller, private service and DAO
-
+  * Each example follows a layered structure with interfaces at every boundary (Controller → Service → Repository → DTO where applicable)
+  
 **HINTS**:
 * Only extend the shop core if there is no other way like listen and handle shop events,
   decorate/replace some DI service.

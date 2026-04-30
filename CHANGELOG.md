@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - `ddoe/wysiwyg-editor-module` dependency
 - Example of extending another module's Twig blocks - customizing the Summernote WYSIWYG editor with additional plugins and options
+- API Entrypoint examples
 
 ## [v2.0.0] - 2025-11-27
 

@@ -1,0 +1,39 @@
+{% extends "layout/header.html.twig" %}
+
+{% block dd_layout_page_header_icon_menu_account %}
+    {{ parent() }}
+
+    {% if oxcmp_user %}
+        <span id="oeem-greeting-btn-wrapper" class="d-none">
+            <a id="oeem-greeting-btn"
+               class="btn btn-sm btn-outline-primary ms-2"
+               href="">
+                {{ translate({ ident: "OEEXAMPLESMODULE_GREETING_UPDATE" }) }}
+            </a>
+        </span>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                fetch('/api/user-info?stoken={{ oViewConf.getSessionChallengeToken() }}', {
+                    credentials: 'same-origin',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(function (response) {
+                    if (!response.ok) return;
+                    return response.json();
+                })
+                .then(function (data) {
+                    if (!data) return;
+                    var wrapper = document.getElementById('oeem-greeting-btn-wrapper');
+                    var btn = document.getElementById('oeem-greeting-btn');
+                    btn.textContent = data.firstName;
+                    btn.href = data.greetingUrl;
+                    wrapper.classList.remove('d-none');
+                })
+                .catch(function () {});
+            });
+        </script>
+    {% endif %}
+{% endblock %}

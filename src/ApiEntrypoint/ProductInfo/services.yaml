@@ -1,0 +1,13 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Infrastructure\ProductRepositoryInterface:
+    class: OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Infrastructure\ProductRepository
+
+  OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Service\ProductInfoServiceInterface:
+    class: OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Service\ProductInfoService
+
+  OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Controller\ProductInfoApiController:
+    public: true

@@ -1,0 +1,30 @@
+{% extends "include/header_links.html.twig" %}
+
+{% block admin_header_links %}
+    <li>
+        <span id="oeem-admin-greeting" class="rc">
+        </span>
+    </li>
+    {{ parent() }}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('/api/admin-info?stoken={{ oViewConf.getSessionChallengeToken() }}', {
+                credentials: 'same-origin',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(function (response) {
+                if (!response.ok) return;
+                return response.json();
+            })
+            .then(function (data) {
+                if (!data) return;
+                var el = document.getElementById('oeem-admin-greeting');
+                el.textContent = data.greeting;
+            })
+            .catch(function () {});
+        });
+    </script>
+{% endblock %}

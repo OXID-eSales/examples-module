@@ -1,0 +1,13 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Infrastructure\UserRepositoryInterface:
+    class: OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Infrastructure\UserRepository
+
+  OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Service\UserInfoServiceInterface:
+    class: OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Service\UserInfoService
+
+  OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Controller\UserInfoApiController:
+    public: true

@@ -28,4 +28,6 @@ $aLang = [
     'SHOP_MODULE_oeexamplesmodule_Categories' => 'Kategorien hinzufügen',
     'SHOP_MODULE_oeexamplesmodule_Channels' => 'Kanäle hinzufügen',
     'SHOP_MODULE_oeexamplesmodule_Password' => 'Kennwort',
+
+    'OEEXAMPLESMODULE_ADMIN_HELLO' => 'Hallo, Admin %s',
 ];

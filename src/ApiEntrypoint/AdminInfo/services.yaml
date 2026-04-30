@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\Service\AdminInfoServiceInterface:
+    class: OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\Service\AdminInfoService
+
+  OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\Controller\AdminInfoApiController:
+    public: true

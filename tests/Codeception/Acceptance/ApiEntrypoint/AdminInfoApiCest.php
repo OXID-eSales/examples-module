@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tests\Codeception\Acceptance;
+namespace OxidEsales\ExamplesModule\Tests\Codeception\Acceptance\ApiEntrypoint;
 
 use Codeception\Attribute\Group;
 use Codeception\Util\Fixtures;
@@ -59,12 +59,12 @@ final class AdminInfoApiCest
         $I->openShop();
         $I->waitForPageLoad();
 
-        $response = $I->executeAsyncJS(
-            "var callback = arguments[arguments.length - 1];"
-            . "fetch('/api/admin-info')"
-            . ".then(function(r) { callback({status: r.status}); })"
-            . ".catch(function(e) { callback({status: 0}); });"
-        );
+        $response = $I->executeAsyncJS(<<<JS
+            var done = arguments[arguments.length - 1]; // WebDriver injects the callback as the last argument
+            fetch('/api/admin-info')
+            .then(function(r) { done({status: r.status}); })
+            .catch(function(e) { done({status: 0}); });
+            JS);
 
         $I->assertSame(401, $response['status']);
     }

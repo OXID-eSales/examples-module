@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tests\Codeception\Acceptance;
+namespace OxidEsales\ExamplesModule\Tests\Codeception\Acceptance\ApiEntrypoint;
 
 use Codeception\Attribute\Group;
 use Codeception\Util\Fixtures;

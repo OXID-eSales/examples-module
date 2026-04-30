@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tests\Codeception\Acceptance;
+namespace OxidEsales\ExamplesModule\Tests\Codeception\Acceptance\ApiEntrypoint;
 
 use Codeception\Attribute\Group;
 use OxidEsales\ExamplesModule\Tests\Codeception\Support\AcceptanceTester;
@@ -60,18 +60,20 @@ final class ProductInfoApiCest
 
     private function fetchApi(AcceptanceTester $I, string $path): array
     {
-        return $I->executeAsyncJS(
-            "var callback = arguments[arguments.length - 1];"
-            . "fetch('" . $path . "')"
-            . ".then(function(r) {"
-            . "  var status = r.status;"
-            . "  return r.json().then(function(b) {"
-            . "    callback({status: status, body: b});"
-            . "  });"
-            . "})"
-            . ".catch(function(e) {"
-            . "  callback({status: 0, body: {error: e.message}});"
-            . "});"
-        );
+        return $I->executeAsyncJS(<<<JS
+            // WebDriver injects the completion callback as the last argument
+            var done = arguments[arguments.length - 1];
+
+            fetch('$path')
+            .then(function(r) {
+                var status = r.status;
+                return r.json().then(function(b) {
+                    done({status: status, body: b});
+                });
+            })
+            .catch(function(e) {
+                done({status: 0, body: {error: e.message}});
+            });
+            JS);
     }
 }

@@ -15,7 +15,7 @@ use OxidEsales\ExamplesModule\Tests\Codeception\Support\AcceptanceTester;
 
 #[Group('oe_examples_module')]
 #[Group('oe_examples_module_api')]
-final class CustomerGroupApiCest
+final class CustomerInfoApiCest
 {
     public function testCustomerGroupsRejectsUnauthenticatedRequest(
         AcceptanceTester $I

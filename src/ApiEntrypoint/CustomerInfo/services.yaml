@@ -1,0 +1,13 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Infrastructure\CustomerGroupRepositoryInterface:
+    class: OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Infrastructure\CustomerGroupRepository
+
+  OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Service\CustomerGroupServiceInterface:
+    class: OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Service\CustomerGroupService
+
+  OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Controller\CustomerGroupApiController:
+    public: true

@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Service;
+namespace OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Service;
 
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure\CustomerGroupRepositoryInterface;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Infrastructure\CustomerGroupRepositoryInterface;
 
 readonly class CustomerGroupService implements CustomerGroupServiceInterface
 {

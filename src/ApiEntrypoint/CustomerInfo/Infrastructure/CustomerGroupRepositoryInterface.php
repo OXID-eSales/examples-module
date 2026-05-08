@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure;
+namespace OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Infrastructure;
 
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\DTO\CustomerGroupCountInterface;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\DTO\CustomerGroupCountInterface;
 
 interface CustomerGroupRepositoryInterface
 {

@@ -7,11 +7,11 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\CustomerGroup\Service;
+namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\CustomerInfo\Service;
 
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Infrastructure\CustomerGroupRepositoryInterface;
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\DTO\CustomerGroupCountInterface;
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Service\CustomerGroupService;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Infrastructure\CustomerGroupRepositoryInterface;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\DTO\CustomerGroupCountInterface;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Service\CustomerGroupService;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

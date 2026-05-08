@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\DTO;
+namespace OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\DTO;
 
 readonly class CustomerGroupCount implements CustomerGroupCountInterface
 {

@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Controller;
+namespace OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Controller;
 
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Service\CustomerGroupServiceInterface;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Service\CustomerGroupServiceInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;

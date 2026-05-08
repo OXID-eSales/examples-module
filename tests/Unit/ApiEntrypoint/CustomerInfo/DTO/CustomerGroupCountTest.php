@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\CustomerGroup\DTO;
+namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\CustomerInfo\DTO;
 
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\DTO\CustomerGroupCount;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\DTO\CustomerGroupCount;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

@@ -7,11 +7,11 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\CustomerGroup\Controller;
+namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\CustomerInfo\Controller;
 
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Controller\CustomerGroupApiController;
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\DTO\CustomerGroupCountInterface;
-use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerGroup\Service\CustomerGroupServiceInterface;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Controller\CustomerGroupApiController;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\DTO\CustomerGroupCountInterface;
+use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Service\CustomerGroupServiceInterface;
 use OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\ApiEntrypointTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\HttpFoundation\JsonResponse;

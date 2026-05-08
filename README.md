@@ -155,10 +155,10 @@ The repository contains examples of following cases and more:
       * service injection
       * shop/language-aware database view via `ShopAdapterInterface::generateDatabaseViewName()`
       * translation via `ShopAdapterInterface`
-  * **JWT-protected endpoint** — [CustomerGroup](src/ApiEntrypoint/CustomerGroup/Controller/CustomerGroupApiController.php): `GET /api/customer-groups`
-    * Requires `#[IsGranted('ROLE_ADMIN')]` — admin JWT token via `Authorization: Bearer`
+  * **JWT-protected endpoints** — [CustomerInfo](src/ApiEntrypoint/CustomerInfo/):
     * Requires `oxid-esales/jwt-authentication-component` — obtain a token via `POST /api/login` (see [JWT component README](https://github.com/OXID-eSales/jwt-authentication-component#login) for details)
-    * Returns customer counts per user group (sensitive business data)
+    * [`GET /api/customer-groups`](src/ApiEntrypoint/CustomerInfo/Controller/CustomerGroupApiController.php) — requires `ROLE_ADMIN`, returns customer counts per user group
+    * [`GET /api/customer-info`](src/ApiEntrypoint/CustomerInfo/Controller/CustomerInfoApiController.php) — requires `ROLE_USER`, returns the authenticated user's ID and email directly from the token; demonstrates `#[CurrentUser]` attribute injecting `ApiUser` as a method parameter without a service layer
   * **Frontend session endpoint** — [UserInfo](src/ApiEntrypoint/UserInfo/Controller/UserInfoApiController.php): `GET /api/user-info`
     * Requires `#[SessionUser]` — active frontend session (`sid` cookie)
     * Requires `oxid-esales/session-authentication-component`

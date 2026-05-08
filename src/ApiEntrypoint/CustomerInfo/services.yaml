@@ -11,3 +11,6 @@ services:
 
   OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Controller\CustomerGroupApiController:
     public: true
+
+  OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Controller\CustomerInfoApiController:
+    public: true

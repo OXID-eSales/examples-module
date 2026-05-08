@@ -52,6 +52,40 @@ final class CustomerInfoApiCest
         $I->assertArrayHasKey('total', $response['body']);
     }
 
+    public function testCustomerInfoRejectsUnauthenticatedRequest(
+        AcceptanceTester $I
+    ): void {
+        $I->wantToTest('customer-info rejects unauthenticated requests');
+
+        $I->openShop();
+        $I->waitForPageLoad();
+
+        $response = $this->fetchApi($I, '/api/customer-info');
+
+        $I->assertSame(401, $response['status']);
+    }
+
+    public function testCustomerInfoReturnsDataWithUserToken(
+        AcceptanceTester $I
+    ): void {
+        $I->wantToTest('customer-info returns authenticated user data');
+
+        $I->openShop();
+        $I->waitForPageLoad();
+
+        $user = Fixtures::get('user');
+        $token = $this->loginViaApi($I, $user['email'], $user['password']);
+
+        $response = $this->fetchApiWithToken(
+            $I,
+            '/api/customer-info',
+            $token
+        );
+
+        $I->assertSame(200, $response['status']);
+        $I->assertArrayHasKey('userId', $response['body']);
+        $I->assertSame($user['email'], $response['body']['email']);
+    }
 
     private function loginViaApi(
         AcceptanceTester $I,

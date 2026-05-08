@@ -198,7 +198,7 @@ installation/usage methods.
 This module is in working state and can be directly installed via composer:
 ```
 composer require oxid-esales/examples-module
-./vendor/bin/oe-eshop-doctrine_migration migrations:migrate oe_examples_module
+./vendor/bin/oe-eshop-db_migrate migrations:migrate oe_examples_module
 ```
 
 and [activate the module](https://docs.oxid-esales.com/developer/en/latest/development/modules_components_themes/module/installation_setup/setup.html#setup-activation).
@@ -263,16 +263,16 @@ The examples module is intended to act as a tutorial module so keep your eyes op
 * migrations are intended to bump the database (and eventual existing data) to a new module version (this also goes for first time installation).
 * ensure migrations are stable against rerun
 
-Migrations have to be run via console command (`./vendor/bin/oe-eshop-doctrine_migration`)
+Migrations have to be run via console command (`./vendor/bin/oe-eshop-db_migrate`)
 
 ```bash
-./vendor/bin/oe-eshop-doctrine_migration migrations:migrate oe_examples_module
+./vendor/bin/oe-eshop-db_migrate migrations:migrate oe_examples_module
 ```
 
 NOTE: Existing migrations must not be changed. If the database needs a change, add a new migration file and change to your needs:
 
 ```bash
-./vendor/bin/oe-eshop-doctrine_migration migrations:generate oe_examples_module
+./vendor/bin/oe-eshop-db_migrate migrations:generate oe_examples_module
 ```
 
 For more information, check the [developer documentation](https://docs.oxid-esales.com/developer/en/latest/development/tell_me_about/migrations.html).

@@ -49,7 +49,7 @@ docker compose exec php composer update --no-interaction
 $SCRIPT_PATH/parts/shared/setup_database.sh --no-demodata
 
 docker compose exec -T php vendor/bin/oe-console oe:module:install ./
-docker compose exec -T php vendor/bin/oe-eshop-doctrine_migration migrations:migrate
+docker compose exec -T php vendor/bin/oe-eshop-db_migrate migrations:migrate
 docker compose exec -T php vendor/bin/oe-eshop-db_views_generate
 
 docker compose exec -T php vendor/bin/oe-console oe:module:activate oe_examples_module

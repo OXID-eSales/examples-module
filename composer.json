@@ -90,15 +90,5 @@
             "oxid-esales/oxideshop-composer-plugin": true,
             "oxid-esales/oxideshop-unified-namespace-generator": true
         }
-    },
-    "repositories": {
-        "oxid-esales/jwt-authentication-component": {
-            "type": "git",
-            "url": "https://github.com/OXID-eSales/jwt-authentication-component"
-        },
-        "oxid-esales/session-authentication-component": {
-            "type": "git",
-            "url": "https://github.com/OXID-eSales/session-authentication-component"
-        }
     }
 }

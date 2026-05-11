@@ -1,0 +1,13 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  OxidEsales\ExamplesModule\Greeting\Twig\Extension\ExampleLogicInterface:
+    class: OxidEsales\ExamplesModule\Greeting\Twig\Extension\ExampleLogic
+    public: true
+
+  OxidEsales\ExamplesModule\Greeting\Twig\Extension\ExampleExtension:
+    tags: [ 'twig.extension' ]
+    arguments:
+      $container: '@service_container'

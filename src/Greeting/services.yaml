@@ -1,5 +1,6 @@
 imports:
   - { resource: Infrastructure/services.yaml }
+  - { resource: Twig/services.yaml }
 
 services:
   _defaults:

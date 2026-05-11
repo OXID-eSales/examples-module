@@ -119,6 +119,8 @@ The repository contains examples of following cases and more:
 
 * Templates
   * [creating templates for your module](views/twig/templates/greetingtemplate.html.twig)
+    * demonstrates usage of a [custom Twig function](src/Greeting/Twig/Extension/ExampleExtension.php) registered via `twig.extension` tag — `{{ example('some param') }}`
+    * the function delegates to [ExampleLogicInterface](src/Greeting/Twig/Extension/ExampleLogicInterface.php) — a dedicated service registered in DI, meaning it can have its own dependencies injected
   * [extending of oxid theme templates or blocks](views/twig/extensions/themes)
     * extending a shop admin template block (`admin_user_main_form` - only an extension of a block, without functionality)
     * extending a shop template block (`start_newest_articles`)

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Updated for OXID eShop 7.5.x compatibility
 - PHP 8.3-8.5 support (removed PHP 8.2)
+- README and dev recipes now invoke the `oe-eshop-db_migrate` console binary instead of the legacy `oe-eshop-doctrine_migration` name
 
 ### Added
 - `ddoe/wysiwyg-editor-module` dependency

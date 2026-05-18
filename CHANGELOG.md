@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [v2.1.0] - Unreleased
+## [v2.1.0] - 2026-05-18
 
 ### Changed
 - Updated for OXID eShop 7.5.x compatibility
@@ -44,4 +44,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - The module is extracted from the [Module template](https://github.com/OXID-eSales/module-template) repository.
 
+[v2.1.0]: https://github.com/OXID-eSales/examples-module/compare/v2.0.0...v2.1.0
 [v2.0.0]: https://github.com/OXID-eSales/examples-module/compare/v1.0.0...v2.0.0

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `ddoe/wysiwyg-editor-module` dependency
 - Example of extending another module's Twig blocks - customizing the Summernote WYSIWYG editor with additional plugins and options
 - API Entrypoint examples
+- Example of a Twig extension exposing a custom function (`ExampleExtension` / `ExampleLogic`) used in the greeting template
 
 ## [v2.0.0] - 2025-11-27
 

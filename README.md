@@ -1,6 +1,6 @@
 # OXID eShop Examples Module
 
-[![Development](https://github.com/OXID-eSales/examples-module/actions/workflows/trigger.yaml/badge.svg?branch=b-7.5.x)](https://github.com/OXID-eSales/examples-module/actions/workflows/trigger.yaml)
+[![Development](https://github.com/OXID-eSales/examples-module/actions/workflows/trigger.yaml/badge.svg?branch=b-7.6.x)](https://github.com/OXID-eSales/examples-module/actions/workflows/trigger.yaml)
 [![Latest Version](https://img.shields.io/packagist/v/OXID-eSales/examples-module?logo=composer&label=latest&include_prereleases&color=orange)](https://packagist.org/packages/oxid-esales/examples-module)
 [![PHP Version](https://img.shields.io/packagist/php-v/oxid-esales/examples-module)](https://github.com/oxid-esales/examples-module)
 
@@ -28,6 +28,7 @@ This module also comes with all the quality tools OXID recommends to use.
 
 ## Branch compatibility
 
+* b-7.6.x branch and v2.2+ releases - compatible with OXID eShop compilation 7.6.x and the respective branch
 * b-7.5.x branch and v2.1+ releases - compatible with OXID eShop compilation 7.5.x and the respective branch
 * b-7.4.x branch and v2.0.x releases - compatible with OXID eShop compilation 7.4.x and the respective branch
 * b-7.3.x branch and v1.x releases - compatible with OXID eShop compilation 7.3.x and the respective branch

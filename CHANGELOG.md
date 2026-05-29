@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Update module to work with OXID eShop 7.6
 
+## [v2.1.1] - 2026-05-29
+
+### Changed
+- Allow both dev and tagged versions for component dependencies
+
 ## [v2.1.0] - 2026-05-18
 
 ### Changed

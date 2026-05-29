@@ -90,16 +90,16 @@ We would like to encourage following ideas and principles in module development:
 
 The repository contains examples of following cases and more:
 
-* [Extending of shop controllers and models](https://github.com/OXID-eSales/examples-module/blob/b-7.5.x/metadata.php#L25)
+* [Extending of shop controllers and models](https://github.com/OXID-eSales/examples-module/blob/b-7.6.x/metadata.php#L25)
   * extending a shop model (`OxidEsales\ExamplesModule\Extension\Model\User`) / (`OxidEsales\ExamplesModule\Extension\Model\Basket`)
   * extending a shop controller (`OxidEsales\ExamplesModule\Extension\Controller\StartController`)
 
-* [Controllers as service](https://github.com/OXID-eSales/examples-module/blob/b-7.5.x/src/Greeting/services.yaml#L34)
+* [Controllers as service](https://github.com/OXID-eSales/examples-module/blob/b-7.6.x/src/Greeting/services.yaml#L34)
   * own module controller (`oeem_greeting` with own template and own translations)
   * own module admin controller (`oeem_admin_greeting` with own template and own translations)
 
 * [Using Symfony DI](services.yaml)
-  * [Injection of Registry classes with bind](https://github.com/OXID-eSales/examples-module/blob/b-7.5.x/services.yaml#L16)
+  * [Injection of Registry classes with bind](https://github.com/OXID-eSales/examples-module/blob/b-7.6.x/services.yaml#L16)
   * [Service decoration](src/Greeting/Service/Decorator/GreetingValidationDecorator.php) - shows how to decorate services
     * Note: While the example uses validation/truncation for simplicity, better use cases include logging, caching, performance monitoring, or audit trails
     * [Decorator registration](src/Greeting/services.yaml) - using `decorates:` in DI configuration
@@ -116,7 +116,7 @@ The repository contains examples of following cases and more:
     * [UserRepository](src/Greeting/Infrastructure/Repository/UserRepository.php) - loading shop user with model example
     * [TrackerRepository](src/Tracker/Infrastructure/Repository/TrackerRepository.php) - more comprehensive example showing dependencies and DTO usage
 
-* [Various types of module settings](https://github.com/OXID-eSales/examples-module/blob/b-7.5.x/metadata.php#L38)
+* [Various types of module settings](https://github.com/OXID-eSales/examples-module/blob/b-7.6.x/metadata.php#L38)
 
 * Templates
   * [creating templates for your module](views/twig/templates/greetingtemplate.html.twig)
@@ -140,7 +140,7 @@ The repository contains examples of following cases and more:
     * [Dispatching the event](src/ProductVote/Service/VoteService.php) - triggering events from services
 
 * Testing your module backend and frontend part
-  * [Composer aliases for easy running of tests and quality tools](https://github.com/OXID-eSales/examples-module/blob/b-7.5.x/composer.json#L49)
+  * [Composer aliases for easy running of tests and quality tools](https://github.com/OXID-eSales/examples-module/blob/b-7.6.x/composer.json#L49)
   * [Using the github actions as CI tool with all recommended tools preconfigured for you.](.github)
 
 * [Using variables from .env file](.env)
@@ -231,7 +231,7 @@ In case of different environment usage, please adjust by your own needs.
 ## Development installation on OXID eShop SDK
 
 The installation instructions below are shown for the current [SDK](https://github.com/OXID-eSales/docker-eshop-sdk)
-for shop 7.5. Make sure your system meets the requirements of the SDK.
+for shop 7.6. Make sure your system meets the requirements of the SDK.
 
 0. Ensure all docker containers are down to avoid port conflicts
 
@@ -242,7 +242,7 @@ echo MyProject && git clone https://github.com/OXID-eSales/docker-eshop-sdk.git 
 
 2. Clone the repository to the source directory
 ```shell
-git clone --recurse-submodules https://github.com/OXID-eSales/examples-module.git --branch=b-7.5.x ./source
+git clone --recurse-submodules https://github.com/OXID-eSales/examples-module.git --branch=b-7.6.x ./source
 ```
 
 3. Run the recipe to setup the development environment, you can decide which shop edition to install. Omitting the flag installs EE.

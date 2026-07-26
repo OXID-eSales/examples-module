@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Application\Model\Article as EshopModelArticle;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\ExamplesModule\Extension\Model\Basket;
 use OxidEsales\ExamplesModule\Logging\Service\BasketProductLoggerServiceInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(Basket::class)]
@@ -42,6 +43,7 @@ final class BasketTest extends IntegrationTestCase
         $product->save();
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testAddToBasket(): void
     {
         $loggerSpy = $this->createMock(BasketProductLoggerServiceInterface::class);

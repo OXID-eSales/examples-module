@@ -38,17 +38,17 @@ final class GreetingValidationDecoratorTest extends TestCase
     public function getGreetingDelegatesToInnerService(): void
     {
         $expectedGreeting = uniqid('greeting');
-        $userMock = $this->createMock(User::class);
+        $userStub = $this->createStub(User::class);
 
         $innerService = $this->createMock(GreetingMessageServiceInterface::class);
         $innerService->expects($this->once())
             ->method('getGreeting')
-            ->with($userMock)
+            ->with($userStub)
             ->willReturn($expectedGreeting);
 
         $sut = $this->getSut(originalService: $innerService);
 
-        $this->assertSame($expectedGreeting, $sut->getGreeting($userMock));
+        $this->assertSame($expectedGreeting, $sut->getGreeting($userStub));
     }
 
     #[Test]

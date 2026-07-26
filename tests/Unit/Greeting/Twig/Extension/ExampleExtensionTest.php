@@ -23,7 +23,7 @@ final class ExampleExtensionTest extends TestCase
     {
         $logicStub = $this->createStub(ExampleLogicInterface::class);
 
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
         $container->method('get')
             ->willReturnMap([
                 [ExampleLogicInterface::class, $logicStub],

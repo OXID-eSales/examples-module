@@ -11,12 +11,11 @@ namespace OxidEsales\ExamplesModule\Tests\Unit\Greeting\Infrastructure\Factory;
 
 use OxidEsales\ExamplesModule\Extension\Model\UserInterface;
 use OxidEsales\ExamplesModule\Greeting\Infrastructure\Factory\UserModelFactory;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \OxidEsales\ExamplesModule\Greeting\Infrastructure\Factory\UserModelFactory
- */
+#[CoversClass(UserModelFactory::class)]
 class UserModelFactoryTest extends TestCase
 {
     #[Test]

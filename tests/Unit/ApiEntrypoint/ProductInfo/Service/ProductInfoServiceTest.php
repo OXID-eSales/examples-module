@@ -36,8 +36,9 @@ final class ProductInfoServiceTest extends TestCase
     {
         $expectedTranslation = uniqid('translation_');
 
-        $shopAdapterMock = $this->createStub(ShopAdapterInterface::class);
-        $shopAdapterMock->method('translateString')
+        $shopAdapterMock = $this->createMock(ShopAdapterInterface::class);
+        $shopAdapterMock->expects($this->once())
+            ->method('translateString')
             ->with(ModuleCore::API_HELLO_LANGUAGE_CONST)
             ->willReturn($expectedTranslation);
 

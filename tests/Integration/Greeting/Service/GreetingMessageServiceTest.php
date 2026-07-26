@@ -28,7 +28,7 @@ final class GreetingMessageServiceTest extends TestCase
     {
         $sut = $this->getSut(
             greetingSettings: $greetingSettingsStub = $this->createStub(GreetingSettingsInterface::class),
-            shopAdapter: $shopAdapterStub = $this->createStub(ShopAdapterInterface::class),
+            shopAdapter: $shopAdapterMock = $this->createMock(ShopAdapterInterface::class),
         );
 
         $greetingSettingsStub->method('getGreetingMode')
@@ -40,7 +40,8 @@ final class GreetingMessageServiceTest extends TestCase
         $userStub->method('getPersonalGreeting')->willReturn($personalGreeting);
 
         $expectedTranslation = 'translatedGreeting';
-        $shopAdapterStub->method('translateString')
+        $shopAdapterMock->expects($this->once())
+            ->method('translateString')
             ->with($personalGreeting)
             ->willReturn($expectedTranslation);
 

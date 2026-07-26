@@ -47,10 +47,10 @@ final class UserRepositoryTest extends TestCase
     public function getActiveUserReturnsUserIfLoadingSuccessful(): void
     {
         $userModelFactoryMock = $this->createConfiguredStub(UserModelFactoryInterface::class, [
-            'create' => $userModelMock = $this->createMock(User::class),
+            'create' => $userModelStub = $this->createStub(User::class),
         ]);
 
-        $userModelMock->method('loadActiveUser')->willReturn(true);
+        $userModelStub->method('loadActiveUser')->willReturn(true);
 
         $sut = $this->getSut(
             userModelFactory: $userModelFactoryMock
@@ -58,7 +58,7 @@ final class UserRepositoryTest extends TestCase
 
         $result = $sut->getActiveUser();
 
-        $this->assertSame($userModelMock, $result);
+        $this->assertSame($userModelStub, $result);
         $this->assertInstanceOf(UserInterface::class, $result);
     }
 
@@ -66,10 +66,10 @@ final class UserRepositoryTest extends TestCase
     public function getActiveUserThrowsExceptionIfLoadingNotSuccessful(): void
     {
         $userModelFactoryMock = $this->createConfiguredStub(UserModelFactoryInterface::class, [
-            'create' => $userModelMock = $this->createMock(User::class),
+            'create' => $userModelStub = $this->createStub(User::class),
         ]);
 
-        $userModelMock->method('loadActiveUser')->willReturn(false);
+        $userModelStub->method('loadActiveUser')->willReturn(false);
 
         $sut = $this->getSut(
             userModelFactory: $userModelFactoryMock

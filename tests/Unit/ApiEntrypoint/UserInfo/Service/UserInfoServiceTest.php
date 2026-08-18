@@ -39,12 +39,13 @@ final class UserInfoServiceTest extends TestCase
     {
         $username = uniqid('unknown_');
 
-        $repositoryStub = $this->createStub(UserRepositoryInterface::class);
-        $repositoryStub->method('getFirstNameByUsername')
+        $repositoryMock = $this->createMock(UserRepositoryInterface::class);
+        $repositoryMock->expects($this->once())
+            ->method('getFirstNameByUsername')
             ->with($username)
             ->willReturn(null);
 
-        $sut = $this->getSut(userRepository: $repositoryStub);
+        $sut = $this->getSut(userRepository: $repositoryMock);
 
         $this->assertNull($sut->getUserInfo($username));
     }

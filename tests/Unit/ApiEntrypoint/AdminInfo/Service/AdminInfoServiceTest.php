@@ -32,12 +32,13 @@ final class AdminInfoServiceTest extends TestCase
         $username = uniqid('admin_') . '@example.com';
         $translatedPattern = uniqid('hello_') . ' %s';
 
-        $shopAdapterStub = $this->createStub(ShopAdapterInterface::class);
-        $shopAdapterStub->method('translateString')
+        $shopAdapterMock = $this->createMock(ShopAdapterInterface::class);
+        $shopAdapterMock->expects($this->once())
+            ->method('translateString')
             ->with(ModuleCore::ADMIN_HELLO_LANGUAGE_CONST)
             ->willReturn($translatedPattern);
 
-        $sut = $this->getSut(shopAdapter: $shopAdapterStub);
+        $sut = $this->getSut(shopAdapter: $shopAdapterMock);
 
         $this->assertSame(
             sprintf($translatedPattern, $username),

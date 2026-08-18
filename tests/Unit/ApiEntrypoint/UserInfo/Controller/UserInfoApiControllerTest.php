@@ -30,12 +30,13 @@ final class UserInfoApiControllerTest extends ApiEntrypointTestCase
             'getGreetingUrl' => $greetingUrl,
         ]);
 
-        $serviceStub = $this->createStub(UserInfoServiceInterface::class);
-        $serviceStub->method('getUserInfo')
+        $serviceMock = $this->createMock(UserInfoServiceInterface::class);
+        $serviceMock->expects($this->once())
+            ->method('getUserInfo')
             ->with($username)
             ->willReturn($userInfoStub);
 
-        $sut = $this->getSut(userInfoService: $serviceStub);
+        $sut = $this->getSut(userInfoService: $serviceMock);
         $response = $sut->getUserInfo($this->createRequestWithUser($username));
         $data = $this->decodeResponse($response);
 
@@ -49,12 +50,13 @@ final class UserInfoApiControllerTest extends ApiEntrypointTestCase
     {
         $username = uniqid('user_');
 
-        $serviceStub = $this->createStub(UserInfoServiceInterface::class);
-        $serviceStub->method('getUserInfo')
+        $serviceMock = $this->createMock(UserInfoServiceInterface::class);
+        $serviceMock->expects($this->once())
+            ->method('getUserInfo')
             ->with($username)
             ->willReturn(null);
 
-        $sut = $this->getSut(userInfoService: $serviceStub);
+        $sut = $this->getSut(userInfoService: $serviceMock);
         $request = $this->createRequestWithUser($username);
 
         $response = $sut->getUserInfo($request);

@@ -26,12 +26,13 @@ final class GreetingMessageServiceTest extends TestCase
     {
         $shopName = uniqid();
         $service = $this->getSut(
-            shopAdapter: $shopAdapterStub = $this->createStub(ShopAdapterInterface::class),
+            shopAdapter: $shopAdapterMock = $this->createMock(ShopAdapterInterface::class),
             shopName: $shopName,
         );
 
         $translatedString = uniqid() . ' %s';
-        $shopAdapterStub->method('translateString')
+        $shopAdapterMock->expects($this->once())
+            ->method('translateString')
             ->with(ModuleCore::GENERAL_GREETING_LANGUAGE_CONST)
             ->willReturn($translatedString);
 
@@ -42,14 +43,15 @@ final class GreetingMessageServiceTest extends TestCase
     {
         $service = $this->getSut(
             greetingSettings: $greetingSettingsStub = $this->createStub(GreetingSettingsInterface::class),
-            shopAdapter: $shopAdapterStub = $this->createStub(ShopAdapterInterface::class),
+            shopAdapter: $shopAdapterMock = $this->createMock(ShopAdapterInterface::class),
         );
 
         $greetingSettingsStub->method('getGreetingMode')
             ->willReturn(GreetingSettingsInterface::GREETING_MODE_GENERIC);
 
         $expectedTranslation = 'translatedGreeting';
-        $shopAdapterStub->method('translateString')
+        $shopAdapterMock->expects($this->once())
+            ->method('translateString')
             ->with(ModuleCore::DEFAULT_PERSONAL_GREETING_LANGUAGE_CONST)
             ->willReturn($expectedTranslation);
 
@@ -60,14 +62,15 @@ final class GreetingMessageServiceTest extends TestCase
     {
         $service = $this->getSut(
             greetingSettings: $greetingSettingsStub = $this->createStub(GreetingSettingsInterface::class),
-            shopAdapter: $shopAdapterStub = $this->createStub(ShopAdapterInterface::class),
+            shopAdapter: $shopAdapterMock = $this->createMock(ShopAdapterInterface::class),
         );
 
         $greetingSettingsStub->method('getGreetingMode')
             ->willReturn(GreetingSettingsInterface::GREETING_MODE_GENERIC);
 
         $expectedTranslation = 'translatedGreeting';
-        $shopAdapterStub->method('translateString')
+        $shopAdapterMock->expects($this->once())
+            ->method('translateString')
             ->with(ModuleCore::DEFAULT_PERSONAL_GREETING_LANGUAGE_CONST)
             ->willReturn($expectedTranslation);
 

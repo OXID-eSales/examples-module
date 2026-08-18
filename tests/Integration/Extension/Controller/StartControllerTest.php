@@ -18,6 +18,7 @@ use OxidEsales\ExamplesModule\Extension\Controller\StartController;
 use OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface;
 use OxidEsales\ExamplesModule\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /*
  * Here we have full integration test cases for a what we call 'chain extended' shop class.
@@ -64,9 +65,7 @@ final class StartControllerTest extends IntegrationTestCase
         $this->assertTrue($controller->showOeemGeneralGreeting());
     }
 
-    /**
-     * @dataProvider providerCanUpdateOeemGreeting
-     */
+    #[DataProvider('providerCanUpdateOeemGreeting')]
     public function testCanUpdateOeemGreeting(bool $hasUser, string $mode, bool $expected): void
     {
         $greetingSettings = $this->get(GreetingSettingsInterface::class);
@@ -82,10 +81,9 @@ final class StartControllerTest extends IntegrationTestCase
     }
 
     /**
-     * @dataProvider providerGetOeemGreeting
-     *
      * @param mixed $expect
      */
+    #[DataProvider('providerGetOeemGreeting')]
     public function testGetOeemGreeting(bool $hasUser, string $mode, $expect): void
     {
         $greetingSettings = $this->get(GreetingSettingsInterface::class);

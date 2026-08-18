@@ -21,6 +21,7 @@ use OxidEsales\ExamplesModule\Tests\Integration\IntegrationTestCase;
 use OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository\TrackerRepositoryInterface;
 use OxidEsales\ExamplesModule\Tracker\Model\TrackerModel;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
 /*
@@ -97,9 +98,7 @@ final class GreetingControllerTest extends IntegrationTestCase
         $sut->updateGreeting();
     }
 
-    /**
-     * @dataProvider providerRender
-     */
+    #[DataProvider('providerRender')]
     public function testRender(bool $hasUser, string $mode, array $expected): void
     {
         $this->createTestTracker($expected['counter']);
@@ -108,15 +107,6 @@ final class GreetingControllerTest extends IntegrationTestCase
         $greetingSettingsStub
             ->method('isPersonalGreetingMode')
             ->willReturn($mode === GreetingSettingsInterface::GREETING_MODE_PERSONAL);
-
-        $trackerStub = $this->createMock(TrackerModel::class);
-        $trackerStub->method('getCount')->willReturn($expected['counter']);
-
-        $trackerRepositoryMock = $this->createStub(TrackerRepositoryInterface::class);
-        $trackerRepositoryMock
-            ->method('getTrackerByUserId')
-            ->with(self::TEST_USER_ID)
-            ->willReturn($trackerStub);
 
         $userRepositoryStub = $this->createStub(UserRepositoryInterface::class);
         if ($hasUser) {

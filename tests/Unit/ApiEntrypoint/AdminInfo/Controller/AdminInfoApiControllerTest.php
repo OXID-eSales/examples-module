@@ -33,16 +33,17 @@ final class AdminInfoApiControllerTest extends ApiEntrypointTestCase
         $email = uniqid('admin_') . '@example.com';
         $greeting = uniqid('greeting_');
 
-        $serviceStub = $this->createStub(AdminInfoServiceInterface::class);
         $adminInfoStub = $this->createConfiguredStub(AdminInfoInterface::class, [
             'getEmail' => $email,
             'getGreeting' => $greeting,
         ]);
-        $serviceStub->method('getAdminInfo')
+        $serviceMock = $this->createMock(AdminInfoServiceInterface::class);
+        $serviceMock->expects($this->once())
+            ->method('getAdminInfo')
             ->with($email)
             ->willReturn($adminInfoStub);
 
-        $sut = $this->getSut(adminInfoService: $serviceStub);
+        $sut = $this->getSut(adminInfoService: $serviceMock);
 
         $response = $sut->getAdminInfo($this->createRequestWithUser($email));
         $data = $this->decodeResponse($response);

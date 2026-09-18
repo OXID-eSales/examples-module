@@ -7,3 +7,7 @@ services:
   OxidEsales\ExamplesModule\Migration\MigrationPathProvider:
     tags:
       - { name: 'oxid_esales.migration_path_provider' }
+
+  OxidEsales\ExamplesModule\Setup\ModuleLifecycleSubscriber:
+    tags:
+      - { name: kernel.event_subscriber }

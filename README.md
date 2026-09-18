@@ -109,6 +109,9 @@ The repository contains examples of following cases and more:
   * DI-registered ("tagged") migrations via a [`MigrationPathProvider`](src/Migration/MigrationPathProvider.php) registered in [`bootstrap-services.yaml`](bootstrap-services.yaml) - an alternative to the auto-detected `migration/migrations.yml`, 
     so the migrations can be run for the installed module even while it is deactivated
 
+* [Module lifecycle events](bootstrap-services.yaml)
+  * reacting to this module's own activation/deactivation with a [`ModuleLifecycleSubscriber`](src/Setup/ModuleLifecycleSubscriber.php) - a DI event subscriber registered in [`bootstrap-services.yaml`](bootstrap-services.yaml) so it is in the container before activation, instead of the deprecated `metadata.php` `onActivate`/`onDeactivate` events
+
 * Accessing the database
   * Model with a database (`OxidEsales\ExamplesModule\Tracker\Model\TrackerModel`)
   * ``oxNew`` object factory example (`OxidEsales\ExamplesModule\Greeting\Infrastructure\Factory\UserModelFactory`)

@@ -1,0 +1,9 @@
+services:
+
+  _defaults:
+    public: false
+    autowire: true
+
+  OxidEsales\ExamplesModule\Migration\MigrationPathProvider:
+    tags:
+      - { name: 'oxid_esales.migration_path_provider' }

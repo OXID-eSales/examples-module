@@ -8,7 +8,7 @@
     <!--
     <file>../translations</file>
     -->
-    <file>../migration</file>
+    <file>../di_migrations</file>
     <exclude-pattern>./tests/Codeception/Config</exclude-pattern>
 
     <!-- display progress -->

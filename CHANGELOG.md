@@ -6,9 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [v2.2.0] - unreleased
 
+### Added
+- Example of DI-registered ("tagged") module migrations
+
 ### Changed
 - Update module to work with OXID eShop 7.6
 - Update PHPUnit to 12.5
+- Module migrations moved out of the auto-detected `migration/migrations.yml` into
+  `di_migrations/migrations.yaml`
 
 ## [v2.1.1] - 2026-05-29
 

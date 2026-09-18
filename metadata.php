@@ -29,10 +29,6 @@ $aModule = [
         \OxidEsales\Eshop\Application\Model\Basket::class => \OxidEsales\ExamplesModule\Extension\Model\Basket::class,
         \OxidEsales\Eshop\Application\Model\User::class => \OxidEsales\ExamplesModule\Extension\Model\User::class,
     ],
-    'events' => [
-        'onActivate' => '\OxidEsales\ExamplesModule\Core\ModuleEvents::onActivate',
-        'onDeactivate' => '\OxidEsales\ExamplesModule\Core\ModuleEvents::onDeactivate'
-    ],
     'settings' => [
         //TODO: add help texts for settings to explain possibilities and point out which ones only serve as example
         /** Main */

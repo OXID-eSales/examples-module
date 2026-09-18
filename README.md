@@ -104,8 +104,10 @@ The repository contains examples of following cases and more:
     * Note: While the example uses validation/truncation for simplicity, better use cases include logging, caching, performance monitoring, or audit trails
     * [Decorator registration](src/Greeting/services.yaml) - using `decorates:` in DI configuration
 
-* [Migrations](migration)
+* [Migrations](di_migrations)
   * extending a shop database table (`oxuser`)
+  * DI-registered ("tagged") migrations via a [`MigrationPathProvider`](src/Migration/MigrationPathProvider.php) registered in [`bootstrap-services.yaml`](bootstrap-services.yaml) - an alternative to the auto-detected `migration/migrations.yml`, 
+    so the migrations can be run for the installed module even while it is deactivated
 
 * Accessing the database
   * Model with a database (`OxidEsales\ExamplesModule\Tracker\Model\TrackerModel`)
@@ -201,7 +203,7 @@ installation/usage methods.
 This module is in working state and can be directly installed via composer:
 ```
 composer require oxid-esales/examples-module
-./vendor/bin/oe-eshop-db_migrate migrations:migrate oe_examples_module
+./vendor/bin/oe-console oe:database:migrate
 ```
 
 and [activate the module](https://docs.oxid-esales.com/developer/en/latest/development/modules_components_themes/module/installation_setup/setup.html#setup-activation).
@@ -266,16 +268,25 @@ The examples module is intended to act as a tutorial module so keep your eyes op
 * migrations are intended to bump the database (and eventual existing data) to a new module version (this also goes for first time installation).
 * ensure migrations are stable against rerun
 
-Migrations have to be run via console command (`./vendor/bin/oe-eshop-db_migrate`)
+This module registers its migrations through the DI container instead of relying on the
+auto-detected `migration/migrations.yml`: the migration configuration lives in
+[`di_migrations/migrations.yaml`](di_migrations/migrations.yaml) and is exposed by a
+[`MigrationPathProvider`](src/Migration/MigrationPathProvider.php) tagged
+`oxid_esales.migration_path_provider` in [`bootstrap-services.yaml`](bootstrap-services.yaml).
+Because it is a bootstrap service, the provider is available for the installed module regardless of
+activation, so the migrations run even before the module is activated.
+
+Run all pending migrations (shop + all tagged providers, including this module) via console command:
 
 ```bash
-./vendor/bin/oe-eshop-db_migrate migrations:migrate oe_examples_module
+./vendor/bin/oe-console oe:database:migrate
 ```
 
-NOTE: Existing migrations must not be changed. If the database needs a change, add a new migration file and change to your needs:
+NOTE: Existing migrations must not be changed. If the database needs a change, add a new migration file. Generate one by calling Doctrine Migrations directly against this module's configuration:
 
 ```bash
-./vendor/bin/oe-eshop-db_migrate migrations:generate oe_examples_module
+./vendor/bin/doctrine-migrations migrations:generate \
+    --configuration=vendor/oxid-esales/examples-module/di_migrations/migrations.yaml
 ```
 
 For more information, check the [developer documentation](https://docs.oxid-esales.com/developer/en/latest/development/tell_me_about/migrations.html).

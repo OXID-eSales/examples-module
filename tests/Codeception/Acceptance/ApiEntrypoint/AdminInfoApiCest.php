@@ -28,7 +28,7 @@ final class AdminInfoApiCest
 
         $I->loginAdmin();
         $I->selectHeaderFrame();
-        $I->waitForElementVisible('#oeem-admin-greeting', 10);
+        $I->waitForText($admin['email'], 10, '#oeem-admin-greeting');
 
         $greetingText = $I->grabTextFrom('#oeem-admin-greeting');
         $I->assertStringContainsString($admin['email'], $greetingText);
@@ -43,7 +43,7 @@ final class AdminInfoApiCest
 
         $I->loginAdmin();
         $I->selectHeaderFrame();
-        $I->waitForElementVisible('#oeem-admin-greeting', 10);
+        $I->waitForText('Admin', 10, '#oeem-admin-greeting');
 
         $greetingText = $I->grabTextFrom('#oeem-admin-greeting');
         $I->assertStringContainsString('Admin', $greetingText);

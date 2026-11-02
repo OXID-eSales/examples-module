@@ -13,12 +13,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\BeforeModule
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleActivationEvent;
 use OxidEsales\ExamplesModule\Core\Module;
 use OxidEsales\ExamplesModule\Setup\ModuleLifecycleSubscriber;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 final class ModuleLifecycleSubscriberTest extends TestCase
 {
-    public function testSubscribesToModuleActivationAndDeactivationEvents(): void
+    #[Test]
+    public function subscribesToModuleActivationAndDeactivationEvents(): void
     {
         $this->assertSame(
             [
@@ -29,39 +31,64 @@ final class ModuleLifecycleSubscriberTest extends TestCase
         );
     }
 
-    public function testActivationIsHandledForThisModule(): void
+    #[Test]
+    public function activationIsHandledForThisModule(): void
     {
-        $logger = $this->createMock(LoggerInterface::class);
-        $logger->expects($this->once())->method('info');
+        $loggerSpy = $this->createMock(LoggerInterface::class);
+        $loggerSpy->expects($this->once())
+            ->method('info')
+            ->with($this->stringContains(Module::MODULE_ID));
 
-        (new ModuleLifecycleSubscriber($logger))
-            ->onActivate(new FinalizingModuleActivationEvent(1, Module::MODULE_ID));
+        $sut = $this->getSut(logger: $loggerSpy);
+
+        $event = new FinalizingModuleActivationEvent(1, Module::MODULE_ID);
+        $sut->onActivate($event);
     }
 
-    public function testActivationIsIgnoredForOtherModules(): void
+    #[Test]
+    public function activationIsIgnoredForOtherModules(): void
     {
-        $logger = $this->createMock(LoggerInterface::class);
-        $logger->expects($this->never())->method('info');
+        $loggerSpy = $this->createMock(LoggerInterface::class);
+        $loggerSpy->expects($this->never())
+            ->method('info');
 
-        (new ModuleLifecycleSubscriber($logger))
-            ->onActivate(new FinalizingModuleActivationEvent(1, 'other_module'));
+        $sut = $this->getSut(logger: $loggerSpy);
+
+        $event = new FinalizingModuleActivationEvent(1, 'other_module');
+        $sut->onActivate($event);
     }
 
-    public function testDeactivationIsHandledForThisModule(): void
+    #[Test]
+    public function deactivationIsHandledForThisModule(): void
     {
-        $logger = $this->createMock(LoggerInterface::class);
-        $logger->expects($this->once())->method('info');
+        $loggerSpy = $this->createMock(LoggerInterface::class);
+        $loggerSpy->expects($this->once())
+            ->method('info')
+            ->with($this->stringContains(Module::MODULE_ID));
 
-        (new ModuleLifecycleSubscriber($logger))
-            ->onDeactivate(new BeforeModuleDeactivationEvent(1, Module::MODULE_ID));
+        $sut = $this->getSut(logger: $loggerSpy);
+
+        $event = new BeforeModuleDeactivationEvent(1, Module::MODULE_ID);
+        $sut->onDeactivate($event);
     }
 
-    public function testDeactivationIsIgnoredForOtherModules(): void
+    #[Test]
+    public function deactivationIsIgnoredForOtherModules(): void
     {
-        $logger = $this->createMock(LoggerInterface::class);
-        $logger->expects($this->never())->method('info');
+        $loggerSpy = $this->createMock(LoggerInterface::class);
+        $loggerSpy->expects($this->never())->method('info');
 
-        (new ModuleLifecycleSubscriber($logger))
-            ->onDeactivate(new BeforeModuleDeactivationEvent(1, 'other_module'));
+        $sut = $this->getSut(logger: $loggerSpy);
+
+        $event = new BeforeModuleDeactivationEvent(1, 'other_module');
+        $sut->onDeactivate($event);
+    }
+
+    private function getSut(
+        ?LoggerInterface $logger = null,
+    ): ModuleLifecycleSubscriber {
+        return new ModuleLifecycleSubscriber(
+            logger: $logger ?? $this->createStub(LoggerInterface::class),
+        );
     }
 }

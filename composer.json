@@ -24,7 +24,7 @@
         "squizlabs/php_codesniffer": "^4.0",
         "phpmd/phpmd": "^2.15",
         "oxid-esales/oxideshop-ce": "dev-b-7.6.x",
-        "phpunit/phpunit": "^12.5",
+        "phpunit/phpunit": "^13.4",
         "mikey179/vfsstream": "~1.6.8",
         "codeception/codeception": "^5.1",
         "codeception/module-asserts": "^3.0",

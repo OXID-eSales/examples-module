@@ -4,10 +4,10 @@ services:
     public: false
     autowire: true
 
-  OxidEsales\ExamplesModule\Migration\MigrationPathProvider:
+  OxidEsales\ExamplesModule\Core\MigrationPathProvider:
     tags:
       - { name: 'oxid_esales.migration_path_provider' }
 
-  OxidEsales\ExamplesModule\Setup\ModuleLifecycleSubscriber:
+  OxidEsales\ExamplesModule\Core\ModuleLifecycleSubscriber:
     tags:
       - { name: kernel.event_subscriber }

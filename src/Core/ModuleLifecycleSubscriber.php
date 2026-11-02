@@ -7,11 +7,10 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Setup;
+namespace OxidEsales\ExamplesModule\Core;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\BeforeModuleDeactivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleActivationEvent;
-use OxidEsales\ExamplesModule\Core\Module;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

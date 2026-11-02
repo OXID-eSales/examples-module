@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Migration;
+namespace OxidEsales\ExamplesModule\Core;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationPathProviderInterface;
 

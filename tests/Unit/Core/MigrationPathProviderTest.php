@@ -7,10 +7,10 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tests\Unit\Migration;
+namespace OxidEsales\ExamplesModule\Tests\Unit\Core;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationPathProviderInterface;
-use OxidEsales\ExamplesModule\Migration\MigrationPathProvider;
+use OxidEsales\ExamplesModule\Core\MigrationPathProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

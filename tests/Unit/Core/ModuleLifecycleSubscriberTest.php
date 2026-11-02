@@ -7,12 +7,12 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tests\Unit\Setup;
+namespace OxidEsales\ExamplesModule\Tests\Unit\Core;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\BeforeModuleDeactivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleActivationEvent;
 use OxidEsales\ExamplesModule\Core\Module;
-use OxidEsales\ExamplesModule\Setup\ModuleLifecycleSubscriber;
+use OxidEsales\ExamplesModule\Core\ModuleLifecycleSubscriber;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;

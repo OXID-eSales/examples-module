@@ -106,11 +106,11 @@ The repository contains examples of following cases and more:
 
 * [Migrations](di_migrations)
   * extending a shop database table (`oxuser`)
-  * DI-registered ("tagged") migrations via a [`MigrationPathProvider`](src/Migration/MigrationPathProvider.php) registered in [`bootstrap-services.yaml`](bootstrap-services.yaml) - an alternative to the auto-detected `migration/migrations.yml`, 
+  * DI-registered ("tagged") migrations via a [`MigrationPathProvider`](src/Core/MigrationPathProvider.php) registered in [`bootstrap-services.yaml`](bootstrap-services.yaml) - an alternative to the auto-detected `migration/migrations.yml`, 
     so the migrations can be run for the installed module even while it is deactivated
 
 * [Module lifecycle events](bootstrap-services.yaml)
-  * reacting to this module's own activation/deactivation with a [`ModuleLifecycleSubscriber`](src/Setup/ModuleLifecycleSubscriber.php) - a DI event subscriber registered in [`bootstrap-services.yaml`](bootstrap-services.yaml) so it is in the container before activation, instead of the deprecated `metadata.php` `onActivate`/`onDeactivate` events
+  * reacting to this module's own activation/deactivation with a [`ModuleLifecycleSubscriber`](src/Core/ModuleLifecycleSubscriber.php) - a DI event subscriber registered in [`bootstrap-services.yaml`](bootstrap-services.yaml) so it is in the container before activation, instead of the deprecated `metadata.php` `onActivate`/`onDeactivate` events
 
 * Accessing the database
   * Model with a database (`OxidEsales\ExamplesModule\Tracker\Model\TrackerModel`)
@@ -274,7 +274,7 @@ The examples module is intended to act as a tutorial module so keep your eyes op
 This module registers its migrations through the DI container instead of relying on the
 auto-detected `migration/migrations.yml`: the migration configuration lives in
 [`di_migrations/migrations.yaml`](di_migrations/migrations.yaml) and is exposed by a
-[`MigrationPathProvider`](src/Migration/MigrationPathProvider.php) tagged
+[`MigrationPathProvider`](src/Core/MigrationPathProvider.php) tagged
 `oxid_esales.migration_path_provider` in [`bootstrap-services.yaml`](bootstrap-services.yaml).
 Because it is a bootstrap service, the provider is available for the installed module regardless of
 activation, so the migrations run even before the module is activated.

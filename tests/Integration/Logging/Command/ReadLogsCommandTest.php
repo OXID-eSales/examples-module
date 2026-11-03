@@ -14,6 +14,7 @@ use OxidEsales\ExamplesModule\Logging\Command\ReadLogsCommand;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 #[CoversClass(ReadLogsCommand::class)]
@@ -34,6 +35,7 @@ final class ReadLogsCommandTest extends TestCase
         $commandTester = new CommandTester($sut);
         $commandTester->execute([]);
 
+        $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());
         $this->assertStringContainsString($fileContents, $commandTester->getDisplay());
     }
 
@@ -49,6 +51,7 @@ final class ReadLogsCommandTest extends TestCase
         $commandTester = new CommandTester($sut);
         $commandTester->execute([]);
 
+        $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
         $this->assertStringContainsString('was not found', $commandTester->getDisplay());
     }
 

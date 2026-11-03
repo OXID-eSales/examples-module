@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Example of DI-registered ("tagged") module migrations
 - Example of a module setting help text (`HELP_SHOP_MODULE_<setting name>` language key)
+- Example of typing array data with a PHPStan array shape (`@phpstan-type`) where no DTO is used, shown on the database rows in `CustomerGroupRepository`
 
 ### Changed
 - Update module to work with OXID eShop 7.6

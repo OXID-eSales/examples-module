@@ -147,6 +147,7 @@ The repository contains examples of following cases and more:
 
 * Testing your module backend and frontend part
   * [Composer aliases for easy running of tests and quality tools](https://github.com/OXID-eSales/examples-module/blob/b-7.6.x/composer.json#L49)
+  * [PHPStan array shape type](src/ApiEntrypoint/CustomerInfo/Infrastructure/CustomerGroupRepository.php#L17) - in case data is passed around as arrays instead of type-strict DTOs (for example, rows fetched from the database), describe the array structure with `@phpstan-type`, so static analysis knows its keys and value types
   * [Using the github actions as CI tool with all recommended tools preconfigured for you.](.github)
 
 * [Using variables from .env file](.env)

@@ -13,6 +13,13 @@ use Doctrine\DBAL\Result;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\DTO\CustomerGroupCount;
 
+/**
+ * @phpstan-type CustomerGroupCountRow array{
+ *     groupId: string,
+ *     title: string,
+ *     customerCount: int|numeric-string
+ * }
+ */
 readonly class CustomerGroupRepository implements CustomerGroupRepositoryInterface
 {
     public function __construct(
@@ -43,6 +50,7 @@ readonly class CustomerGroupRepository implements CustomerGroupRepositoryInterfa
 
         /** @var Result $result */
         $result = $queryBuilder->execute();
+        /** @var CustomerGroupCountRow[] $rows */
         $rows = $result->fetchAllAssociative();
 
         $counts = [];

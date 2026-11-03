@@ -122,6 +122,7 @@ The repository contains examples of following cases and more:
     * [TrackerRepository](src/Tracker/Infrastructure/Repository/TrackerRepository.php) - more comprehensive example showing dependencies and DTO usage
 
 * [Various types of module settings](https://github.com/OXID-eSales/examples-module/blob/b-7.6.x/metadata.php#L38)
+  * [Help text for a module setting](views/admin_twig/en/module_options.php#L23) - add a `HELP_SHOP_MODULE_<setting name>` key to the admin translations and a help icon with this text is shown next to the setting
 
 * Templates
   * [creating templates for your module](views/twig/templates/greetingtemplate.html.twig)

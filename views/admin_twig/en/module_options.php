@@ -20,6 +20,7 @@ $aLang = [
     # Module settings
     'SHOP_MODULE_GROUP_oeexamplesmodule_main' => 'Settings',
     'SHOP_MODULE_oeexamplesmodule_GreetingMode' => 'Greeting mode',
+    'HELP_SHOP_MODULE_oeexamplesmodule_GreetingMode' => 'Generic: logged in users see the general greeting message.<br>Personal: logged in users can set their own greeting on the start page.',
     'SHOP_MODULE_oeexamplesmodule_GreetingMode_generic' => 'generic',
     'SHOP_MODULE_oeexamplesmodule_GreetingMode_personal' => 'personal',
     'SHOP_MODULE_oeexamplesmodule_BrandName' => 'Brand name',

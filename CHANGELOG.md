@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Example of DI-registered ("tagged") module migrations
+- Example of a module setting help text (`HELP_SHOP_MODULE_<setting name>` language key)
 
 ### Changed
 - Update module to work with OXID eShop 7.6

@@ -20,6 +20,7 @@ $aLang = [
     # Module settings
     'SHOP_MODULE_GROUP_oeexamplesmodule_main' => 'Einstellungen',
     'SHOP_MODULE_oeexamplesmodule_GreetingMode' => 'Begrüßungsmodus',
+    'HELP_SHOP_MODULE_oeexamplesmodule_GreetingMode' => 'Höflich: angemeldete Benutzer sehen die allgemeine Begrüßungsnachricht.<br>Unhöflich: angemeldete Benutzer können auf der Startseite ihre eigene Begrüßung festlegen.',
     'SHOP_MODULE_oeexamplesmodule_GreetingMode_generic' => 'höflich',
     'SHOP_MODULE_oeexamplesmodule_GreetingMode_personal' => 'unhöflich',
     'SHOP_MODULE_oeexamplesmodule_BrandName' => 'Markenname',

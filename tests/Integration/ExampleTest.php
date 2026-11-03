@@ -7,9 +7,10 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tests\Integration\Service;
+namespace OxidEsales\ExamplesModule\Tests\Integration;
 
 use OxidEsales\Eshop\Application\Controller\StartController as EshopStartController;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /*
@@ -17,7 +18,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class ExampleTest extends TestCase
 {
-    public function testRender(): void
+    #[Test]
+    public function render(): void
     {
         $controller = oxNew(EshopStartController::class);
 

@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\ExamplesModule\Tracker\Model\TrackerInterface;
 use OxidEsales\ExamplesModule\Tracker\Model\TrackerModel;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 
 #[CoversClass(TrackerModel::class)]
 final class TrackerModelTest extends IntegrationTestCase
@@ -34,13 +35,15 @@ final class TrackerModelTest extends IntegrationTestCase
         $queryBuilder->execute();
     }
 
-    public function testIsCorrectInterface(): void
+    #[Test]
+    public function isCorrectInterface(): void
     {
         $sut = oxNew(TrackerModel::class);
         $this->assertInstanceOf(TrackerInterface::class, $sut);
     }
 
-    public function testGetCount(): void
+    #[Test]
+    public function getCountReturnsLoadedCount(): void
     {
         $this->prepareTestData(22);
 
@@ -50,7 +53,8 @@ final class TrackerModelTest extends IntegrationTestCase
         $this->assertSame(22, $sut->getCount());
     }
 
-    public function testCountUp(): void
+    #[Test]
+    public function countUp(): void
     {
         $this->prepareTestData(10);
 

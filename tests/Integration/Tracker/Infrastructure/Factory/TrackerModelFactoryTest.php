@@ -11,15 +11,18 @@ namespace OxidEsales\ExamplesModule\Tests\Integration\Tracker\Infrastructure\Fac
 
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\ExamplesModule\Tracker\Infrastructure\Factory\TrackerModelFactory;
+use OxidEsales\ExamplesModule\Tracker\Infrastructure\Factory\TrackerModelFactoryInterface;
 use OxidEsales\ExamplesModule\Tracker\Model\TrackerModel;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 
 #[CoversClass(TrackerModelFactory::class)]
 final class TrackerModelFactoryTest extends IntegrationTestCase
 {
-    public function testCreateProducesNewModelObjectEveryCall(): void
+    #[Test]
+    public function createProducesNewModelObjectEveryCall(): void
     {
-        $sut = new TrackerModelFactory();
+        $sut = $this->getSut();
 
         $firstModel = $sut->create();
         $secondModel = $sut->create();
@@ -27,5 +30,10 @@ final class TrackerModelFactoryTest extends IntegrationTestCase
         $this->assertInstanceOf(TrackerModel::class, $firstModel);
         $this->assertInstanceOf(TrackerModel::class, $secondModel);
         $this->assertNotSame($firstModel, $secondModel);
+    }
+
+    private function getSut(): TrackerModelFactoryInterface
+    {
+        return new TrackerModelFactory();
     }
 }

@@ -12,6 +12,7 @@ namespace OxidEsales\ExamplesModule\Tests\Integration\Logging\Command;
 use org\bovigo\vfs\vfsStream;
 use OxidEsales\ExamplesModule\Logging\Command\ReadLogsCommand;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -22,12 +23,15 @@ final class ReadLogsCommandTest extends TestCase
 {
     private const VFS_ROOT_DIRECTORY = 'vfsRoot';
 
-    public function testExecute(): void
+    #[Test]
+    public function execute(): void
     {
         $fileContents = 'Test log file contents...';
         $basketLogFilePath = $this->getVirtualTestLogFilePath($fileContents);
 
-        $sut = new ReadLogsCommand($basketLogFilePath);
+        $sut = $this->getSut(
+            logFilePath: $basketLogFilePath,
+        );
 
         $application = new Application();
         $application->add($sut);
@@ -39,11 +43,14 @@ final class ReadLogsCommandTest extends TestCase
         $this->assertStringContainsString($fileContents, $commandTester->getDisplay());
     }
 
-    public function testExecuteLogNotFound(): void
+    #[Test]
+    public function executeLogNotFound(): void
     {
         $nonExistentFilePath = '/none/existent/file.log';
 
-        $sut = new ReadLogsCommand($nonExistentFilePath);
+        $sut = $this->getSut(
+            logFilePath: $nonExistentFilePath,
+        );
 
         $application = new Application();
         $application->add($sut);
@@ -53,6 +60,14 @@ final class ReadLogsCommandTest extends TestCase
 
         $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
         $this->assertStringContainsString('was not found', $commandTester->getDisplay());
+    }
+
+    private function getSut(
+        string $logFilePath,
+    ): ReadLogsCommand {
+        return new ReadLogsCommand(
+            logFilePath: $logFilePath,
+        );
     }
 
     /**

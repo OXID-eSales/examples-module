@@ -39,7 +39,9 @@ final class ModuleLifecycleSubscriberTest extends TestCase
             ->method('info')
             ->with($this->stringContains(Module::MODULE_ID));
 
-        $sut = $this->getSut(logger: $loggerSpy);
+        $sut = $this->getSut(
+            logger: $loggerSpy,
+        );
 
         $event = new FinalizingModuleActivationEvent(1, Module::MODULE_ID);
         $sut->onActivate($event);
@@ -52,7 +54,9 @@ final class ModuleLifecycleSubscriberTest extends TestCase
         $loggerSpy->expects($this->never())
             ->method('info');
 
-        $sut = $this->getSut(logger: $loggerSpy);
+        $sut = $this->getSut(
+            logger: $loggerSpy,
+        );
 
         $event = new FinalizingModuleActivationEvent(1, 'other_module');
         $sut->onActivate($event);
@@ -66,7 +70,9 @@ final class ModuleLifecycleSubscriberTest extends TestCase
             ->method('info')
             ->with($this->stringContains(Module::MODULE_ID));
 
-        $sut = $this->getSut(logger: $loggerSpy);
+        $sut = $this->getSut(
+            logger: $loggerSpy,
+        );
 
         $event = new BeforeModuleDeactivationEvent(1, Module::MODULE_ID);
         $sut->onDeactivate($event);
@@ -78,7 +84,9 @@ final class ModuleLifecycleSubscriberTest extends TestCase
         $loggerSpy = $this->createMock(LoggerInterface::class);
         $loggerSpy->expects($this->never())->method('info');
 
-        $sut = $this->getSut(logger: $loggerSpy);
+        $sut = $this->getSut(
+            logger: $loggerSpy,
+        );
 
         $event = new BeforeModuleDeactivationEvent(1, 'other_module');
         $sut->onDeactivate($event);

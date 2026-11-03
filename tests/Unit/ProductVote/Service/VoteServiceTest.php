@@ -17,12 +17,10 @@ use OxidEsales\ExamplesModule\ProductVote\DataObject\ProductVote;
 use OxidEsales\ExamplesModule\ProductVote\DataObject\VoteResult;
 use OxidEsales\ExamplesModule\ProductVote\Event\ProductVotedEventInterface;
 use OxidEsales\ExamplesModule\ProductVote\Service\VoteService;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-#[CoversClass(VoteService::class)]
 final class VoteServiceTest extends TestCase
 {
     private const TEST_PRODUCT_ID = 'test_product_id';
@@ -46,7 +44,9 @@ final class VoteServiceTest extends TestCase
         $productVoteDaoSpy->expects($this->once())->method('getProductVote')
             ->with(self::TEST_PRODUCT_ID, self::TEST_USER_ID)->willReturn($this->getProductVoteDataType());
 
-        $sut = $this->getSut(productVoteDao: $productVoteDaoSpy);
+        $sut = $this->getSut(
+            productVoteDao: $productVoteDaoSpy,
+        );
         $productVote = $sut->getProductVote($this->productStub, $this->userStub);
 
         $this->assertEquals($productVote, $this->getProductVoteDataType());
@@ -58,7 +58,9 @@ final class VoteServiceTest extends TestCase
         $productVoteDaoSpy = $this->createMock(ProductVoteDaoInterface::class);
         $productVoteDaoSpy->expects($this->once())->method('setProductVote')->with($this->getProductVoteDataType());
 
-        $sut = $this->getSut(productVoteDao: $productVoteDaoSpy);
+        $sut = $this->getSut(
+            productVoteDao: $productVoteDaoSpy,
+        );
         $sut->setProductVote($this->productStub, $this->userStub, true);
     }
 
@@ -93,7 +95,9 @@ final class VoteServiceTest extends TestCase
         $productVoteDaoSpy->expects($this->once())
             ->method('resetProductVote')->with(self::TEST_PRODUCT_ID, self::TEST_USER_ID);
 
-        $sut = $this->getSut(productVoteDao: $productVoteDaoSpy);
+        $sut = $this->getSut(
+            productVoteDao: $productVoteDaoSpy,
+        );
         $sut->resetProductVote($this->productStub, $this->userStub);
     }
 
@@ -104,7 +108,9 @@ final class VoteServiceTest extends TestCase
         $voteResultDaoSpy->expects($this->once())
             ->method('getProductVoteResult')->with(self::TEST_PRODUCT_ID)->willReturn($this->getVoteResultDataType());
 
-        $sut = $this->getSut(voteResultDao: $voteResultDaoSpy);
+        $sut = $this->getSut(
+            voteResultDao: $voteResultDaoSpy,
+        );
         $voteResult = $sut->getProductVoteResult($this->productStub);
 
         $this->assertEquals($voteResult, $this->getVoteResultDataType());

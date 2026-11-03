@@ -15,6 +15,7 @@ use OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository\TrackerRepositor
 use OxidEsales\ExamplesModule\Tracker\Infrastructure\Repository\TrackerRepositoryInterface;
 use OxidEsales\ExamplesModule\Tracker\Model\TrackerModel;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 
 #[CoversClass(TrackerRepository::class)]
 final class TrackerRepositoryTest extends IntegrationTestCase
@@ -39,7 +40,8 @@ final class TrackerRepositoryTest extends IntegrationTestCase
         $queryBuilder->execute();
     }
 
-    public function testGetExistingTrackerByUserId(): void
+    #[Test]
+    public function getExistingTrackerByUserId(): void
     {
         $this->prepareTestData();
 
@@ -49,7 +51,8 @@ final class TrackerRepositoryTest extends IntegrationTestCase
         $this->assertSame(self::TEST_TRACKER_COUNT, $tracker->getCount());
     }
 
-    public function testGetNotExistingTrackerByUserIdGivesZeroCount(): void
+    #[Test]
+    public function getNotExistingTrackerByUserIdGivesZeroCount(): void
     {
         $sut = $this->getSut();
         $tracker = $sut->getTrackerByUserId('_notexisting');

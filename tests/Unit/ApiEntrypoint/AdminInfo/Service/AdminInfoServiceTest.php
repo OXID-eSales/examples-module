@@ -12,13 +12,13 @@ namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\AdminInfo\Service;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\Service\AdminInfoService;
 use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(AdminInfoService::class)]
 final class AdminInfoServiceTest extends TestCase
 {
-    public function testGetAdminInfoReturnsEmail(): void
+    #[Test]
+    public function getAdminInfoReturnsEmail(): void
     {
         $username = uniqid('admin_') . '@example.com';
 
@@ -27,7 +27,8 @@ final class AdminInfoServiceTest extends TestCase
         $this->assertSame($username, $sut->getAdminInfo($username)->getEmail());
     }
 
-    public function testGetAdminInfoReturnsTranslatedGreetingWithEmail(): void
+    #[Test]
+    public function getAdminInfoReturnsTranslatedGreetingWithEmail(): void
     {
         $username = uniqid('admin_') . '@example.com';
         $translatedPattern = uniqid('hello_') . ' %s';
@@ -38,7 +39,9 @@ final class AdminInfoServiceTest extends TestCase
             ->with(ModuleCore::ADMIN_HELLO_LANGUAGE_CONST)
             ->willReturn($translatedPattern);
 
-        $sut = $this->getSut(shopAdapter: $shopAdapterMock);
+        $sut = $this->getSut(
+            shopAdapter: $shopAdapterMock,
+        );
 
         $this->assertSame(
             sprintf($translatedPattern, $username),

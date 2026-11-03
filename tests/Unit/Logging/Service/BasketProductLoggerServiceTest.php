@@ -11,16 +11,16 @@ namespace OxidEsales\ExamplesModule\Tests\Unit\Logging\Service;
 
 use OxidEsales\ExamplesModule\Logging\Service\BasketProductLoggerService;
 use OxidEsales\ExamplesModule\Logging\Settings\LoggingSettingsInterface;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface as PsrLoggerInterface;
 
-#[CoversClass(BasketProductLoggerService::class)]
 final class BasketProductLoggerServiceTest extends TestCase
 {
     private const TEST_PRODUCT_ID = 'itemId';
 
-    public function testLogWhenEnabled(): void
+    #[Test]
+    public function logWhenEnabled(): void
     {
         $psrLoggerMock = $this->createMock(PsrLoggerInterface::class);
         $psrLoggerMock->expects($this->once())
@@ -40,7 +40,8 @@ final class BasketProductLoggerServiceTest extends TestCase
         $sut->log(self::TEST_PRODUCT_ID);
     }
 
-    public function testLogWhenDisabled(): void
+    #[Test]
+    public function logWhenDisabled(): void
     {
         $psrLoggerMock = $this->createMock(PsrLoggerInterface::class);
         $psrLoggerMock->expects($this->never())

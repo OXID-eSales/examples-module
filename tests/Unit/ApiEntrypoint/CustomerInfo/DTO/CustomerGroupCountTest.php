@@ -10,13 +10,13 @@ declare(strict_types=1);
 namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\CustomerInfo\DTO;
 
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\DTO\CustomerGroupCount;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(CustomerGroupCount::class)]
 final class CustomerGroupCountTest extends TestCase
 {
-    public function testStoresGroupIdTitleAndCount(): void
+    #[Test]
+    public function storesGroupIdTitleAndCount(): void
     {
         $groupId = uniqid();
         $title = uniqid();

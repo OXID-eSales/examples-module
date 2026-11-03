@@ -13,13 +13,13 @@ use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Controller\UserInfoApiContr
 use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\DTO\UserInfoInterface;
 use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Service\UserInfoServiceInterface;
 use OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\ApiEntrypointTestCase;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-#[CoversClass(UserInfoApiController::class)]
 final class UserInfoApiControllerTest extends ApiEntrypointTestCase
 {
-    public function testGetUserInfoReturnsJsonResponseWithStatus200AndData(): void
+    #[Test]
+    public function getUserInfoReturnsJsonResponseWithStatus200AndData(): void
     {
         $username = uniqid('user_');
         $firstName = uniqid('name_');
@@ -36,7 +36,9 @@ final class UserInfoApiControllerTest extends ApiEntrypointTestCase
             ->with($username)
             ->willReturn($userInfoStub);
 
-        $sut = $this->getSut(userInfoService: $serviceMock);
+        $sut = $this->getSut(
+            userInfoService: $serviceMock,
+        );
         $response = $sut->getUserInfo($this->createRequestWithUser($username));
         $data = $this->decodeResponse($response);
 
@@ -46,7 +48,8 @@ final class UserInfoApiControllerTest extends ApiEntrypointTestCase
         $this->assertSame($greetingUrl, $data['greetingUrl']);
     }
 
-    public function testGetUserInfoReturns404WhenUserNotFound(): void
+    #[Test]
+    public function getUserInfoReturns404WhenUserNotFound(): void
     {
         $username = uniqid('user_');
 
@@ -56,7 +59,9 @@ final class UserInfoApiControllerTest extends ApiEntrypointTestCase
             ->with($username)
             ->willReturn(null);
 
-        $sut = $this->getSut(userInfoService: $serviceMock);
+        $sut = $this->getSut(
+            userInfoService: $serviceMock,
+        );
         $request = $this->createRequestWithUser($username);
 
         $response = $sut->getUserInfo($request);

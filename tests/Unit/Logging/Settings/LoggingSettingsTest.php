@@ -13,13 +13,13 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServ
 use OxidEsales\ExamplesModule\Core\Module;
 use OxidEsales\ExamplesModule\Logging\Settings\LoggingSettings;
 use OxidEsales\ExamplesModule\Logging\Settings\LoggingSettingsInterface;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(LoggingSettings::class)]
 final class LoggingSettingsTest extends TestCase
 {
-    public function testIsLoggingEnabledReturnsExpectedValue(): void
+    #[Test]
+    public function isLoggingEnabledReturnsExpectedValue(): void
     {
         $expectedValue = (bool)rand(0, 1);
 
@@ -28,7 +28,9 @@ final class LoggingSettingsTest extends TestCase
             [LoggingSettings::LOGGER_STATUS, Module::MODULE_ID, $expectedValue]
         ]);
 
-        $sut = $this->getSut(moduleSettingService: $moduleSettingServiceStub);
+        $sut = $this->getSut(
+            moduleSettingService: $moduleSettingServiceStub,
+        );
         $result = $sut->isLoggingEnabled();
 
         $this->assertSame($expectedValue, $result);

@@ -11,15 +11,16 @@ namespace OxidEsales\ExamplesModule\Tests\Unit\Greeting\Twig\Extension;
 
 use OxidEsales\ExamplesModule\Greeting\Twig\Extension\ExampleExtension;
 use OxidEsales\ExamplesModule\Greeting\Twig\Extension\ExampleLogicInterface;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use Twig\Extension\ExtensionInterface;
 use Twig\TwigFunction;
 
-#[CoversClass(ExampleExtension::class)]
 final class ExampleExtensionTest extends TestCase
 {
-    public function testGetFunctionsRegistersExampleFunction(): void
+    #[Test]
+    public function getFunctionsRegistersExampleFunction(): void
     {
         $logicStub = $this->createStub(ExampleLogicInterface::class);
 
@@ -29,7 +30,9 @@ final class ExampleExtensionTest extends TestCase
                 [ExampleLogicInterface::class, $logicStub],
             ]);
 
-        $sut = new ExampleExtension(container: $container);
+        $sut = $this->getSut(
+            container: $container,
+        );
         $functions = $sut->getFunctions();
 
         $exampleFunction = current(array_filter(
@@ -41,5 +44,13 @@ final class ExampleExtensionTest extends TestCase
         $this->assertInstanceOf(TwigFunction::class, $exampleFunction);
         $this->assertSame($logicStub, $callable[0]);
         $this->assertSame('exampleMethod', $callable[1]);
+    }
+
+    private function getSut(
+        ContainerInterface $container,
+    ): ExtensionInterface {
+        return new ExampleExtension(
+            container: $container,
+        );
     }
 }

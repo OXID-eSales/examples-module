@@ -25,14 +25,15 @@ class GreetingRepositoryTest extends IntegrationTestCase
     public const TEST_USER_ID = '_testuser';
     public const TEST_GREETING = 'Hi there';
 
-    public function testGetSavedUserGreeting(): void
+    #[Test]
+    public function getSavedUserGreeting(): void
     {
         $this->prepareTestData();
 
-        $repo = $this->get(GreetingRepositoryInterface::class);
+        $sut = $this->getSut();
 
-        $this->assertSame(self::TEST_GREETING, $repo->getSavedUserGreeting(self::TEST_USER_ID));
-        $this->assertSame('', $repo->getSavedUserGreeting('_notexisting'));
+        $this->assertSame(self::TEST_GREETING, $sut->getSavedUserGreeting(self::TEST_USER_ID));
+        $this->assertSame('', $sut->getSavedUserGreeting('_notexisting'));
     }
 
     #[Test]
@@ -47,8 +48,7 @@ class GreetingRepositoryTest extends IntegrationTestCase
             'getActiveUser' => $activeUser
         ]);
 
-        $sut = new GreetingRepository(
-            queryBuilderFactory: $this->get(QueryBuilderFactoryInterface::class),
+        $sut = $this->getSut(
             userRepository: $userRepositoryStub,
         );
 
@@ -60,6 +60,15 @@ class GreetingRepositoryTest extends IntegrationTestCase
 
         // check that greeting was persisted
         $this->assertSame($greetingExample, $sut->getSavedUserGreeting($activeUser->getId()));
+    }
+
+    private function getSut(
+        ?UserRepositoryInterface $userRepository = null,
+    ): GreetingRepositoryInterface {
+        return new GreetingRepository(
+            queryBuilderFactory: $this->get(QueryBuilderFactoryInterface::class),
+            userRepository: $userRepository ?? $this->get(UserRepositoryInterface::class),
+        );
     }
 
     private function prepareTestData(): void

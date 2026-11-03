@@ -12,13 +12,13 @@ namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\CustomerInfo\Servic
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Infrastructure\CustomerGroupRepositoryInterface;
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\DTO\CustomerGroupCountInterface;
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Service\CustomerGroupService;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(CustomerGroupService::class)]
 final class CustomerGroupServiceTest extends TestCase
 {
-    public function testGetCustomerGroupCountsDelegatesToRepository(): void
+    #[Test]
+    public function getCustomerGroupCountsDelegatesToRepository(): void
     {
         $expectedCounts = [
             $this->createStub(CustomerGroupCountInterface::class),
@@ -29,23 +29,29 @@ final class CustomerGroupServiceTest extends TestCase
         $repositoryStub->method('getCustomerGroupCounts')
             ->willReturn($expectedCounts);
 
-        $sut = $this->getSut(groupCountRepository: $repositoryStub);
+        $sut = $this->getSut(
+            groupCountRepository: $repositoryStub,
+        );
 
         $this->assertSame($expectedCounts, $sut->getCustomerGroupCounts());
     }
 
-    public function testGetCustomerGroupCountsReturnsEmptyArrayWhenNoGroups(): void
+    #[Test]
+    public function getCustomerGroupCountsReturnsEmptyArrayWhenNoGroups(): void
     {
         $repositoryStub = $this->createStub(CustomerGroupRepositoryInterface::class);
         $repositoryStub->method('getCustomerGroupCounts')
             ->willReturn([]);
 
-        $sut = $this->getSut(groupCountRepository: $repositoryStub);
+        $sut = $this->getSut(
+            groupCountRepository: $repositoryStub,
+        );
 
         $this->assertSame([], $sut->getCustomerGroupCounts());
     }
 
-    public function testGetTotalCustomerCountSumsAllGroups(): void
+    #[Test]
+    public function getTotalCustomerCountSumsAllGroups(): void
     {
         $count1 = mt_rand(1, 500);
         $count2 = mt_rand(1, 500);
@@ -57,18 +63,23 @@ final class CustomerGroupServiceTest extends TestCase
         $repositoryStub->method('getCustomerGroupCounts')
             ->willReturn([$group1, $group2]);
 
-        $sut = $this->getSut(groupCountRepository: $repositoryStub);
+        $sut = $this->getSut(
+            groupCountRepository: $repositoryStub,
+        );
 
         $this->assertSame($count1 + $count2, $sut->getTotalCustomerCount());
     }
 
-    public function testGetTotalCustomerCountReturnsZeroWhenNoGroups(): void
+    #[Test]
+    public function getTotalCustomerCountReturnsZeroWhenNoGroups(): void
     {
         $repositoryStub = $this->createStub(CustomerGroupRepositoryInterface::class);
         $repositoryStub->method('getCustomerGroupCounts')
             ->willReturn([]);
 
-        $sut = $this->getSut(groupCountRepository: $repositoryStub);
+        $sut = $this->getSut(
+            groupCountRepository: $repositoryStub,
+        );
 
         $this->assertSame(0, $sut->getTotalCustomerCount());
     }

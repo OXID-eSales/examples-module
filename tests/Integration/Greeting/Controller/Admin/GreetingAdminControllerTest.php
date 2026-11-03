@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tests\Integration\Controller\Admin;
+namespace OxidEsales\ExamplesModule\Tests\Integration\Greeting\Controller\Admin;
 
 use OxidEsales\ExamplesModule\Core\Module as ModuleCore;
 use OxidEsales\ExamplesModule\Greeting\Controller\Admin\GreetingAdminController;
@@ -15,8 +15,10 @@ use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUserInterface;
 use OxidEsales\ExamplesModule\Greeting\Service\UserServiceInterface;
 use OxidEsales\ExamplesModule\Greeting\Transput\AdminGreetingRequestInterface;
 use OxidEsales\ExamplesModule\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 
+#[CoversClass(GreetingAdminController::class)]
 final class GreetingAdminControllerTest extends IntegrationTestCase
 {
     #[Test]

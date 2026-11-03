@@ -10,13 +10,13 @@ declare(strict_types=1);
 namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\AdminInfo\DTO;
 
 use OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\DTO\AdminInfo;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(AdminInfo::class)]
 final class AdminInfoTest extends TestCase
 {
-    public function testStoresEmailAndGreeting(): void
+    #[Test]
+    public function storesEmailAndGreeting(): void
     {
         $email = uniqid() . '@example.com';
         $greeting = uniqid();

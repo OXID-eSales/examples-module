@@ -16,6 +16,7 @@ use OxidEsales\ExamplesModule\Tracker\Model\TrackerModel;
 use OxidEsales\ExamplesModule\Tracker\Service\TrackerService;
 use OxidEsales\ExamplesModule\Tracker\Service\TrackerServiceInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(TrackerService::class)]
@@ -27,7 +28,8 @@ final class TrackerServiceTest extends TestCase
 
     public const TEST_GREETING = 'Hi there';
 
-    public function testUpdateTrackerNoGreetingChangeIfItsTheSame(): void
+    #[Test]
+    public function updateTrackerNoGreetingChangeIfItsTheSame(): void
     {
         $greetingRepository = $this->createConfiguredStub(GreetingRepositoryInterface::class, [
             'getSavedUserGreeting' => self::TEST_GREETING
@@ -49,7 +51,8 @@ final class TrackerServiceTest extends TestCase
         $sut->updateTracker($user);
     }
 
-    public function testUpdateTrackerGreetingChangeIfItDiffers(): void
+    #[Test]
+    public function updateTrackerGreetingChangeIfItDiffers(): void
     {
         $greetingRepository = $this->createConfiguredStub(GreetingRepositoryInterface::class, [
             'getSavedUserGreeting' => self::TEST_GREETING . ' with a change'
@@ -73,7 +76,8 @@ final class TrackerServiceTest extends TestCase
         $sut->updateTracker($user);
     }
 
-    public function testUpdateTrackerWithUserWithoutIdIsNotDoingAnything(): void
+    #[Test]
+    public function updateTrackerWithUserWithoutIdIsNotDoingAnything(): void
     {
         $greetingRepository = $this->createMock(GreetingRepositoryInterface::class);
         $greetingRepository->expects($this->never())->method('getSavedUserGreeting');
@@ -102,8 +106,8 @@ final class TrackerServiceTest extends TestCase
         $greetingRepository ??= $this->createStub(GreetingRepositoryInterface::class);
 
         return new TrackerService(
-            $trackerRepository,
-            $greetingRepository
+            trackerRepository: $trackerRepository,
+            greetingRepository: $greetingRepository,
         );
     }
 }

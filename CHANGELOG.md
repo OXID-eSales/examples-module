@@ -10,12 +10,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Example of DI-registered ("tagged") module migrations
 - Example of a module setting help text (`HELP_SHOP_MODULE_<setting name>` language key)
 - Example of typing array data with a PHPStan array shape (`@phpstan-type`) where no DTO is used, shown on the database rows in `CustomerGroupRepository`
+- Example of building frontend assets (TypeScript, SCSS) with Vite, with the TypeScript organized like the PHP side:
+  a service and a component behind interfaces, wired together with constructor injection in `main.ts`
+- Example of TypeScript tests with Vitest, including a data provider (`it.each`) and coverage reports
 
 ### Changed
 - Update module to work with OXID eShop 7.6
 - Update PHPUnit to 12.5
 - Module migrations moved out of the auto-detected `migration/migrations.yml` into
   `di_migrations/migrations.yaml`
+- The storefront header greeting button script moved from an inline `<script>` in the template to the Vite-built `main.min.js`;
+  the button got its own style, using the red from the shop logo
 - Module activation/deactivation handling reworked: the deprecated `metadata.php` `onActivate`/`onDeactivate`
   events and the `Core\ModuleEvents` class were replaced by the `Core\ModuleLifecycleSubscriber` event subscriber,
   registered in `bootstrap-services.yaml`

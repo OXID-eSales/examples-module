@@ -1,0 +1,20 @@
+{
+  "name": "oxid-esales-examples-module",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.1.11",
+    "jsdom": "^29.1.1",
+    "sass": "~1.80.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.2.2",
+    "vitest": "^4.1.11"
+  },
+  "scripts": {
+    "build": "tsc --noEmit && vite build",
+    "watch": "vite build --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest --run --config tests/vitest.config.js",
+    "test:coverage": "vitest --run --coverage --config tests/vitest.config.js"
+  }
+}

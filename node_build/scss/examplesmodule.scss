@@ -1,0 +1,26 @@
+@use 'sass:color';
+
+$greeting-btn-color: #E1201F; // the red from the shop logo (out/apex/img/logo.svg)
+$greeting-btn-max-width: 10rem;
+
+#oeem-greeting-btn-wrapper {
+    #oeem-greeting-btn {
+        max-width: $greeting-btn-max-width;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        background-color: $greeting-btn-color;
+        border-color: $greeting-btn-color;
+        border-radius: 50rem;
+        color: #fff;
+        font-weight: 600;
+
+        &:hover,
+        &:focus {
+            background-color: color.adjust($greeting-btn-color, $lightness: -10%);
+            border-color: color.adjust($greeting-btn-color, $lightness: -10%);
+            color: #fff;
+        }
+    }
+}

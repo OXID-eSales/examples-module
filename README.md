@@ -136,6 +136,12 @@ The repository contains examples of following cases and more:
     * `ddoe_wysiwyg_plugins` block - load additional Summernote plugin scripts via `{{ script() }}`
     * `ddoe_wysiwyg_summernote_options` block - customize editor options (toolbar, fonts, etc.) via `Object.assign()`
 
+* [Building frontend assets with Vite](vite.config.js)
+  * TypeScript and SCSS sources live in [node_build](node_build) and are built into `assets/out/build` with `npm install && npm run build` (or `npm run watch` during development)
+  * the TypeScript is split into ES modules ([user info service](node_build/js/User/UserInfoService.ts) behind an [interface](node_build/js/User/UserInfoServiceInterface.ts), [greeting button component](node_build/js/Greeting/GreetingButtonComponent.ts) that gets the service injected through its constructor); the [entry file](node_build/js/main.ts) creates and wires them together, like the DI container does in PHP; Vite compiles and bundles them into one `main.min.js`
+  * the build checks the types first and stops on errors; `npm run typecheck` runs only the check (settings in [tsconfig.json](tsconfig.json))
+  * the built files are included in the [header template](views/twig/extensions/themes/default/layout/header.html.twig) via `{{ style() }}` and `{{ script() }}`; template values (like the session token) are passed to the script through `data-` attributes
+
 * Using the translations for your module specific phrases
   * [in admin](views/admin_twig)
   * [in frontend](translations)
@@ -325,6 +331,18 @@ preconfigured quality tools available. Example:
 $ composer phpcs
 $ composer phpstan
 $ composer phpmd
+```
+
+### TypeScript tests
+
+The TypeScript sources in `node_build/js` are tested with [Vitest](https://vitest.dev/) in a simulated browser environment (jsdom).
+The tests are in [tests/Js](tests/Js), the configuration in [tests/vitest.config.js](tests/vitest.config.js):
+
+```bash
+$ npm install
+$ npm run typecheck
+$ npm test
+$ npm run test:coverage
 ```
 
 ### Integration/Acceptance tests

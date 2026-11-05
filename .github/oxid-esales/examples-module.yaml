@@ -1,6 +1,7 @@
 install:
   cache:
     prepared_shop: false
+  add_services: 'node selenium-chrome-126'
   composer:
     root_url: ''
     transform: |
@@ -28,12 +29,24 @@ runscript: &runscript
         "report:tests-unit",
         "report:tests-integration",
         "no_report:tests-codeception",
+        "examples-node:test",
+        "examples-node:typecheck",
       ]
   report:
     path: ''
   no_report:
     path: ''
     coverage_prefix: ''
+  examples-node:
+    composer:
+      early: true # Should set true to skip "Run composer if there is no transform" step
+    path: ''
+    coverage_prefix: ''
+    container_name: 'node'
+    container_method: 'run'
+    script_runner: 'npm run'
+    custom_script: |
+      docker compose run node npm install 
 
 runslim:
   <<: *runscript

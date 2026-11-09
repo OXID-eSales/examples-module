@@ -7,7 +7,7 @@ export default defineConfig({
         emptyOutDir: true,
         minify: true,
         sourcemap: true,
-        rollupOptions: {
+        rolldownOptions: {
             input: {
                 main: path.resolve(import.meta.dirname, 'node_build/js/main.ts'),
                 examplesmodule_style: path.resolve(import.meta.dirname, 'node_build/scss/examplesmodule.scss'),

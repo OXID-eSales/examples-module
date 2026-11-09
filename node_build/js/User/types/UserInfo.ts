@@ -1,4 +1,4 @@
-export interface UserInfoInterface {
+export type UserInfo = {
     firstName: string;
     greetingUrl: string;
-}
+};

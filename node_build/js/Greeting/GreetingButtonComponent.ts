@@ -1,4 +1,4 @@
-import type { UserInfoInterface } from '../User/UserInfoInterface';
+import type { UserInfo } from '../User/types/UserInfo';
 import type { UserInfoServiceInterface } from '../User/UserInfoServiceInterface';
 import type { GreetingButtonComponentInterface } from './GreetingButtonComponentInterface';
 
@@ -15,7 +15,7 @@ export class GreetingButtonComponent implements GreetingButtonComponentInterface
             return;
         }
 
-        let userInfo: UserInfoInterface;
+        let userInfo: UserInfo;
         try {
             userInfo = await this.userInfoService.getUserInfo(wrapper.dataset.stoken);
         } catch {

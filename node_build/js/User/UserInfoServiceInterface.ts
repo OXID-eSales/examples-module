@@ -1,5 +1,5 @@
-import type { UserInfoInterface } from './UserInfoInterface';
+import type { UserInfo } from './types/UserInfo';
 
 export interface UserInfoServiceInterface {
-    getUserInfo(sessionToken: string): Promise<UserInfoInterface>;
+    getUserInfo(sessionToken: string): Promise<UserInfo>;
 }

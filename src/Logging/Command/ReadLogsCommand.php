@@ -47,6 +47,6 @@ class ReadLogsCommand extends Command
 
         $output->writeln(sprintf(self::LOG_FILE_ERROR, $this->logFilePath));
 
-        return Command::SUCCESS;
+        return Command::FAILURE;
     }
 }

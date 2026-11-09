@@ -14,18 +14,21 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\GreetingRepository;
 use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUser;
 use PHPUnit\Framework\Attributes\CoversTrait;
+use PHPUnit\Framework\Attributes\Test;
 
 #[CoversTrait(PersonalGreetingUser::class)]
 final class PersonalGreetingUserTest extends IntegrationTestCase
 {
-    public function testGetPersonalGreetingNotSet(): void
+    #[Test]
+    public function getPersonalGreetingNotSet(): void
     {
         $user = oxNew(EshopModelUser::class);
 
         $this->assertEmpty($user->getPersonalGreeting());
     }
 
-    public function testGetPersonalGreeting(): void
+    #[Test]
+    public function getPersonalGreeting(): void
     {
         $user = oxNew(EshopModelUser::class);
 

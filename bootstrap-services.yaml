@@ -1,0 +1,13 @@
+services:
+
+  _defaults:
+    public: false
+    autowire: true
+
+  OxidEsales\ExamplesModule\Core\MigrationPathProvider:
+    tags:
+      - { name: 'oxid_esales.migration_path_provider' }
+
+  OxidEsales\ExamplesModule\Core\ModuleLifecycleSubscriber:
+    tags:
+      - { name: kernel.event_subscriber }

@@ -56,7 +56,7 @@ final class GreetingControllerTest extends IntegrationTestCase
     }
 
     #[Test]
-    public function testUpdateGreetingWithPersonalModeOn(): void
+    public function updateGreetingWithPersonalModeOn(): void
     {
         $greetingSettingsStub = $this->createConfiguredStub(GreetingSettingsInterface::class, [
             'isPersonalGreetingMode' => true,
@@ -81,7 +81,7 @@ final class GreetingControllerTest extends IntegrationTestCase
     }
 
     #[Test]
-    public function testUpdateGreetingWithPersonalModeOff(): void
+    public function updateGreetingWithPersonalModeOff(): void
     {
         $greetingSettingsStub = $this->createConfiguredStub(GreetingSettingsInterface::class, [
             'isPersonalGreetingMode' => false,
@@ -98,8 +98,9 @@ final class GreetingControllerTest extends IntegrationTestCase
         $sut->updateGreeting();
     }
 
+    #[Test]
     #[DataProvider('providerRender')]
-    public function testRender(bool $hasUser, string $mode, array $expected): void
+    public function render(bool $hasUser, string $mode, array $expected): void
     {
         $this->createTestTracker($expected['counter']);
 

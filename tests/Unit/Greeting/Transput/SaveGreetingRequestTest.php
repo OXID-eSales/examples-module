@@ -24,7 +24,9 @@ final class SaveGreetingRequestTest extends TestCase
             ->with(SaveGreetingRequest::OEEM_GREETING_FORM_FIELD, '')
             ->willReturn($greetingMessage);
 
-        $sut = $this->getSut(request: $requestMock);
+        $sut = $this->getSut(
+            request: $requestMock,
+        );
         $this->assertSame($greetingMessage, $sut->getGreetingMessage());
     }
 

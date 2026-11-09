@@ -12,12 +12,10 @@ namespace OxidEsales\ExamplesModule\Tests\Unit\Greeting\Service\Decorator;
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\ExamplesModule\Greeting\Service\Decorator\GreetingValidationDecorator;
 use OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageServiceInterface;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(GreetingValidationDecorator::class)]
 final class GreetingValidationDecoratorTest extends TestCase
 {
     #[Test]
@@ -29,7 +27,9 @@ final class GreetingValidationDecoratorTest extends TestCase
             ->method('getGeneralGreeting')
             ->willReturn($expectedGreeting);
 
-        $sut = $this->getSut(originalService: $innerService);
+        $sut = $this->getSut(
+            originalService: $innerService,
+        );
 
         $this->assertSame($expectedGreeting, $sut->getGeneralGreeting());
     }
@@ -46,7 +46,9 @@ final class GreetingValidationDecoratorTest extends TestCase
             ->with($userStub)
             ->willReturn($expectedGreeting);
 
-        $sut = $this->getSut(originalService: $innerService);
+        $sut = $this->getSut(
+            originalService: $innerService,
+        );
 
         $this->assertSame($expectedGreeting, $sut->getGreeting($userStub));
     }
@@ -62,7 +64,9 @@ final class GreetingValidationDecoratorTest extends TestCase
             ->method('saveGreetingForCurrentUser')
             ->with($expectedMessage);
 
-        $sut = $this->getSut(originalService: $innerService);
+        $sut = $this->getSut(
+            originalService: $innerService,
+        );
         $sut->saveGreetingForCurrentUser($inputMessage);
     }
 

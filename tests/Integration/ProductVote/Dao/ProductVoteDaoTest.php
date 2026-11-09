@@ -26,8 +26,7 @@ final class ProductVoteDaoTest extends IntegrationTestCase
     #[Test]
     public function noVoteForNoRecord(): void
     {
-        /** @var ProductVoteDaoInterface $sut */
-        $sut = $this->get(ProductVoteDaoInterface::class);
+        $sut = $this->getSut();
 
         $productVote = $sut->getProductVote('productId', 'userId');
         $this->assertNull($productVote);
@@ -37,8 +36,7 @@ final class ProductVoteDaoTest extends IntegrationTestCase
     #[DataProvider('isVoteUpProvider')]
     public function setAndGetVoteGivesTheSameVote(bool $isVoteUp): void
     {
-        /** @var ProductVoteDaoInterface $sut */
-        $sut = $this->get(ProductVoteDaoInterface::class);
+        $sut = $this->getSut();
 
         $vote = new ProductVote(self::TEST_PRODUCT_ID, self::TEST_USER_ID, $isVoteUp);
         $sut->setProductVote($vote);
@@ -65,8 +63,7 @@ final class ProductVoteDaoTest extends IntegrationTestCase
         $upVote = new ProductVote(self::TEST_PRODUCT_ID, self::TEST_USER_ID, true);
         $downVote = new ProductVote(self::TEST_PRODUCT_ID, self::TEST_USER_ID, false);
 
-        /** @var ProductVoteDaoInterface $sut */
-        $sut = $this->get(ProductVoteDaoInterface::class);
+        $sut = $this->getSut();
         $sut->setProductVote($upVote);
         $sut->setProductVote($downVote);
 
@@ -77,8 +74,7 @@ final class ProductVoteDaoTest extends IntegrationTestCase
     #[Test]
     public function resetNonExistingVoteDoesNothing(): void
     {
-        /** @var ProductVoteDaoInterface $sut */
-        $sut = $this->get(ProductVoteDaoInterface::class);
+        $sut = $this->getSut();
         $sut->resetProductVote(self::TEST_PRODUCT_ID, self::TEST_USER_ID);
 
         $vote = $sut->getProductVote(self::TEST_PRODUCT_ID, self::TEST_USER_ID);
@@ -88,13 +84,17 @@ final class ProductVoteDaoTest extends IntegrationTestCase
     #[Test]
     public function resetVoteRemovesVote(): void
     {
-        /** @var ProductVoteDaoInterface $sut */
-        $sut = $this->get(ProductVoteDaoInterface::class);
+        $sut = $this->getSut();
         $sut->setProductVote(new ProductVote(self::TEST_PRODUCT_ID, self::TEST_USER_ID, true));
 
         $sut->resetProductVote(self::TEST_PRODUCT_ID, self::TEST_USER_ID);
 
         $vote = $sut->getProductVote(self::TEST_PRODUCT_ID, self::TEST_USER_ID);
         $this->assertNull($vote);
+    }
+
+    private function getSut(): ProductVoteDaoInterface
+    {
+        return $this->get(ProductVoteDaoInterface::class);
     }
 }

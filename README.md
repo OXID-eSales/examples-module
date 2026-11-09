@@ -104,8 +104,13 @@ The repository contains examples of following cases and more:
     * Note: While the example uses validation/truncation for simplicity, better use cases include logging, caching, performance monitoring, or audit trails
     * [Decorator registration](src/Greeting/services.yaml) - using `decorates:` in DI configuration
 
-* [Migrations](migration)
+* [Migrations](di_migrations)
   * extending a shop database table (`oxuser`)
+  * DI-registered ("tagged") migrations via a [`MigrationPathProvider`](src/Core/MigrationPathProvider.php) registered in [`bootstrap-services.yaml`](bootstrap-services.yaml) - an alternative to the auto-detected `migration/migrations.yml`, 
+    so the migrations can be run for the installed module even while it is deactivated
+
+* [Module lifecycle events](bootstrap-services.yaml)
+  * reacting to this module's own activation/deactivation with a [`ModuleLifecycleSubscriber`](src/Core/ModuleLifecycleSubscriber.php) - a DI event subscriber registered in [`bootstrap-services.yaml`](bootstrap-services.yaml) so it is in the container before activation, instead of the deprecated `metadata.php` `onActivate`/`onDeactivate` events
 
 * Accessing the database
   * Model with a database (`OxidEsales\ExamplesModule\Tracker\Model\TrackerModel`)
@@ -117,6 +122,7 @@ The repository contains examples of following cases and more:
     * [TrackerRepository](src/Tracker/Infrastructure/Repository/TrackerRepository.php) - more comprehensive example showing dependencies and DTO usage
 
 * [Various types of module settings](https://github.com/OXID-eSales/examples-module/blob/b-7.6.x/metadata.php#L38)
+  * [Help text for a module setting](views/admin_twig/en/module_options.php#L23) - add a `HELP_SHOP_MODULE_<setting name>` key to the admin translations and a help icon with this text is shown next to the setting
 
 * Templates
   * [creating templates for your module](views/twig/templates/greetingtemplate.html.twig)
@@ -130,6 +136,12 @@ The repository contains examples of following cases and more:
     * `ddoe_wysiwyg_plugins` block - load additional Summernote plugin scripts via `{{ script() }}`
     * `ddoe_wysiwyg_summernote_options` block - customize editor options (toolbar, fonts, etc.) via `Object.assign()`
 
+* [Building frontend assets with Vite](vite.config.js)
+  * TypeScript and SCSS sources live in [node_build](node_build) and are built into `assets/out/build` with `npm install && npm run build` (or `npm run watch` during development)
+  * the TypeScript is split into ES modules ([user info service](node_build/js/User/UserInfoService.ts) behind an [interface](node_build/js/User/UserInfoServiceInterface.ts), [greeting button component](node_build/js/Greeting/GreetingButtonComponent.ts) that gets the service injected through its constructor); the [entry file](node_build/js/main.ts) creates and wires them together, like the DI container does in PHP; Vite compiles and bundles them into one `main.min.js`
+  * the build checks the types first and stops on errors; `npm run typecheck` runs only the check (settings in [tsconfig.json](tsconfig.json))
+  * the built files are included in the [header template](views/twig/extensions/themes/default/layout/header.html.twig) via `{{ style() }}` and `{{ script() }}`; template values (like the session token) are passed to the script through `data-` attributes
+
 * Using the translations for your module specific phrases
   * [in admin](views/admin_twig)
   * [in frontend](translations)
@@ -141,6 +153,7 @@ The repository contains examples of following cases and more:
 
 * Testing your module backend and frontend part
   * [Composer aliases for easy running of tests and quality tools](https://github.com/OXID-eSales/examples-module/blob/b-7.6.x/composer.json#L49)
+  * [PHPStan array shape type](src/ApiEntrypoint/CustomerInfo/Infrastructure/CustomerGroupRepository.php#L17) - in case data is passed around as arrays instead of type-strict DTOs (for example, rows fetched from the database), describe the array structure with `@phpstan-type`, so static analysis knows its keys and value types
   * [Using the github actions as CI tool with all recommended tools preconfigured for you.](.github)
 
 * [Using variables from .env file](.env)
@@ -201,7 +214,7 @@ installation/usage methods.
 This module is in working state and can be directly installed via composer:
 ```
 composer require oxid-esales/examples-module
-./vendor/bin/oe-eshop-db_migrate migrations:migrate oe_examples_module
+./vendor/bin/oe-console oe:database:migrate
 ```
 
 and [activate the module](https://docs.oxid-esales.com/developer/en/latest/development/modules_components_themes/module/installation_setup/setup.html#setup-activation).
@@ -266,16 +279,25 @@ The examples module is intended to act as a tutorial module so keep your eyes op
 * migrations are intended to bump the database (and eventual existing data) to a new module version (this also goes for first time installation).
 * ensure migrations are stable against rerun
 
-Migrations have to be run via console command (`./vendor/bin/oe-eshop-db_migrate`)
+This module registers its migrations through the DI container instead of relying on the
+auto-detected `migration/migrations.yml`: the migration configuration lives in
+[`di_migrations/migrations.yaml`](di_migrations/migrations.yaml) and is exposed by a
+[`MigrationPathProvider`](src/Core/MigrationPathProvider.php) tagged
+`oxid_esales.migration_path_provider` in [`bootstrap-services.yaml`](bootstrap-services.yaml).
+Because it is a bootstrap service, the provider is available for the installed module regardless of
+activation, so the migrations run even before the module is activated.
+
+Run all pending migrations (shop + all tagged providers, including this module) via console command:
 
 ```bash
-./vendor/bin/oe-eshop-db_migrate migrations:migrate oe_examples_module
+./vendor/bin/oe-console oe:database:migrate
 ```
 
-NOTE: Existing migrations must not be changed. If the database needs a change, add a new migration file and change to your needs:
+NOTE: Existing migrations must not be changed. If the database needs a change, add a new migration file. Generate one by calling Doctrine Migrations directly against this module's configuration:
 
 ```bash
-./vendor/bin/oe-eshop-db_migrate migrations:generate oe_examples_module
+./vendor/bin/doctrine-migrations migrations:generate \
+    --configuration=vendor/oxid-esales/examples-module/di_migrations/migrations.yaml
 ```
 
 For more information, check the [developer documentation](https://docs.oxid-esales.com/developer/en/latest/development/tell_me_about/migrations.html).
@@ -309,6 +331,18 @@ preconfigured quality tools available. Example:
 $ composer phpcs
 $ composer phpstan
 $ composer phpmd
+```
+
+### TypeScript tests
+
+The TypeScript sources in `node_build/js` are tested with [Vitest](https://vitest.dev/) in a simulated browser environment (jsdom).
+The tests are in [tests/Js](tests/Js), the configuration in [tests/vitest.config.js](tests/vitest.config.js):
+
+```bash
+$ npm install
+$ npm run typecheck
+$ npm test
+$ npm run test:coverage
 ```
 
 ### Integration/Acceptance tests

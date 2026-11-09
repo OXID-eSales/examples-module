@@ -3,7 +3,10 @@
 
 vendor/
 composer.lock
+package-lock.json
 
 .php_cs.cache
 tests/.phpunit.result.cache
 tests/.phpunit.cache
+
+node_modules/

@@ -9,6 +9,7 @@ namespace OxidEsales\ExamplesModule\Tests\Unit\Greeting\Transput;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Request\RequestInterface;
 use OxidEsales\ExamplesModule\Greeting\Transput\AdminGreetingRequest;
+use OxidEsales\ExamplesModule\Greeting\Transput\AdminGreetingRequestInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -24,7 +25,17 @@ final class AdminGreetingRequestTest extends TestCase
             ->with('oxid')
             ->willReturn($editObjectId);
 
-        $sut = new AdminGreetingRequest($shopRequestMock);
+        $sut = $this->getSut(
+            request: $shopRequestMock,
+        );
         $this->assertSame($editObjectId, $sut->getEditObjectId());
+    }
+
+    private function getSut(
+        RequestInterface $request,
+    ): AdminGreetingRequestInterface {
+        return new AdminGreetingRequest(
+            request: $request,
+        );
     }
 }

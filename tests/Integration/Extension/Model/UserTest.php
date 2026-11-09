@@ -20,7 +20,8 @@ use PHPUnit\Framework\Attributes\Test;
 #[CoversClass(User::class)]
 final class UserTest extends IntegrationTestCase
 {
-    public function testImplementsInterfaces(): void
+    #[Test]
+    public function implementsInterfaces(): void
     {
         $user = oxNew(EshopModelUser::class);
 

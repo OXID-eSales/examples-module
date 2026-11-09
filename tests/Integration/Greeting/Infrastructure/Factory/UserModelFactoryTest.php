@@ -7,10 +7,11 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\ExamplesModule\Tests\Unit\Greeting\Infrastructure\Factory;
+namespace OxidEsales\ExamplesModule\Tests\Integration\Greeting\Infrastructure\Factory;
 
 use OxidEsales\ExamplesModule\Extension\Model\UserInterface;
 use OxidEsales\ExamplesModule\Greeting\Infrastructure\Factory\UserModelFactory;
+use OxidEsales\ExamplesModule\Greeting\Infrastructure\Factory\UserModelFactoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -21,7 +22,7 @@ class UserModelFactoryTest extends TestCase
     #[Test]
     public function createProducesCorrectTypeOfObjects(): void
     {
-        $sut = new UserModelFactory();
+        $sut = $this->getSut();
 
         $user = $sut->create();
         $this->assertInstanceOf(UserInterface::class, $user);
@@ -30,11 +31,16 @@ class UserModelFactoryTest extends TestCase
     #[Test]
     public function createProducesNewObjectsWithEveryCall(): void
     {
-        $sut = new UserModelFactory();
+        $sut = $this->getSut();
 
         $user1 = $sut->create();
         $user2 = $sut->create();
 
         $this->assertNotSame($user1, $user2);
+    }
+
+    private function getSut(): UserModelFactoryInterface
+    {
+        return new UserModelFactory();
     }
 }

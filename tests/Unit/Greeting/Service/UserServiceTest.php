@@ -13,13 +13,13 @@ use OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\UserRepositoryI
 use OxidEsales\ExamplesModule\Greeting\Model\PersonalGreetingUserInterface;
 use OxidEsales\ExamplesModule\Greeting\Service\UserService;
 use OxidEsales\ExamplesModule\Greeting\Service\UserServiceInterface;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(UserService::class)]
 final class UserServiceTest extends TestCase
 {
-    public function testGetUserByIdDelegatesToRepository(): void
+    #[Test]
+    public function getUserByIdDelegatesToRepository(): void
     {
         $userId = uniqid();
         $userModel = $this->createStub(PersonalGreetingUserInterface::class);
@@ -44,6 +44,8 @@ final class UserServiceTest extends TestCase
     ): UserServiceInterface {
         $userRepository ??= $this->createStub(UserRepositoryInterface::class);
 
-        return new UserService($userRepository);
+        return new UserService(
+            userRepository: $userRepository,
+        );
     }
 }

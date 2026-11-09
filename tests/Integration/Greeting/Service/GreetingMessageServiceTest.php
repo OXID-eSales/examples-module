@@ -15,6 +15,7 @@ use OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\GreetingReposit
 use OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageService;
 use OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(GreetingMessageService::class)]
@@ -24,7 +25,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class GreetingMessageServiceTest extends TestCase
 {
-    public function testGenericGreetingWithUserForPersonalMode(): void
+    #[Test]
+    public function genericGreetingWithUserForPersonalMode(): void
     {
         $sut = $this->getSut(
             greetingSettings: $greetingSettingsStub = $this->createStub(GreetingSettingsInterface::class),

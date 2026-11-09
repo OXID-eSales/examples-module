@@ -27,7 +27,7 @@ final class UserRepositoryTest extends IntegrationTestCase
 
         $this->createUser(username: $username, firstName: $firstName);
 
-        $sut = $this->get(UserRepositoryInterface::class);
+        $sut = $this->getSut();
 
         $this->assertSame($firstName, $sut->getFirstNameByUsername($username));
     }
@@ -35,7 +35,7 @@ final class UserRepositoryTest extends IntegrationTestCase
     #[Test]
     public function returnsNullForNonExistentUser(): void
     {
-        $sut = $this->get(UserRepositoryInterface::class);
+        $sut = $this->getSut();
 
         $this->assertNull(
             $sut->getFirstNameByUsername(uniqid('unknown_') . '@example.com')
@@ -49,9 +49,14 @@ final class UserRepositoryTest extends IntegrationTestCase
 
         $this->createUser(username: $username, firstName: '');
 
-        $sut = $this->get(UserRepositoryInterface::class);
+        $sut = $this->getSut();
 
         $this->assertSame('', $sut->getFirstNameByUsername($username));
+    }
+
+    private function getSut(): UserRepositoryInterface
+    {
+        return $this->get(UserRepositoryInterface::class);
     }
 
     private function createUser(string $username, string $firstName): void

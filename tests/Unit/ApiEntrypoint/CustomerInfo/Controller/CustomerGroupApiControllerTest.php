@@ -13,13 +13,13 @@ use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Controller\CustomerGrou
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\DTO\CustomerGroupCountInterface;
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Service\CustomerGroupServiceInterface;
 use OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\ApiEntrypointTestCase;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-#[CoversClass(CustomerGroupApiController::class)]
 final class CustomerGroupApiControllerTest extends ApiEntrypointTestCase
 {
-    public function testGetCustomerGroupsReturnsJsonResponseWithStatus200(): void
+    #[Test]
+    public function getCustomerGroupsReturnsJsonResponseWithStatus200(): void
     {
         $sut = $this->getSut();
         $response = $sut->getCustomerGroups();
@@ -28,7 +28,8 @@ final class CustomerGroupApiControllerTest extends ApiEntrypointTestCase
         $this->assertSame(200, $response->getStatusCode());
     }
 
-    public function testGetCustomerGroupsContainsGroupDataAndTotal(): void
+    #[Test]
+    public function getCustomerGroupsContainsGroupDataAndTotal(): void
     {
         $groupId = uniqid('group_');
         $title = uniqid('title_');
@@ -46,7 +47,9 @@ final class CustomerGroupApiControllerTest extends ApiEntrypointTestCase
             'getTotalCustomerCount' => $total,
         ]);
 
-        $sut = $this->getSut(customerGroupService: $serviceStub);
+        $sut = $this->getSut(
+            customerGroupService: $serviceStub,
+        );
         $response = $sut->getCustomerGroups();
         $data = $this->decodeResponse($response);
 

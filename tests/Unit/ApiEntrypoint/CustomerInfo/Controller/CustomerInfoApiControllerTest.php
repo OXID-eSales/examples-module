@@ -12,12 +12,12 @@ namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\CustomerInfo\Contro
 use OxidEsales\AuthComponent\Security\User\ApiUser;
 use OxidEsales\ExamplesModule\ApiEntrypoint\CustomerInfo\Controller\CustomerInfoApiController;
 use OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\ApiEntrypointTestCase;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 
-#[CoversClass(CustomerInfoApiController::class)]
 final class CustomerInfoApiControllerTest extends ApiEntrypointTestCase
 {
-    public function testGetAuthenticatedUserInfoReturnsUserIdAndEmail(): void
+    #[Test]
+    public function getAuthenticatedUserInfoReturnsUserIdAndEmail(): void
     {
         $oxid = uniqid('oxid_');
         $email = uniqid('user_');

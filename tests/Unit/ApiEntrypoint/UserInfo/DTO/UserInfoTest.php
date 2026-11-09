@@ -10,13 +10,13 @@ declare(strict_types=1);
 namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\UserInfo\DTO;
 
 use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\DTO\UserInfo;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(UserInfo::class)]
 final class UserInfoTest extends TestCase
 {
-    public function testStoresFirstNameAndGreetingUrl(): void
+    #[Test]
+    public function storesFirstNameAndGreetingUrl(): void
     {
         $firstName = uniqid('name_');
         $greetingUrl = uniqid('url_');

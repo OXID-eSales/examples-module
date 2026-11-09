@@ -30,7 +30,7 @@ final class CustomerGroupRepositoryTest extends IntegrationTestCase
     #[Test]
     public function returnsEmptyArrayWhenNoActiveGroups(): void
     {
-        $sut = $this->get(CustomerGroupRepositoryInterface::class);
+        $sut = $this->getSut();
 
         $this->assertSame([], $sut->getCustomerGroupCounts());
     }
@@ -42,7 +42,7 @@ final class CustomerGroupRepositoryTest extends IntegrationTestCase
         $groupTitle = uniqid('group_');
         $this->createGroup($groupId, $groupTitle);
 
-        $sut = $this->get(CustomerGroupRepositoryInterface::class);
+        $sut = $this->getSut();
 
         $result = $sut->getCustomerGroupCounts();
         $this->assertCount(1, $result);
@@ -65,7 +65,7 @@ final class CustomerGroupRepositoryTest extends IntegrationTestCase
             );
         }
 
-        $sut = $this->get(CustomerGroupRepositoryInterface::class);
+        $sut = $this->getSut();
 
         $result = $sut->getCustomerGroupCounts();
         $this->assertSame($userCount, $result[0]->getCount());
@@ -80,9 +80,14 @@ final class CustomerGroupRepositoryTest extends IntegrationTestCase
             active: false,
         );
 
-        $sut = $this->get(CustomerGroupRepositoryInterface::class);
+        $sut = $this->getSut();
 
         $this->assertSame([], $sut->getCustomerGroupCounts());
+    }
+
+    private function getSut(): CustomerGroupRepositoryInterface
+    {
+        return $this->get(CustomerGroupRepositoryInterface::class);
     }
 
     private function createGroup(

@@ -22,7 +22,8 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(UserRepository::class)]
 final class UserRepositoryTest extends TestCase
 {
-    public function testGetUserByIdLoadsUserAndReturnsIt(): void
+    #[Test]
+    public function getUserByIdLoadsUserAndReturnsIt(): void
     {
         $userId = uniqid();
 
@@ -84,6 +85,8 @@ final class UserRepositoryTest extends TestCase
     ): UserRepositoryInterface {
         $userModelFactory ??= $this->createStub(UserModelFactoryInterface::class);
 
-        return new UserRepository($userModelFactory);
+        return new UserRepository(
+            userModelFactory: $userModelFactory,
+        );
     }
 }

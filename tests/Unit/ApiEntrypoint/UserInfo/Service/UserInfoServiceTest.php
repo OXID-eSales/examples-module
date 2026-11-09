@@ -12,13 +12,13 @@ namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\UserInfo\Service;
 use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Infrastructure\UserRepositoryInterface;
 use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\DTO\UserInfoInterface;
 use OxidEsales\ExamplesModule\ApiEntrypoint\UserInfo\Service\UserInfoService;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(UserInfoService::class)]
 final class UserInfoServiceTest extends TestCase
 {
-    public function testGetUserInfoReturnsUserInfoWithFirstNameAndGreetingUrl(): void
+    #[Test]
+    public function getUserInfoReturnsUserInfoWithFirstNameAndGreetingUrl(): void
     {
         $username = uniqid('user_');
         $expectedFirstName = uniqid('name_');
@@ -27,7 +27,9 @@ final class UserInfoServiceTest extends TestCase
             'getFirstNameByUsername' => $expectedFirstName,
         ]);
 
-        $sut = $this->getSut(userRepository: $repositoryStub);
+        $sut = $this->getSut(
+            userRepository: $repositoryStub,
+        );
         $result = $sut->getUserInfo($username);
 
         $this->assertInstanceOf(UserInfoInterface::class, $result);
@@ -35,7 +37,8 @@ final class UserInfoServiceTest extends TestCase
         $this->assertSame('index.php?cl=oeem_greeting', $result->getGreetingUrl());
     }
 
-    public function testGetUserInfoReturnsNullWhenUserNotFound(): void
+    #[Test]
+    public function getUserInfoReturnsNullWhenUserNotFound(): void
     {
         $username = uniqid('unknown_');
 
@@ -45,7 +48,9 @@ final class UserInfoServiceTest extends TestCase
             ->with($username)
             ->willReturn(null);
 
-        $sut = $this->getSut(userRepository: $repositoryMock);
+        $sut = $this->getSut(
+            userRepository: $repositoryMock,
+        );
 
         $this->assertNull($sut->getUserInfo($username));
     }

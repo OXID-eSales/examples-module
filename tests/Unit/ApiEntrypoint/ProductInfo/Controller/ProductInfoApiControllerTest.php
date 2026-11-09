@@ -12,13 +12,13 @@ namespace OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\ProductInfo\Control
 use OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Controller\ProductInfoApiController;
 use OxidEsales\ExamplesModule\ApiEntrypoint\ProductInfo\Service\ProductInfoServiceInterface;
 use OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\ApiEntrypointTestCase;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-#[CoversClass(ProductInfoApiController::class)]
 final class ProductInfoApiControllerTest extends ApiEntrypointTestCase
 {
-    public function testGetProductInfoReturnsJsonResponseWithStatus200(): void
+    #[Test]
+    public function getProductInfoReturnsJsonResponseWithStatus200(): void
     {
         $sut = $this->getSut();
         $response = $sut->getProductInfo();
@@ -27,7 +27,8 @@ final class ProductInfoApiControllerTest extends ApiEntrypointTestCase
         $this->assertSame(200, $response->getStatusCode());
     }
 
-    public function testGetProductInfoContainsProductCountAndMessage(): void
+    #[Test]
+    public function getProductInfoContainsProductCountAndMessage(): void
     {
         $expectedCount = mt_rand(1, 10000);
         $expectedMessage = uniqid('message_');
@@ -36,7 +37,9 @@ final class ProductInfoApiControllerTest extends ApiEntrypointTestCase
             'getGreetingMessage' => $expectedMessage,
         ]);
 
-        $sut = $this->getSut(productInfoService: $serviceStub);
+        $sut = $this->getSut(
+            productInfoService: $serviceStub,
+        );
         $data = $this->decodeResponse($sut->getProductInfo());
 
         $this->assertSame($expectedCount, $data['productCount']);

@@ -19,6 +19,7 @@ use OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface;
 use OxidEsales\ExamplesModule\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * Here we have full integration test cases for a what we call 'chain extended' shop class.
@@ -48,7 +49,8 @@ final class StartControllerTest extends IntegrationTestCase
         parent::tearDown();
     }
 
-    public function testGetGeneralGreeting(): void
+    #[Test]
+    public function getGeneralGreeting(): void
     {
         $controller = oxNew(EshopStartController::class);
 
@@ -59,14 +61,16 @@ final class StartControllerTest extends IntegrationTestCase
         $this->assertStringStartsWith($patternPrefix, $result);
     }
 
-    public function testShowGeneralGreeting(): void
+    #[Test]
+    public function showGeneralGreeting(): void
     {
         $controller = oxNew(EshopStartController::class);
         $this->assertTrue($controller->showOeemGeneralGreeting());
     }
 
+    #[Test]
     #[DataProvider('providerCanUpdateOeemGreeting')]
-    public function testCanUpdateOeemGreeting(bool $hasUser, string $mode, bool $expected): void
+    public function canUpdateOeemGreeting(bool $hasUser, string $mode, bool $expected): void
     {
         $greetingSettings = $this->get(GreetingSettingsInterface::class);
         $greetingSettings->saveGreetingMode($mode);
@@ -83,8 +87,9 @@ final class StartControllerTest extends IntegrationTestCase
     /**
      * @param mixed $expect
      */
+    #[Test]
     #[DataProvider('providerGetOeemGreeting')]
-    public function testGetOeemGreeting(bool $hasUser, string $mode, $expect): void
+    public function getOeemGreeting(bool $hasUser, string $mode, $expect): void
     {
         $greetingSettings = $this->get(GreetingSettingsInterface::class);
         $greetingSettings->saveGreetingMode($mode);

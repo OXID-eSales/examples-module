@@ -13,23 +13,25 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServ
 use OxidEsales\ExamplesModule\Core\Module;
 use OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettings;
 use OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\String\UnicodeString;
 
-#[CoversClass(GreetingSettings::class)]
 final class GreetingSettingsTest extends TestCase
 {
+    #[Test]
     #[DataProvider('getGreetingModeDataProvider')]
-    public function testGetGreetingMode(string $value, string $expected): void
+    public function getGreetingMode(string $value, string $expected): void
     {
         $moduleSettingServiceStub = $this->createStub(ModuleSettingServiceInterface::class);
         $moduleSettingServiceStub->method('getString')->willReturnMap([
             [GreetingSettings::GREETING_MODE, Module::MODULE_ID, new UnicodeString($value)]
         ]);
 
-        $sut = $this->getSut(moduleSettingService: $moduleSettingServiceStub);
+        $sut = $this->getSut(
+            moduleSettingService: $moduleSettingServiceStub,
+        );
         $this->assertSame($expected, $sut->getGreetingMode());
     }
 
@@ -55,15 +57,18 @@ final class GreetingSettingsTest extends TestCase
         ];
     }
 
+    #[Test]
     #[DataProvider('isPersonalGreetingModeDataProvider')]
-    public function testIsPersonalGreetingMode(string $value, bool $expected): void
+    public function isPersonalGreetingMode(string $value, bool $expected): void
     {
         $moduleSettingServiceStub = $this->createStub(ModuleSettingServiceInterface::class);
         $moduleSettingServiceStub->method('getString')->willReturnMap([
             [GreetingSettings::GREETING_MODE, Module::MODULE_ID, new UnicodeString($value)]
         ]);
 
-        $sut = $this->getSut(moduleSettingService: $moduleSettingServiceStub);
+        $sut = $this->getSut(
+            moduleSettingService: $moduleSettingServiceStub,
+        );
         $this->assertSame($expected, $sut->isPersonalGreetingMode());
     }
 
@@ -81,7 +86,8 @@ final class GreetingSettingsTest extends TestCase
         ];
     }
 
-    public function testSaveGreetingMode(): void
+    #[Test]
+    public function saveGreetingMode(): void
     {
         $value = 'someValue';
 
@@ -92,7 +98,9 @@ final class GreetingSettingsTest extends TestCase
             Module::MODULE_ID
         );
 
-        $sut = $this->getSut(moduleSettingService: $moduleSettingServiceMock);
+        $sut = $this->getSut(
+            moduleSettingService: $moduleSettingServiceMock,
+        );
         $sut->saveGreetingMode($value);
     }
 

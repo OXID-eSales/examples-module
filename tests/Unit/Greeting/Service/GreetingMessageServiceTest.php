@@ -15,14 +15,13 @@ use OxidEsales\ExamplesModule\Greeting\Exception\UserNotLoggedIn;
 use OxidEsales\ExamplesModule\Greeting\Infrastructure\Repository\GreetingRepositoryInterface;
 use OxidEsales\ExamplesModule\Greeting\Service\GreetingMessageService;
 use OxidEsales\ExamplesModule\Greeting\Settings\GreetingSettingsInterface;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(GreetingMessageService::class)]
 final class GreetingMessageServiceTest extends TestCase
 {
-    public function testGeneralGreeting(): void
+    #[Test]
+    public function generalGreeting(): void
     {
         $shopName = uniqid();
         $service = $this->getSut(
@@ -39,7 +38,8 @@ final class GreetingMessageServiceTest extends TestCase
         $this->assertSame(sprintf($translatedString, $shopName), $service->getGeneralGreeting());
     }
 
-    public function testGenericGreetingNoUserForGenericMode(): void
+    #[Test]
+    public function genericGreetingNoUserForGenericMode(): void
     {
         $service = $this->getSut(
             greetingSettings: $greetingSettingsStub = $this->createStub(GreetingSettingsInterface::class),
@@ -58,7 +58,8 @@ final class GreetingMessageServiceTest extends TestCase
         $this->assertSame($expectedTranslation, $service->getGreeting(null));
     }
 
-    public function testGenericGreetingWithUserForGenericMode(): void
+    #[Test]
+    public function genericGreetingWithUserForGenericMode(): void
     {
         $service = $this->getSut(
             greetingSettings: $greetingSettingsStub = $this->createStub(GreetingSettingsInterface::class),
@@ -77,7 +78,8 @@ final class GreetingMessageServiceTest extends TestCase
         $this->assertSame($expectedTranslation, $service->getGreeting(null));
     }
 
-    public function testGenericGreetingNoUserForPersonalMode(): void
+    #[Test]
+    public function genericGreetingNoUserForPersonalMode(): void
     {
         $service = $this->getSut(
             greetingSettings: $greetingSettingsStub = $this->createStub(GreetingSettingsInterface::class),

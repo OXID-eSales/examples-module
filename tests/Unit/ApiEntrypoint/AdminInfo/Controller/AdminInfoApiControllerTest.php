@@ -13,13 +13,13 @@ use OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\Controller\AdminInfoApiCon
 use OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\DTO\AdminInfoInterface;
 use OxidEsales\ExamplesModule\ApiEntrypoint\AdminInfo\Service\AdminInfoServiceInterface;
 use OxidEsales\ExamplesModule\Tests\Unit\ApiEntrypoint\ApiEntrypointTestCase;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-#[CoversClass(AdminInfoApiController::class)]
 final class AdminInfoApiControllerTest extends ApiEntrypointTestCase
 {
-    public function testGetAdminInfoReturnsJsonResponseWithStatus200(): void
+    #[Test]
+    public function getAdminInfoReturnsJsonResponseWithStatus200(): void
     {
         $sut = $this->getSut();
         $response = $sut->getAdminInfo($this->createRequestWithUser(uniqid()));
@@ -28,7 +28,8 @@ final class AdminInfoApiControllerTest extends ApiEntrypointTestCase
         $this->assertSame(200, $response->getStatusCode());
     }
 
-    public function testGetAdminInfoReturnsEmailAndGreeting(): void
+    #[Test]
+    public function getAdminInfoReturnsEmailAndGreeting(): void
     {
         $email = uniqid('admin_') . '@example.com';
         $greeting = uniqid('greeting_');
@@ -43,7 +44,9 @@ final class AdminInfoApiControllerTest extends ApiEntrypointTestCase
             ->with($email)
             ->willReturn($adminInfoStub);
 
-        $sut = $this->getSut(adminInfoService: $serviceMock);
+        $sut = $this->getSut(
+            adminInfoService: $serviceMock,
+        );
 
         $response = $sut->getAdminInfo($this->createRequestWithUser($email));
         $data = $this->decodeResponse($response);
@@ -52,7 +55,8 @@ final class AdminInfoApiControllerTest extends ApiEntrypointTestCase
         $this->assertSame($greeting, $data['greeting']);
     }
 
-    public function testGetAdminInfoResponseStructure(): void
+    #[Test]
+    public function getAdminInfoResponseStructure(): void
     {
         $sut = $this->getSut();
 

@@ -25,8 +25,7 @@ final class ResultDaoTest extends IntegrationTestCase
     #[Test]
     public function calculateNoVotes(): void
     {
-        /** @var VoteResultDaoInterface $sut */
-        $sut = $this->get(VoteResultDaoInterface::class);
+        $sut = $this->getSut();
         $result = $sut->getProductVoteResult(self::TEST_PRODUCT_ID);
 
         $this->assertEquals(self::TEST_PRODUCT_ID, $result->getProductId());
@@ -39,7 +38,7 @@ final class ResultDaoTest extends IntegrationTestCase
     {
         $this->addProductVote(true, 'user_1');
 
-        $sut = $this->get(VoteResultDaoInterface::class);
+        $sut = $this->getSut();
         $result = $sut->getProductVoteResult(self::TEST_PRODUCT_ID);
         $this->assertEquals(self::TEST_PRODUCT_ID, $result->getProductId());
         $this->assertEquals(1, $result->getVoteUp());
@@ -57,11 +56,16 @@ final class ResultDaoTest extends IntegrationTestCase
         $this->addProductVote(true, 'user_6'); // 3/3
         $this->addProductVote(true, 'user_7'); // 4/3
 
-        $sut = $this->get(VoteResultDaoInterface::class);
+        $sut = $this->getSut();
         $result = $sut->getProductVoteResult(self::TEST_PRODUCT_ID);
         $this->assertEquals(self::TEST_PRODUCT_ID, $result->getProductId());
         $this->assertEquals(4, $result->getVoteUp());
         $this->assertEquals(3, $result->getVoteDown());
+    }
+
+    private function getSut(): VoteResultDaoInterface
+    {
+        return $this->get(VoteResultDaoInterface::class);
     }
 
     private function addProductVote(bool $isVoteUp, string $userId): void

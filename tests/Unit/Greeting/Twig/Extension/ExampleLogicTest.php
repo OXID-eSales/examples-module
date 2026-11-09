@@ -10,19 +10,25 @@ declare(strict_types=1);
 namespace OxidEsales\ExamplesModule\Tests\Unit\Greeting\Twig\Extension;
 
 use OxidEsales\ExamplesModule\Greeting\Twig\Extension\ExampleLogic;
-use PHPUnit\Framework\Attributes\CoversClass;
+use OxidEsales\ExamplesModule\Greeting\Twig\Extension\ExampleLogicInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(ExampleLogic::class)]
 final class ExampleLogicTest extends TestCase
 {
-    public function testExampleMethodIncludesParam(): void
+    #[Test]
+    public function exampleMethodIncludesParam(): void
     {
         $param = uniqid('param_');
 
-        $sut = new ExampleLogic();
+        $sut = $this->getSut();
         $result = $sut->exampleMethod($param);
 
         $this->assertStringContainsString($param, $result);
+    }
+
+    private function getSut(): ExampleLogicInterface
+    {
+        return new ExampleLogic();
     }
 }

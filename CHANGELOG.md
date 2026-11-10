@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v2.2.1] - 2026-11-10
+
+### Changed
+- Use correct WYSIWYG Editor module version in composer.json
+
 ## [v2.2.0] - 2026-11-09
 
 ### Added
@@ -70,6 +75,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - The module is extracted from the [Module template](https://github.com/OXID-eSales/module-template) repository.
 
-[v2.2.0]: https://github.com/OXID-eSales/examples-module/compare/v2.1.0...v2.2.0
+[v2.2.1]: https://github.com/OXID-eSales/examples-module/compare/v2.2.0...v2.2.1
+[v2.2.0]: https://github.com/OXID-eSales/examples-module/compare/v2.1.1...v2.2.0
+[v2.1.1]: https://github.com/OXID-eSales/examples-module/compare/v2.1.0...v2.1.1
 [v2.1.0]: https://github.com/OXID-eSales/examples-module/compare/v2.0.0...v2.1.0
 [v2.0.0]: https://github.com/OXID-eSales/examples-module/compare/v1.0.0...v2.0.0
